@@ -10,10 +10,4 @@
     <ProjectReference Include="..\GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>

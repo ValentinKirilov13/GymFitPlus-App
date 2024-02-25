@@ -12,33 +12,27 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymFitPlus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240224155456_AddUserInfoModel")]
+    [Migration("20240225193905_AddUserInfoModel")]
     partial class AddUserInfoModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.26")
+                .HasAnnotation("ProductVersion", "6.0.27")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserInfo", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)")
                         .HasComment("User identifier");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2")
                         .HasComment("User birth date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("User email adress");
 
                     b.Property<string>("FacebookUrl")
                         .HasMaxLength(200)
@@ -55,6 +49,11 @@ namespace GymFitPlus.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("User gender");
 
+                    b.Property<string>("ImgUrl")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("Link to user profile image");
+
                     b.Property<string>("InstagramUrl")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)")
@@ -65,15 +64,6 @@ namespace GymFitPlus.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("User last name");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasComment("User phone number");
-
-                    b.Property<bool>("ShowEmail")
-                        .HasColumnType("bit")
-                        .HasComment("User email to be public or not");
 
                     b.Property<string>("YouTubeUrl")
                         .HasMaxLength(200)

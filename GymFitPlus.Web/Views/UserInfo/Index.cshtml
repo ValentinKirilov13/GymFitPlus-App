@@ -1,0 +1,32 @@
+﻿@model UserInfoViewModel
+@{
+    ViewBag.Titile = "Dashboard";
+}
+
+@if (Model.ImgUrl != null)
+{
+    <img class="card-img-top" style="width: 18rem;"
+             src="@Model.ImgUrl" >
+}
+
+<p>@Model.FirstName</p>
+<p>@Model.LastName</p>
+<p>@((GenderType)Model.Gender)</p>
+<p>@(DateTime.Today.Year - DateTime.Parse(Model.BirthDate).Year)</p>
+
+@if (Model.FacebookUrl != null)
+{
+    <p>@Model.FacebookUrl</p>
+}
+
+@if (Model.InstagramUrl != null)
+{
+    <p>@Model.InstagramUrl</p>
+}
+
+@if (Model.YouTubeUrl != null)
+{
+    <p>@Model.YouTubeUrl</p>
+}
+
+

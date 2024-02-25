@@ -11,7 +11,8 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Comment("User identifier")]
-        public int Id { get; set; }
+        [Required]
+        public string Id { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
@@ -31,17 +32,9 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("User gender")]
         public GenderType Gender { get; set; }
 
-        [MaxLength(20)]
-        [Comment("User phone number")]
-        public string? PhoneNumber { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        [Comment("User email adress")]
-        public string Email { get; set; } = string.Empty;
-
-        [Comment("User email to be public or not")]
-        public bool ShowEmail { get; set; }
+        [MaxLength(200)]
+        [Comment("Link to user profile image")]
+        public string? ImgUrl { get; set; }
 
         [MaxLength(200)]
         [Comment("Link to user Facebook account")]

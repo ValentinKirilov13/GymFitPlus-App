@@ -2,9 +2,8 @@
 {
     public enum GenderType
     {
-        Male,
+        Male = 1,
         Female,
-        Another,
-        PreferNotToSay
+        Other,
     }
 }
