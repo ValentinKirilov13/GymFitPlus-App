@@ -1,4 +1,4 @@
-﻿namespace GymFitPlus.Infrastructure.Data.Models.Enums
+﻿namespace GymFitPlus.Infrastructure.Enums
 {
     public enum GenderType
     {

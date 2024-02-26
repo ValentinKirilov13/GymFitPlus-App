@@ -2,7 +2,7 @@
 using GymFitPlus.Core.ViewModels.UserInfoViewModels;
 using GymFitPlus.Infrastructure.Data;
 using GymFitPlus.Infrastructure.Data.Models;
-using GymFitPlus.Infrastructure.Data.Models.Enums;
+using GymFitPlus.Infrastructure.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymFitPlus.Core.Services
