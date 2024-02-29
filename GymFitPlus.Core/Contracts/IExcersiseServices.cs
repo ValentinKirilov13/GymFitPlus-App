@@ -6,8 +6,8 @@ namespace GymFitPlus.Core.Contracts
     {
         Task<ExcersiseViewModel?> FindExcersiseByIdAsync(int id);
         Task<IEnumerable<ExcersiseViewModel>> AllExcersiseAsync();
-        Task<bool> AddExcersiseAsync(ExcersiseViewModel viewModel);
-        Task<bool> DeleteExcersiseAsync(int id);
-        Task<bool> EditExcersiseAsync(ExcersiseViewModel viewModel);
+        Task AddExcersiseAsync(ExcersiseViewModel viewModel);
+        Task DeleteExcersiseAsync(int id);
+        Task EditExcersiseAsync(ExcersiseViewModel viewModel);
     }
 }

@@ -15,37 +15,24 @@ namespace GymFitPlus.Core.Services
             _context = context;
         }
 
-        public async Task<bool> AddExcersiseAsync(ExcersiseViewModel viewModel)
+        public async Task AddExcersiseAsync(ExcersiseViewModel viewModel)
         {
-            bool IsSuccessed;
-
-            try
+            var model = new Excercise()
             {
-                var model = new Excercise()
-                {
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-                    ImgUrl = viewModel.ImgUrl,                
-                };
+                Name = viewModel.Name,
+                Description = viewModel.Description,
+                ImgUrl = viewModel.ImgUrl,
+            };
 
-                await _context.Excercises.AddAsync(model);
-                await _context.SaveChangesAsync();
-
-                IsSuccessed = true;
-            }
-            catch (Exception)
-            {
-                //TODO
-                throw;
-            }
-            
-            return IsSuccessed;
+            await _context.Excercises.AddAsync(model);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ExcersiseViewModel?> FindExcersiseByIdAsync(int id)
         {
             return await _context
                 .Excercises
+                .AsNoTracking()
                 .Where(x => x.IsDelete == false)
                 .Select(x => new ExcersiseViewModel()
                 {
@@ -73,58 +60,29 @@ namespace GymFitPlus.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> EditExcersiseAsync(ExcersiseViewModel viewModel)
+        public async Task EditExcersiseAsync(ExcersiseViewModel viewModel)
         {
-            bool IsSuccessed;
+            var model = await FindByIdAsync(viewModel.Id) ?? throw new Exception("The excersise didn't exist!");
 
-            try
-            {
-                var model = await FindByIdAsync(viewModel.Id) ?? throw new Exception();
+            model.Name = viewModel.Name;
+            model.Description = viewModel.Description;
+            model.ImgUrl = viewModel.ImgUrl;
 
-                model.Name = viewModel.Name;
-                model.Description = viewModel.Description;
-                model.ImgUrl = viewModel.ImgUrl;
-
-                await _context.SaveChangesAsync();
-
-                IsSuccessed = true;
-            }
-            catch (Exception)
-            {
-                //TODO
-                throw;
-            }
-            
-            return IsSuccessed;
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteExcersiseAsync(int id)
+        public async Task DeleteExcersiseAsync(int id)
         {
-            bool IsSuccessed;
+            var model = await FindByIdAsync(id) ?? throw new Exception("The excersise didn't exist!");
 
-            try
-            {
-                var model = await FindByIdAsync(id) ?? throw new Exception();
+            model.IsDelete = true;
 
-                model.IsDelete = true;
-
-                await _context.SaveChangesAsync();
-
-                IsSuccessed = true;
-            }
-            catch (Exception)
-            {
-                //TODO
-                throw;
-            }
-
-            return IsSuccessed;
+            await _context.SaveChangesAsync();
         }
 
         private async Task<Excercise?> FindByIdAsync(int id)
         {
             return await _context.Excercises
-                .Where(x => x.IsDelete == false)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
