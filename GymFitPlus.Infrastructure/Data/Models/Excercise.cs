@@ -22,11 +22,12 @@ namespace GymFitPlus.Infrastructure.Data.Models
         public string Description { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(ImgUrlMaxLenght)]
         [Comment("Excercise image")]
-        public string ImgUrl { get; set; } = string.Empty;
+        public byte[] Image { get; set; } = null!;
 
         [Comment("Excercise status")]
         public bool IsDelete { get; set; } = false;
+
+        public ICollection<FitnessProgramExcercise> FitnessProgramsExcercises { get; set; } = new List<FitnessProgramExcercise>();
     }
 }

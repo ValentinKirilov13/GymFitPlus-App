@@ -30,7 +30,11 @@ namespace GymFitPlus.Infrastructure.Constants
             public const int ImgUrlMinLenght = 50;
         }
 
-
+        public static class FitnessProgramConstants
+        {
+            public const int NameMaxLenght = 50;
+            public const int NameMinLenght = 5;
+        }
 
     }
 }

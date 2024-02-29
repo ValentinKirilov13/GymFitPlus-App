@@ -1,4 +1,5 @@
-﻿using GymFitPlus.Infrastructure.Data.Models;
+﻿using GymFitPlus.Infrastructure.Data.Configuration;
+using GymFitPlus.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,15 @@ namespace GymFitPlus.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
-        //public DbSet<Excercise> Excercises { get; set; } = null!;
+        public DbSet<Excercise> Excercises { get; set; } = null!;
+        public DbSet<FitnessProgram> FitnessPrograms { get; set; } = null!;
+        
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    base.OnModelCreating(builder);
-        //}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new FitnessProgramExcerciseConfiguration());
+
+            base.OnModelCreating(builder);
+        }
     }
 }
