@@ -28,7 +28,5 @@ namespace GymFitPlus.Infrastructure.Data.Models
 
         [Comment("Excercise status")]
         public bool IsDelete { get; set; } = false;
-
-        public ICollection<UserExcercise> UsersExcercises { get; set; } = new List<UserExcercise>();
     }
 }

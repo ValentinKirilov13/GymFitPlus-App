@@ -1,25 +1,21 @@
-﻿using GymFitPlus.Infrastructure.Data.Configuration;
-using GymFitPlus.Infrastructure.Data.Models;
+﻿using GymFitPlus.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymFitPlus.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext
+      : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
-        public DbSet<UserInfo> UserInfos { get; set; } = null!;
-        public DbSet<Excercise> Excercises { get; set; } = null!;
-        public DbSet<UserExcercise> UsersExcercises { get; set; } = null!;
+        //public DbSet<Excercise> Excercises { get; set; } = null!;
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfiguration(new UserExcerciseConfiguration());
-
-
-            base.OnModelCreating(builder);
-        }
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    base.OnModelCreating(builder);
+        //}
     }
 }
