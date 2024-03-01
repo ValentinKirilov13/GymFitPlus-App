@@ -16,6 +16,9 @@ namespace GymFitPlus.Infrastructure.Constants
 
             public const double GenderTypeEnumMaxValue = 3;
             public const double GenderTypeEnumMinValue = 1;
+
+            public const int PasswordMaxLenght = 100;
+            public const int PasswordMinLenght = 6;
         }
 
         public static class ExcerciseConstants
