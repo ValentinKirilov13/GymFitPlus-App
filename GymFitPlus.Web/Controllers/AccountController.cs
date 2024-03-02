@@ -1,4 +1,5 @@
 ﻿using GymFitPlus.Infrastructure.Data.Models;
+using GymFitPlus.Web.Attributes;
 using GymFitPlus.Web.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,15 +24,12 @@ namespace GymFitPlus.Web.Controllers
             _logger = logger;
         }
 
+
         [HttpGet]
         [AllowAnonymous]
+        [UserIsAuthenticated]
         public IActionResult Login()
         {
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction(nameof(Dashboard));
-            }
-
             var model = new LoginViewModel();
 
             return View(model);
@@ -39,6 +37,7 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [UserIsAuthenticated]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -63,13 +62,9 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [UserIsAuthenticated]
         public IActionResult Register()
         {
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction(nameof(Dashboard));
-            }
-
             var model = new RegisterViewModel();
 
             return View(model);
@@ -77,6 +72,7 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [UserIsAuthenticated]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -107,7 +103,7 @@ namespace GymFitPlus.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpGet]
