@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
-namespace GymFitPlus.Web.Models
+namespace GymFitPlus.Web.Models.AccountViewModels
 {
     public class LoginViewModel
     {

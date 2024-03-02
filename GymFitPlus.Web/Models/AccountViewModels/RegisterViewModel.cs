@@ -2,7 +2,7 @@
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 using static GymFitPlus.Infrastructure.Constants.DataConstants.ApplicationUserConstants;
 
-namespace GymFitPlus.Web.Models
+namespace GymFitPlus.Web.Models.AccountViewModels
 {
     public class RegisterViewModel
     {

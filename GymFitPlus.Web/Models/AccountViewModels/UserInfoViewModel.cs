@@ -1,4 +1,4 @@
-﻿namespace GymFitPlus.Web.Models
+﻿namespace GymFitPlus.Web.Models.AccountViewModels
 {
     public class UserInfoViewModel
     {

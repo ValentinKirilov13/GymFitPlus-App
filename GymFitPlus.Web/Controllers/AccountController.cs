@@ -1,11 +1,9 @@
 ﻿using GymFitPlus.Infrastructure.Data.Models;
-using GymFitPlus.Infrastructure.Enums;
-using GymFitPlus.Web.Models;
+using GymFitPlus.Web.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -25,8 +23,8 @@ namespace GymFitPlus.Web.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -39,8 +37,8 @@ namespace GymFitPlus.Web.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -63,8 +61,8 @@ namespace GymFitPlus.Web.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -77,8 +75,8 @@ namespace GymFitPlus.Web.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
