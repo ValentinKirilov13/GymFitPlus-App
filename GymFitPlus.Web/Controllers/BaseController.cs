@@ -7,9 +7,9 @@ namespace GymFitPlus.Web.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-        protected string? GetUserId()
+        protected Guid GetUserId()
         {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
     }
 }

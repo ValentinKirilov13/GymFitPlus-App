@@ -1,8 +1,11 @@
 ﻿using GymFitPlus.Infrastructure.Data.Models;
+using GymFitPlus.Infrastructure.Enums;
 using GymFitPlus.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -28,7 +31,7 @@ namespace GymFitPlus.Web.Controllers
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Dashboard));
             }
 
             var model = new LoginViewModel();
@@ -47,7 +50,7 @@ namespace GymFitPlus.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(Dashboard));
                 }                
                 else
                 {
@@ -66,7 +69,7 @@ namespace GymFitPlus.Web.Controllers
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Dashboard));
             }
 
             var model = new RegisterViewModel();
@@ -92,7 +95,7 @@ namespace GymFitPlus.Web.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(Dashboard));
                 }
                 foreach (var error in result.Errors)
                 {
@@ -106,7 +109,30 @@ namespace GymFitPlus.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Privacy", "Home");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Dashboard()
+        {
+            
+            var currentUser = await _userManager.Users
+                .AsNoTracking()
+                .Where(x => x.Id == GetUserId())
+                .Select(x => new UserInfoViewModel()
+                {
+                    FullName = $"{x.FirstName} {x.LastName}",
+                    Age = DateTime.Today.Year - x.BirthDate.Year,
+                    Gander = x.Gender.ToString(),
+                    Image = x.Image,
+                    FacebookUrl = x.FacebookUrl,
+                    InstagramUrl = x.InstagramUrl,
+                    YouTubeUrl = x.YouTubeUrl
+                })
+                .FirstOrDefaultAsync();
+
+
+            return Json(currentUser);
         }
     }
 }

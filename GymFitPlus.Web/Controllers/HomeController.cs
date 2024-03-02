@@ -17,6 +17,11 @@ namespace GymFitPlus.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard","Account");
+            }
+
             return View();
         }
 
