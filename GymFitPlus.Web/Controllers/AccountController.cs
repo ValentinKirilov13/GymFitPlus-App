@@ -1,6 +1,7 @@
-﻿using GymFitPlus.Infrastructure.Data.Models;
+﻿using GymFitPlus.Core.Contracts;
+using GymFitPlus.Core.ViewModels.AccountViewModels;
+using GymFitPlus.Infrastructure.Data.Models;
 using GymFitPlus.Web.Attributes;
-using GymFitPlus.Web.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +13,18 @@ namespace GymFitPlus.Web.Controllers
     public class AccountController : BaseController
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly IAccountService _accountService;
 
         public AccountController(
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountService accountService)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
             _logger = logger;
+            _accountService = accountService;
         }
-
 
         [HttpGet]
         [AllowAnonymous]
@@ -76,28 +76,30 @@ namespace GymFitPlus.Web.Controllers
         [UserIsAuthenticated]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ApplicationUser user = new()
+                if (ModelState.IsValid)
                 {
-                    UserName = model.Username,
-                    Email = model.Email,
-                };
+                    var result = await _accountService.RegisterUserAsync(model);
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: true, lockoutOnFailure: false);
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    return RedirectToAction(nameof(RegisterUserInfo));
+                        return RedirectToAction(nameof(RegisterUserInfo));
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception)
+            {
+                //TODO Custom Erro pages
+                return RedirectToAction();
+            }
         }
 
         [HttpGet]
@@ -111,34 +113,28 @@ namespace GymFitPlus.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUserInfo(RegisterUserInfoFormViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (ModelState.IsValid)
+                {
+                    var result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(Dashboard));
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
                 return View(model);
             }
-
-            var user = await _userManager.FindByIdAsync(User.Id().ToString());
-
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.BirthDate = model.BirthDate;
-            user.Gender = model.Gender;
-            user.FacebookUrl = model.FacebookUrl;
-            user.InstagramUrl = model.InstagramUrl;
-            user.YouTubeUrl = model.YouTubeUrl;
-            user.PhoneNumber = model.PhoneNumber;
-
-            if (model.Image != null && model.Image.Length > 0)
+            catch (Exception)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    model.Image[0].CopyTo(memoryStream);
-                    user.Image = memoryStream.ToArray();
-                }
-            }
-
-            await _userManager.UpdateAsync(user);
-
-            return RedirectToAction(nameof(Dashboard));
+                //TODO Custom Erro pages
+                return RedirectToAction();
+            }           
         }
 
         [HttpPost]
@@ -148,28 +144,28 @@ namespace GymFitPlus.Web.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Dashboard()
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> Dashboard()
+        //{
 
-            var currentUser = await _userManager.Users
-                .AsNoTracking()
-                .Where(x => x.Id == User.Id())
-                .Select(x => new UserInfoViewModel()
-                {
-                    FullName = $"{x.FirstName} {x.LastName}",
-                    Age = DateTime.Today.Year - x.BirthDate.Year,
-                    Gander = x.Gender.ToString(),
-                    Image = x.Image,
-                    FacebookUrl = x.FacebookUrl,
-                    InstagramUrl = x.InstagramUrl,
-                    YouTubeUrl = x.YouTubeUrl
-                })
-                .FirstOrDefaultAsync();
+        //    var currentUser = await _userManager.Users
+        //        .AsNoTracking()
+        //        .Where(x => x.Id == User.Id())
+        //        .Select(x => new UserInfoViewModel()
+        //        {
+        //            FullName = $"{x.FirstName} {x.LastName}",
+        //            Age = DateTime.Today.Year - x.BirthDate.Year,
+        //            Gander = x.Gender.ToString(),
+        //            Image = x.Image,
+        //            FacebookUrl = x.FacebookUrl,
+        //            InstagramUrl = x.InstagramUrl,
+        //            YouTubeUrl = x.YouTubeUrl
+        //        })
+        //        .FirstOrDefaultAsync();
 
 
-            return View(currentUser);
-        }
+        //    return View(currentUser);
+        //}
     }
 }
 
