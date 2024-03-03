@@ -1,6 +1,6 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.ExcersiseViewModels;
-using GymFitPlus.Infrastructure.Data;
+using GymFitPlus.Infrastructure.Data.Common;
 using GymFitPlus.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +8,11 @@ namespace GymFitPlus.Core.Services
 {
     public class ExcersiseServices : IExcersiseServices
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
 
-        public ExcersiseServices(ApplicationDbContext context)
+        public ExcersiseServices(IRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task AddExcersiseAsync(ExcersiseDetailViewModel viewModel)
@@ -24,34 +24,33 @@ namespace GymFitPlus.Core.Services
                 Image = viewModel.Image,
             };
 
-            await _context.Excercises.AddAsync(model);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(model);
+            await _repository.SaveChangesAsync();
         }
         public async Task DeleteExcersiseAsync(int id)
         {
-            var model = await FindByIdAsync(id) ?? throw new Exception("The excersise didn't exist!");
+            var model = await FindByIdAsync(id) ?? throw new NullReferenceException();
 
             model.IsDelete = true;
 
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
+
         public async Task EditExcersiseAsync(ExcersiseDetailViewModel viewModel)
         {
-            var model = await FindByIdAsync(viewModel.Id) ?? throw new Exception("The excersise didn't exist!");
+            var model = await FindByIdAsync(viewModel.Id) ?? throw new NullReferenceException();
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
             model.Image = viewModel.Image;
 
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
 
         public async Task<ExcersiseDetailViewModel?> FindExcersiseByIdAsync(int id)
         {
-            return await _context
-                .Excercises
-                .AsNoTracking()
+            return await _repository.AllReadOnly<Excercise>()               
                 .Where(x => x.IsDelete == false)
                 .Select(x => new ExcersiseDetailViewModel()
                 {
@@ -63,12 +62,9 @@ namespace GymFitPlus.Core.Services
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
-
         public async Task<IEnumerable<ExcersiseAllViewModel>> AllExcersiseAsync()
         {
-            return await _context
-                .Excercises
-                .AsNoTracking()
+            return await _repository.AllReadOnly<Excercise>()
                 .Where(x => x.IsDelete == false)
                 .Select(x => new ExcersiseAllViewModel()
                 {
@@ -84,7 +80,7 @@ namespace GymFitPlus.Core.Services
         
         private async Task<Excercise?> FindByIdAsync(int id)
         {
-            return await _context.Excercises
+            return await _repository.All<Excercise>()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
