@@ -1,0 +1,86 @@
+﻿@model RegisterUserInfoFormViewModel
+@{
+    ViewBag.Title = "Register page";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Register</h4>
+                </div>
+                <div class="card-body">
+
+                    <form asp-action="RegisterUserInfo" asp-controller="Account" method="post" enctype="multipart/form-data">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <img id="imagePreview" alt="Image Preview" style="max-width: 100%; max-height: 200px; margin-top: 10px;">
+
+                        <div class="form-group">
+                            <label asp-for="FirstName"></label>
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name">
+                            <span asp-validation-for="FirstName" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LastName"></label>
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last name">
+                            <span asp-validation-for="LastName" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="BirthDate"></label>
+                            <input asp-for="BirthDate" type="date" class="form-control" placeholder="Enter your birthdate">
+                            <span asp-validation-for="BirthDate" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Gender"></label>
+                            <input asp-for="Gender" type="text" class="form-control" placeholder="Enter your gender">
+                            <span asp-validation-for="Gender" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Enter your phone number">
+                            <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="InstagramUrl"></label>
+                            <input asp-for="InstagramUrl" type="text" class="form-control" placeholder="Enter your instagram account link">
+                            <span asp-validation-for="InstagramUrl" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FacebookUrl"></label>
+                            <input asp-for="FacebookUrl" type="text" class="form-control" placeholder="Enter your facebook account link">
+                            <span asp-validation-for="FacebookUrl" class="alert-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="YouTubeUrl"></label>
+                            <input asp-for="YouTubeUrl" type="text" class="form-control" placeholder="Enter your youtube account link">
+                            <span asp-validation-for="YouTubeUrl" class="alert-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Image"></label>
+                            <input asp-for="Image" type="file" accept="image/*" class="form-control" id="fileInput" onchange="previewImage(event)">
+                            <span asp-validation-for="Image" class="alert-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/RegisterUserInfoView.js"></script>
+}

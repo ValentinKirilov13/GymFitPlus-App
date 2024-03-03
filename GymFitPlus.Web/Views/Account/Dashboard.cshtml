@@ -1,0 +1,30 @@
+﻿@model UserInfoViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<p>@Model.FullName</p>
+<p>@Model.Age</p>
+<p>@Model.Gander</p>
+
+
+@if (Model.Image != null)
+{
+    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="File Preview">
+}
+
+@if (Model.FacebookUrl != null)
+{
+    <p>@Model.FacebookUrl</p>
+}
+
+@if (Model.InstagramUrl != null)
+{
+    <p>@Model.InstagramUrl</p>
+}
+
+@if (Model.YouTubeUrl != null)
+{
+    <p>@Model.YouTubeUrl</p>
+}
