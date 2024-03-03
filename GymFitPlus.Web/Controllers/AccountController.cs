@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -15,7 +16,7 @@ namespace GymFitPlus.Web.Controllers
         private readonly ILogger<AccountController> _logger;
 
         public AccountController(
-            SignInManager<ApplicationUser> signInManager, 
+            SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<AccountController> logger)
         {
@@ -48,7 +49,7 @@ namespace GymFitPlus.Web.Controllers
                 {
                     _logger.LogInformation("User logged in.");
                     return RedirectToAction(nameof(Dashboard));
-                }                
+                }
                 else
                 {
                     _logger.LogInformation("Invalid login attempt.");
@@ -80,7 +81,7 @@ namespace GymFitPlus.Web.Controllers
                 ApplicationUser user = new()
                 {
                     UserName = model.Username,
-                    Email = model.Email,                  
+                    Email = model.Email,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -89,7 +90,7 @@ namespace GymFitPlus.Web.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return RedirectToAction(nameof(Dashboard));
+                    return RedirectToAction(nameof(RegisterUserInfo));
                 }
                 foreach (var error in result.Errors)
                 {
@@ -97,6 +98,47 @@ namespace GymFitPlus.Web.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult RegisterUserInfo()
+        {
+            var model = new RegisterUserInfoFormViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUserInfo(RegisterUserInfoFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByIdAsync(User.Id().ToString());
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.BirthDate = model.BirthDate;
+            user.Gender = model.Gender;
+            user.FacebookUrl = model.FacebookUrl;
+            user.InstagramUrl = model.InstagramUrl;
+            user.YouTubeUrl = model.YouTubeUrl;
+            user.PhoneNumber = model.PhoneNumber;
+
+            if (model.Image != null && model.Image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    model.Image[0].CopyTo(memoryStream);
+                    user.Image = memoryStream.ToArray();
+                }
+            }
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Dashboard));
         }
 
         [HttpPost]
@@ -109,10 +151,10 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Dashboard()
         {
-            
+
             var currentUser = await _userManager.Users
                 .AsNoTracking()
-                .Where(x => x.Id == GetUserId())
+                .Where(x => x.Id == User.Id())
                 .Select(x => new UserInfoViewModel()
                 {
                     FullName = $"{x.FirstName} {x.LastName}",
@@ -126,7 +168,7 @@ namespace GymFitPlus.Web.Controllers
                 .FirstOrDefaultAsync();
 
 
-            return Json(currentUser);
+            return View(currentUser);
         }
     }
 }
