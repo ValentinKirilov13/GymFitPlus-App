@@ -14,5 +14,7 @@ namespace GymFitPlus.Core.ErrorMessages
 
         public const string DateFormatErrorMessage = 
             $"The date format is incorect! Allow format is : {DataConstants.ApplicationUserConstants.DateFormat}";
+
+        public const string PhotoErrorMessage = "File is too big. Max alloed is 2 GB";
     }
 }

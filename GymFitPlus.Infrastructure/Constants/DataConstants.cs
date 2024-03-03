@@ -9,7 +9,7 @@ namespace GymFitPlus.Infrastructure.Constants
             public const int NameMaxLenght = 50;
             public const int NameMinLenght = 5;
 
-            public const string DateFormat = "mm/dd/yyyy";
+            public const string DateFormat = "MM/dd/yyyy";
 
             public const int UrlMaxLenght = 200;
             public const int UrlMinLenght = 50;
@@ -19,6 +19,10 @@ namespace GymFitPlus.Infrastructure.Constants
 
             public const int PasswordMaxLenght = 100;
             public const int PasswordMinLenght = 6;
+
+            public const int UserPhoneMaxLength = 15;
+
+            public const int UserPhoneMinLength = 7;
         }
 
         public static class ExcerciseConstants

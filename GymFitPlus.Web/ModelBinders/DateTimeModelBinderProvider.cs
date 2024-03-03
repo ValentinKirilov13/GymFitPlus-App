@@ -15,7 +15,7 @@ namespace GymFitPlus.Web.ModelBinders
             if (context.Metadata.ModelType == typeof(DateTime)
                 || context.Metadata.ModelType == typeof(DateTime?))
             {
-                return new BinderTypeModelBinder(typeof(DateTimeModelBinderProvider));
+                return new BinderTypeModelBinder(typeof(DateTimeModelBinder));
             }
 
             return null;
