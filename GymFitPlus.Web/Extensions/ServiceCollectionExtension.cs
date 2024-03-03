@@ -1,5 +1,6 @@
 ﻿using GymFitPlus.Infrastructure.Data;
 using GymFitPlus.Infrastructure.Data.Models;
+using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,6 +19,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services
                 .AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IRepository, Repository>();
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
