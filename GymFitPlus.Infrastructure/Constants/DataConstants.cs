@@ -25,7 +25,7 @@ namespace GymFitPlus.Infrastructure.Constants
             public const int UserPhoneMinLength = 7;
         }
 
-        public static class ExcerciseConstants
+        public static class ExerciseConstants
         {
             public const int NameMaxLenght = 50;
             public const int NameMinLenght = 5;

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
-using static GymFitPlus.Infrastructure.Constants.DataConstants.ExcerciseConstants;
 
-namespace GymFitPlus.Core.ViewModels.ExcersiseViewModels
+namespace GymFitPlus.Core.ViewModels.ExerciseViewModels
 {
     public class ExerciseAllViewModel : ExerciseForProgramViewModel
     {       

@@ -1,4 +1,4 @@
-﻿using GymFitPlus.Core.ViewModels.ExcersiseViewModels;
+﻿using GymFitPlus.Core.ViewModels.ExerciseViewModels;
 
 namespace GymFitPlus.Core.Contracts
 {

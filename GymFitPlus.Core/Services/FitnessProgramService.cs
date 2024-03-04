@@ -1,5 +1,5 @@
 ﻿using GymFitPlus.Core.Contracts;
-using GymFitPlus.Core.ViewModels.ExcersiseViewModels;
+using GymFitPlus.Core.ViewModels.ExerciseViewModels;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using GymFitPlus.Infrastructure.Data.Common;
 using GymFitPlus.Infrastructure.Data.Models;
