@@ -37,24 +37,73 @@ namespace GymFitPlus.Core.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<ExerciseDetailViewModel?> FindFitnessProgramByIdAsync(int id)
+        public async Task<FitnessProgramDetailViewModel> FindFitnessProgramByIdAsync(int id)
         {
-            return await _repository.AllReadOnly<FitnessProgram>()
-                .Where(x => x.IsDelete == false)
-                .Select(x => new ExerciseDetailViewModel()
+            return await _repository
+                .AllReadOnly<FitnessProgram>()
+                .Select(p => new FitnessProgramDetailViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Exercises = p.FitnessProgramsExercises
+                    .Where(x => x.FitnessProgramId == id)
+                    .Select(x => new FitnessProgramExercisesInfoViewModel()
+                    {
+                        FitnessProgramId = x.FitnessProgramId,
+                        ExerciseId = x.Exercise.Id,
+                        ExerciseName = x.Exercise.Name, 
+                        Reps = x.Reps,
+                        Sets = x.Sets,
+                        Weight = x.Weight
+                    })
+                    .ToList()
+                })
+                .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
+        }
+
+        public async Task<IEnumerable<FitnessProgramFormViewModel>> AllFitnessProgramsAsync(Guid userId)
+        {
+            return await _repository
+                .AllReadOnly<FitnessProgram>()
+                .Where(x => x.IsDelete == false && x.UserId == userId)
+                .Select(x => new FitnessProgramFormViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Description = x.Description,
-                    Image = x.Image,
-                    UsedByProgramsCount = x.FitnessProgramsExcercises.Count()
                 })
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .ToListAsync();
         }
+
+        public async Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel)
+        {
+            var model = new FitnessProgramExercise()
+            {
+                FitnessProgramId = viewModel.FitnessProgramId,
+                ExerciseId = viewModel.ExerciseId,
+                Reps = viewModel.Reps,
+                Sets = viewModel.Sets,
+                Weight = viewModel.Weight,
+            };
+
+            await _repository.AddAsync(model);
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            if (affectedRows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         private async Task<FitnessProgram?> FindByIdAsync(int id)
         {
-            return await _repository.All<FitnessProgram>()
+            return await _repository
+                .All<FitnessProgram>()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

@@ -15,7 +15,7 @@ namespace GymFitPlus.Core.Services
             _repository = repository;
         }
 
-        public async Task AddExcersiseAsync(ExerciseDetailViewModel viewModel)
+        public async Task AddExerciseAsync(ExerciseDetailViewModel viewModel)
         {
             var model = new Exercise()
             {
@@ -27,7 +27,7 @@ namespace GymFitPlus.Core.Services
             await _repository.AddAsync(model);
             await _repository.SaveChangesAsync();
         }
-        public async Task DeleteExcersiseAsync(int id)
+        public async Task DeleteExerciseAsync(int id)
         {
             var model = await FindByIdAsync(id) ?? throw new NullReferenceException();
 
@@ -36,7 +36,7 @@ namespace GymFitPlus.Core.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditExcersiseAsync(ExerciseDetailViewModel viewModel)
+        public async Task EditExerciseAsync(ExerciseDetailViewModel viewModel)
         {
             var model = await FindByIdAsync(viewModel.Id) ?? throw new NullReferenceException();
 
@@ -48,7 +48,7 @@ namespace GymFitPlus.Core.Services
         }
 
 
-        public async Task<ExerciseDetailViewModel?> FindExcersiseByIdAsync(int id)
+        public async Task<ExerciseDetailViewModel?> FindExerciseByIdAsync(int id)
         {
             return await _repository.AllReadOnly<Exercise>()               
                 .Where(x => x.IsDelete == false)
@@ -58,11 +58,11 @@ namespace GymFitPlus.Core.Services
                     Name = x.Name,
                     Description = x.Description,
                     Image = x.Image,
-                    UsedByProgramsCount = x.FitnessProgramsExcercises.Count()
+                    UsedByProgramsCount = x.FitnessProgramsExercises.Count()
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
-        public async Task<IEnumerable<ExerciseAllViewModel>> AllExcersiseAsync()
+        public async Task<IEnumerable<ExerciseAllViewModel>> AllExerciseAsync()
         {
             return await _repository.AllReadOnly<Exercise>()
                 .Where(x => x.IsDelete == false)
@@ -71,7 +71,7 @@ namespace GymFitPlus.Core.Services
                     Id = x.Id,
                     Name = x.Name,
                     Image = x.Image,
-                    UsedByProgramsCount = x.FitnessProgramsExcercises.Count()
+                    UsedByProgramsCount = x.FitnessProgramsExercises.Count()
                 })
                 .ToListAsync();
         }
