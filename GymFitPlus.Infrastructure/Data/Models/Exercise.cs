@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using static GymFitPlus.Infrastructure.Constants.DataConstants.ExcerciseConstants;
+using static GymFitPlus.Infrastructure.Constants.DataConstants.ExerciseConstants;
 
 namespace GymFitPlus.Infrastructure.Data.Models
 {
@@ -28,6 +28,6 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Excercise status")]
         public bool IsDelete { get; set; } = false;
 
-        public ICollection<FitnessProgramExercise> FitnessProgramsExcercises { get; set; } = new List<FitnessProgramExercise>();
+        public ICollection<FitnessProgramExercise> FitnessProgramsExercises { get; set; } = new List<FitnessProgramExercise>();
     }
 }

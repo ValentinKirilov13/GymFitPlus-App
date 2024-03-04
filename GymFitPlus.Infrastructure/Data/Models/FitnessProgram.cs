@@ -28,6 +28,6 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
 
-        public ICollection<FitnessProgramExercise> FitnessProgramsExcercises { get; set; } = new List<FitnessProgramExercise>();
+        public ICollection<FitnessProgramExercise> FitnessProgramsExercises { get; set; } = new List<FitnessProgramExercise>();
     }
 }

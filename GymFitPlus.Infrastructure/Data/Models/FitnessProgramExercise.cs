@@ -16,23 +16,23 @@ namespace GymFitPlus.Infrastructure.Data.Models
         public FitnessProgram FitnessProgram { get; set; } = null!;
 
         [Required]
-        [Comment("Excercise identifier")]
-        public int ExcerciseId { get; set; }
+        [Comment("Exercise identifier")]
+        public int ExerciseId { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ExcerciseId))]
-        public Exercise Excercise { get; set; } = null!;
+        [ForeignKey(nameof(ExerciseId))]
+        public Exercise Exercise { get; set; } = null!;
 
         [Required]
-        [Comment("Sets for the excercise")]
+        [Comment("Sets for the exercise")]
         public int Sets { get; set; }
 
         [Required]
-        [Comment("Reps for the excercise")]
+        [Comment("Reps for the exercise")]
         public int Reps { get; set; }
 
         [Required]
-        [Comment("Weigth for the excercise")]
-        public int Weigth { get; set; }
+        [Comment("Weight for the exercise")]
+        public int Weight { get; set; }
     }
 }

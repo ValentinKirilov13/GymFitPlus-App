@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymFitPlus.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240229191425_Initial")]
-    partial class Initial
+    [Migration("20240304162219_AddDomainClasses")]
+    partial class AddDomainClasses
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,6 +127,106 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Exercise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Excercise identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .HasComment("Excercise description");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)")
+                        .HasComment("Excercise image");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit")
+                        .HasComment("Excercise status");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Excercise name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exercises");
+
+                    b.HasComment("Table of excercise");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Fitness program identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit")
+                        .HasComment("Excercise status");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Fitness program name");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("Fitness program creator/owner");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FitnessPrograms");
+
+                    b.HasComment("Table with fitness programs");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExercise", b =>
+                {
+                    b.Property<int>("FitnessProgramId")
+                        .HasColumnType("int")
+                        .HasComment("Fitness program identifier");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int")
+                        .HasComment("Exercise identifier");
+
+                    b.Property<int>("Reps")
+                        .HasColumnType("int")
+                        .HasComment("Reps for the exercise");
+
+                    b.Property<int>("Sets")
+                        .HasColumnType("int")
+                        .HasComment("Sets for the exercise");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int")
+                        .HasComment("Weight for the exercise");
+
+                    b.HasKey("FitnessProgramId", "ExerciseId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("FitnessProgramsExercises");
+
+                    b.HasComment("Table of excercise in one fitness program");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -264,6 +364,36 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", b =>
+                {
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExercise", b =>
+                {
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.Exercise", "Exercise")
+                        .WithMany("FitnessProgramsExercises")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", "FitnessProgram")
+                        .WithMany("FitnessProgramsExercises")
+                        .HasForeignKey("FitnessProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("FitnessProgram");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -313,6 +443,16 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Exercise", b =>
+                {
+                    b.Navigation("FitnessProgramsExercises");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", b =>
+                {
+                    b.Navigation("FitnessProgramsExercises");
                 });
 #pragma warning restore 612, 618
         }

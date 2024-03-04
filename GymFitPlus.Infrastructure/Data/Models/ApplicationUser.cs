@@ -30,8 +30,8 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Required]
         [Comment("User gender")]
         [PersonalData]
+        [Range(GenderTypeEnumMinValue,GenderTypeEnumMaxValue)]
         public GenderType Gender { get; set; }
-
 
         [Comment("User profile image")]
         [PersonalData]

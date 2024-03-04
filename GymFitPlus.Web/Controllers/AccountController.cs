@@ -170,8 +170,16 @@ namespace GymFitPlus.Web.Controllers
             {
                 _logger.LogError(ex.Message);
 
-                //TODO Custom Erro pages
-                return RedirectToAction();
+                if (ex is NullReferenceException)
+                {
+                    // Handle FileNotFoundException
+                    return RedirectToAction();
+                }
+                else
+                {
+                    //TODO Custom Erro pages
+                    return RedirectToAction();
+                }             
             }           
         }
 

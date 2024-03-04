@@ -9,7 +9,7 @@ namespace GymFitPlus.Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<FitnessProgramExercise> builder)
         {
             builder
-                .HasKey(pk => new { pk.FitnessProgramId, pk.ExcerciseId});
+                .HasKey(pk => new { pk.FitnessProgramId, pk.ExerciseId});
         }
     }
 }

@@ -127,7 +127,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Excercise", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Exercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -159,7 +159,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Excercises");
+                    b.ToTable("Exercises");
 
                     b.HasComment("Table of excercise");
 
@@ -214,33 +214,33 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.HasComment("Table with fitness programs");
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExcercise", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExercise", b =>
                 {
                     b.Property<int>("FitnessProgramId")
                         .HasColumnType("int")
                         .HasComment("Fitness program identifier");
 
-                    b.Property<int>("ExcerciseId")
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("int")
-                        .HasComment("Excercise identifier");
+                        .HasComment("Exercise identifier");
 
                     b.Property<int>("Reps")
                         .HasColumnType("int")
-                        .HasComment("Reps for the excercise");
+                        .HasComment("Reps for the exercise");
 
                     b.Property<int>("Sets")
                         .HasColumnType("int")
-                        .HasComment("Sets for the excercise");
+                        .HasComment("Sets for the exercise");
 
-                    b.Property<int>("Weigth")
+                    b.Property<int>("Weight")
                         .HasColumnType("int")
-                        .HasComment("Weigth for the excercise");
+                        .HasComment("Weight for the exercise");
 
-                    b.HasKey("FitnessProgramId", "ExcerciseId");
+                    b.HasKey("FitnessProgramId", "ExerciseId");
 
-                    b.HasIndex("ExcerciseId");
+                    b.HasIndex("ExerciseId");
 
-                    b.ToTable("FitnessProgramExcercise");
+                    b.ToTable("FitnessProgramsExercises");
 
                     b.HasComment("Table of excercise in one fitness program");
                 });
@@ -391,21 +391,21 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExcercise", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgramExercise", b =>
                 {
-                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.Excercise", "Excercise")
-                        .WithMany("FitnessProgramsExcercises")
-                        .HasForeignKey("ExcerciseId")
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.Exercise", "Exercise")
+                        .WithMany("FitnessProgramsExercises")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", "FitnessProgram")
-                        .WithMany("FitnessProgramsExcercises")
+                        .WithMany("FitnessProgramsExercises")
                         .HasForeignKey("FitnessProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Excercise");
+                    b.Navigation("Exercise");
 
                     b.Navigation("FitnessProgram");
                 });
@@ -461,14 +461,14 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Excercise", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Exercise", b =>
                 {
-                    b.Navigation("FitnessProgramsExcercises");
+                    b.Navigation("FitnessProgramsExercises");
                 });
 
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", b =>
                 {
-                    b.Navigation("FitnessProgramsExcercises");
+                    b.Navigation("FitnessProgramsExercises");
                 });
 #pragma warning restore 612, 618
         }
