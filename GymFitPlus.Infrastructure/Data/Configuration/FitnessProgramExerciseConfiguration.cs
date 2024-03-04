@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GymFitPlus.Infrastructure.Data.Configuration
 {
-    public class FitnessProgramExcerciseConfiguration : IEntityTypeConfiguration<FitnessProgramExcercise>
+    public class FitnessProgramExerciseConfiguration : IEntityTypeConfiguration<FitnessProgramExercise>
     {
-        public void Configure(EntityTypeBuilder<FitnessProgramExcercise> builder)
+        public void Configure(EntityTypeBuilder<FitnessProgramExercise> builder)
         {
             builder
                 .HasKey(pk => new { pk.FitnessProgramId, pk.ExcerciseId});

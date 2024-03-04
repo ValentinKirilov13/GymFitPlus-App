@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GymFitPlus.Infrastructure.Data.Models
 {
     [Comment("Table of excercise in one fitness program")]
-    public class FitnessProgramExcercise
+    public class FitnessProgramExercise
     {
         [Required]
         [Comment("Fitness program identifier")]
@@ -21,7 +21,7 @@ namespace GymFitPlus.Infrastructure.Data.Models
 
         [Required]
         [ForeignKey(nameof(ExcerciseId))]
-        public Excercise Excercise { get; set; } = null!;
+        public Exercise Excercise { get; set; } = null!;
 
         [Required]
         [Comment("Sets for the excercise")]

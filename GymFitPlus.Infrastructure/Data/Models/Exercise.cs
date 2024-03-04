@@ -5,7 +5,7 @@ using static GymFitPlus.Infrastructure.Constants.DataConstants.ExcerciseConstant
 namespace GymFitPlus.Infrastructure.Data.Models
 {
     [Comment("Table of excercise")]
-    public class Excercise
+    public class Exercise
     {
         [Key]
         [Comment("Excercise identifier")]
@@ -28,6 +28,6 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Excercise status")]
         public bool IsDelete { get; set; } = false;
 
-        public ICollection<FitnessProgramExcercise> FitnessProgramsExcercises { get; set; } = new List<FitnessProgramExcercise>();
+        public ICollection<FitnessProgramExercise> FitnessProgramsExcercises { get; set; } = new List<FitnessProgramExercise>();
     }
 }

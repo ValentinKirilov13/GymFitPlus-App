@@ -4,11 +4,10 @@ using static GymFitPlus.Infrastructure.Constants.DataConstants.ExcerciseConstant
 
 namespace GymFitPlus.Core.ViewModels.ExcersiseViewModels
 {
-    public class ExcersiseAllViewModel : ExcersiseForProgramViewModel
-    {       
+    public class ExerciseDetailViewModel : ExerciseAllViewModel
+    {
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public byte[] Image { get; set; } = null!;
-
-        public int UsedByProgramsCount { get; set; }
+        [StringLength(DescriptionMaxLenght, MinimumLength = DescriptionMinLenght, ErrorMessage = LengthErrorMessage)]
+        public string Description { get; set; } = string.Empty;
     }
 }

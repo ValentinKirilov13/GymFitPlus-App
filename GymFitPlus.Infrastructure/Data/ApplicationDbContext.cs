@@ -12,14 +12,14 @@ namespace GymFitPlus.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
-        public DbSet<Excercise> Excercises { get; set; } = null!;
+        public DbSet<Exercise> Exercises { get; set; } = null!;
         public DbSet<FitnessProgram> FitnessPrograms { get; set; } = null!;
         
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new FitnessProgramExcerciseConfiguration());
-            builder.ApplyConfiguration(new ExserciseConfiguration());
+            builder.ApplyConfiguration(new FitnessProgramExerciseConfiguration());
+            builder.ApplyConfiguration(new ExerciseConfiguration());
 
 
             base.OnModelCreating(builder);

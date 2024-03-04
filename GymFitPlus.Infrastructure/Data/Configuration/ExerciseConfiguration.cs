@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GymFitPlus.Infrastructure.Data.Configuration
 {
-    public class ExserciseConfiguration : IEntityTypeConfiguration<Excercise>
+    public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
     {
-        public void Configure(EntityTypeBuilder<Excercise> builder)
+        public void Configure(EntityTypeBuilder<Exercise> builder)
         {
             builder
                 .HasData(SeedData.SeedExsersise);
