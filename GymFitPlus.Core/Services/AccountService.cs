@@ -2,6 +2,7 @@
 using GymFitPlus.Core.ViewModels.AccountViewModels;
 using GymFitPlus.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymFitPlus.Core.Services
 {
@@ -48,6 +49,38 @@ namespace GymFitPlus.Core.Services
             }
 
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<bool> IsCurrentUserFullRegisteredAsync(Guid userId)
+        {
+            var currUser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new NullReferenceException();
+
+            if (string.IsNullOrEmpty(currUser.FirstName) && string.IsNullOrEmpty(currUser.LastName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public async Task<UserInfoViewModel> GetUserForDashboardAsync(Guid userId)
+        {
+            return await _userManager.Users
+               .AsNoTracking()
+               .Where(x => x.Id == userId)
+               .Select(x => new UserInfoViewModel()
+               {
+                   FullName = $"{x.FirstName} {x.LastName}",
+                   Age = DateTime.Today.Year - x.BirthDate.Year,
+                   Gander = x.Gender.ToString(),
+                   Image = x.Image,
+                   FacebookUrl = x.FacebookUrl,
+                   InstagramUrl = x.InstagramUrl,
+                   YouTubeUrl = x.YouTubeUrl
+               })
+               .FirstOrDefaultAsync() ?? throw new NullReferenceException();
         }
     }
 }

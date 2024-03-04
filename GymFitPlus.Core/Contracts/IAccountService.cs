@@ -5,6 +5,8 @@ namespace GymFitPlus.Core.Contracts
 {
     public interface IAccountService
     {
+        Task<UserInfoViewModel> GetUserForDashboardAsync(Guid userId);
+        Task<bool> IsCurrentUserFullRegisteredAsync(Guid userId);
         Task<IdentityResult> RegisterUserAsync(RegisterViewModel model);
         Task<IdentityResult> RegisterUserInfoAsync(RegisterUserInfoFormViewModel model, string userId);
     }

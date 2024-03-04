@@ -1,4 +1,5 @@
 ﻿using GymFitPlus.Infrastructure.Enums;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 using static GymFitPlus.Infrastructure.Constants.DataConstants.ApplicationUserConstants;
