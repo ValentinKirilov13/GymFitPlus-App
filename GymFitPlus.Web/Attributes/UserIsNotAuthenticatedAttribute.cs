@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace GymFitPlus.Web.Attributes
 {
-    public class UserIsAuthenticatedAttribute : ActionFilterAttribute
+    public class UserIsNotAuthenticatedAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

@@ -1,7 +1,9 @@
 ﻿using GymFitPlus.Infrastructure.Data;
 using GymFitPlus.Infrastructure.Data.Models;
-using HouseRentingSystem.Infrastructure.Data.Common;
+using GymFitPlus.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using GymFitPlus.Core.Contracts;
+using GymFitPlus.Core.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,6 +11,11 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services
+                .AddScoped<IAccountService, AccountService>();
+            services
+               .AddScoped<IExcersiseServices, ExcersiseServices>();
+
             return services;
         }
 
@@ -20,7 +27,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            services.AddScoped<IRepository, Repository>();
+            services
+                .AddScoped<IRepository, Repository>();
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
