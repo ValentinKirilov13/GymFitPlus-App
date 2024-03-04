@@ -5,7 +5,6 @@ using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace GymFitPlus.Web.Controllers
@@ -28,7 +27,7 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [UserIsAuthenticated]
+        [UserIsNotAuthenticated]
         public IActionResult Login()
         {
             var model = new LoginViewModel();
@@ -38,32 +37,41 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [UserIsAuthenticated]
+        [UserIsNotAuthenticated]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+                if (ModelState.IsValid)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToAction(nameof(Dashboard));
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToAction(nameof(Dashboard));
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Invalid login attempt.");
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    }
                 }
-                else
-                {
-                    _logger.LogInformation("Invalid login attempt.");
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
+
+                return View(model);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
 
-            return View(model);
+                //TODO Custom Erro pages
+                return RedirectToAction();
+            }          
         }
 
         [HttpGet]
         [AllowAnonymous]
-        [UserIsAuthenticated]
+        [UserIsNotAuthenticated]
         public IActionResult Register()
         {
             var model = new RegisterViewModel();
@@ -73,41 +81,62 @@ namespace GymFitPlus.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [UserIsAuthenticated]
+        [UserIsNotAuthenticated]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _accountService.RegisterUserAsync(model);
+                    IdentityResult result = await _accountService.RegisterUserAsync(model);
 
                     if (result.Succeeded)
                     {
+                        _logger.LogInformation("User have successfully registered.");
+
                         await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: true, lockoutOnFailure: false);
 
+                        _logger.LogInformation("User logged in.");
                         return RedirectToAction(nameof(RegisterUserInfo));
                     }
                     foreach (var error in result.Errors)
                     {
+                        _logger.LogInformation("Invalid register attempt!");
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex) 
             {
+                _logger.LogError(ex.Message);
+
                 //TODO Custom Erro pages
                 return RedirectToAction();
             }
         }
 
         [HttpGet]
-        public IActionResult RegisterUserInfo()
+        public async Task<IActionResult> RegisterUserInfo()
         {
-            var model = new RegisterUserInfoFormViewModel();
+            try
+            {
+                if (await _accountService.IsCurrentUserFullRegisteredAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(Dashboard));
+                }
 
-            return View(model);
+                var model = new RegisterUserInfoFormViewModel();
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                //TODO Custom Erro pages
+                return RedirectToAction();
+            }         
         }
 
         [HttpPost]
@@ -115,23 +144,32 @@ namespace GymFitPlus.Web.Controllers
         {
             try
             {
+                if (await _accountService.IsCurrentUserFullRegisteredAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(Dashboard));
+                }
+
                 if (ModelState.IsValid)
                 {
-                    var result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
+                    IdentityResult result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
 
                     if (result.Succeeded)
                     {
+                        _logger.LogInformation("User have successfully full registered.");
                         return RedirectToAction(nameof(Dashboard));
                     }
                     foreach (var error in result.Errors)
                     {
+                        _logger.LogInformation("Invalid full register attempt!");
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
+
                 //TODO Custom Erro pages
                 return RedirectToAction();
             }           
@@ -144,28 +182,23 @@ namespace GymFitPlus.Web.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Dashboard()
-        //{
+        [HttpGet]
+        public async Task<IActionResult> Dashboard()
+        {
+            try
+            {
+                UserInfoViewModel currentUser = await _accountService.GetUserForDashboardAsync(User.Id());
 
-        //    var currentUser = await _userManager.Users
-        //        .AsNoTracking()
-        //        .Where(x => x.Id == User.Id())
-        //        .Select(x => new UserInfoViewModel()
-        //        {
-        //            FullName = $"{x.FirstName} {x.LastName}",
-        //            Age = DateTime.Today.Year - x.BirthDate.Year,
-        //            Gander = x.Gender.ToString(),
-        //            Image = x.Image,
-        //            FacebookUrl = x.FacebookUrl,
-        //            InstagramUrl = x.InstagramUrl,
-        //            YouTubeUrl = x.YouTubeUrl
-        //        })
-        //        .FirstOrDefaultAsync();
+                return View(currentUser);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
 
-
-        //    return View(currentUser);
-        //}
+                //TODO Custom Erro pages
+                return RedirectToAction();
+            }            
+        }
     }
 }
 
