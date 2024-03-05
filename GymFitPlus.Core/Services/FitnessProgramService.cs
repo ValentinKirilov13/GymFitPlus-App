@@ -70,6 +70,7 @@ namespace GymFitPlus.Core.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    ExerciseCount = x.FitnessProgramsExercises.Count(),
                 })
                 .ToListAsync();
         }
@@ -99,6 +100,20 @@ namespace GymFitPlus.Core.Services
             }
         }
 
+
+
+        //
+        public async Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync()
+        {
+            return await _repository
+                .AllReadOnly<Exercise>()
+                .Select(x => new ExerciseForProgramViewModel()
+                {
+                    Id =x.Id,
+                    Name=x.Name,
+                })
+                .ToListAsync();
+        }
 
         private async Task<FitnessProgram?> FindByIdAsync(int id)
         {
