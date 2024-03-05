@@ -35,7 +35,6 @@ namespace GymFitPlus.Core.Services
 
             await _repository.SaveChangesAsync();
         }
-
         public async Task EditExerciseAsync(ExerciseDetailViewModel viewModel)
         {
             var model = await FindByIdAsync(viewModel.Id) ?? throw new NullReferenceException();
@@ -75,9 +74,20 @@ namespace GymFitPlus.Core.Services
                 })
                 .ToListAsync();
         }
+        public async Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync()
+        {
+            return await _repository
+                .AllReadOnly<Exercise>()
+                .Select(x => new ExerciseForProgramViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                })
+                .ToListAsync();
+        }
 
 
-        
+
         private async Task<Exercise?> FindByIdAsync(int id)
         {
             return await _repository.All<Exercise>()

@@ -26,5 +26,8 @@ namespace GymFitPlus.Core.ViewModels.FitnessProgramViewModels
         public int Weight { get; set; }
 
         public IEnumerable<ExerciseForProgramViewModel> Exercises { get; set; } = new List<ExerciseForProgramViewModel>();
+
+
+        public int Order { get; set; }
     }
 }

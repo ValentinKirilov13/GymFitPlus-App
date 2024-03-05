@@ -1,10 +1,4 @@
-﻿using GymFitPlus.Core.ViewModels.ExerciseViewModels;
-using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 
 namespace GymFitPlus.Core.Contracts
 {
@@ -14,7 +8,9 @@ namespace GymFitPlus.Core.Contracts
         Task AddFitnessProgramAsync(FitnessProgramFormViewModel viewModel, Guid userId);
         Task<IEnumerable<FitnessProgramFormViewModel>> AllFitnessProgramsAsync(Guid userId);
         Task DeleteFitnessProgramAsync(int id);
+        Task EditFitnessProgram(FitnessProgramFormViewModel viewModel);
+        Task EditFitnessProgramExercise(FitnessProgramExercisesInfoViewModel viewModel);
         Task<FitnessProgramDetailViewModel> FindFitnessProgramByIdAsync(int id);
-        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync();
+        Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId);
     }
 }
