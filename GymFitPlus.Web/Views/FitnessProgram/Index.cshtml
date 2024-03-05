@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FitnessProgramFormViewModel>
+@{
+    ViewBag.Title = "My programs";
+}
+
+<header>
+    <h1>My fitness programs</h1>
+</header>
+
+<a asp-controller="FitnessProgram" asp-action="AddProgram">Create a program</a>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="card col-md-2 border-1">
+                <a asp-controller="FitnessProgram" asp-action="Details" asp-route-id="@item.Id" class="btn" >
+                    <div>                      
+                        <div class="card-body">
+                            <h3 class="card-title">@item.Name</h3>
+                            <p class="card-text"> Have @item.ExerciseCount exercise.</p>
+                        </div>
+                    </div>
+                </a>               
+            </div>
+        }
+    </div>
+</div>

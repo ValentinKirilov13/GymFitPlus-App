@@ -1,0 +1,37 @@
+﻿@model FitnessProgramFormViewModel
+@{
+    ViewBag.Title = "Create program";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="d-flex align-items-center justify-content-center">
+            <h1>
+                Here is a begining
+            </h1>
+        </div>
+
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+
+            <form class="form-control" asp-controller="FitnessProgram" asp-action="AddProgram" method="post">
+
+                <input asp-for="Id" hidden />
+
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" type="text" />
+                <span asp-validation-for="Name" class="alert-danger"></span>
+
+                <input class="form-control btn btn-primary" type="submit" value="Create" />
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

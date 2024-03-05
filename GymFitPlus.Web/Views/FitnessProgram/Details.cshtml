@@ -1,0 +1,66 @@
+﻿@model FitnessProgramDetailViewModel
+@{
+    ViewBag.Title = Model.Name;
+    int count = 0;
+}
+@if (ViewBag.Success != null && ViewBag.Success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> You successfuly added exercise to @ViewBag.Title.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <h1 class="float-end">@Model.Name</h1>
+        </div>
+
+        <div class="col-md-3">
+            <a asp-controller="FitnessProgram" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary float-end">Edit</a>
+        </div>
+
+        <div class="col-md-3 float-end">
+            <form asp-controller="FitnessProgram" asp-action="Delete" method="post">
+                <input asp-for="Id" hidden />
+                <input type="submit" class="btn btn-danger float-end" value="Delete" />
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Exercise</th>
+                        <th scope="col">Sets</th>
+                        <th scope="col">Reps</th>
+                        <th scope="col">Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Exercises)
+                    {
+                        <tr>
+                            <th scope="row">@(count++)</th>
+                            <td>@item.ExerciseName</td>
+                            <td>@item.Sets</td>
+                            <td>@item.Reps</td>
+                            <td>@item.Weight</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <a asp-controller="FitnessProgram" asp-action="AddExerciseToProgram" asp-route-programId="@Model.Id" class="btn btn-primary float-end">Add Exercise</a>
+        </div>
+    </div>
+
+</div>

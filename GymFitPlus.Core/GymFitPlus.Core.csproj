@@ -7,13 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

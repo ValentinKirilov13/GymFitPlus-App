@@ -1,9 +1,15 @@
+using GymFitPlus.Web.ModelBinders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
-builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices();
+
+builder.Services.AddControllersWithViews(opt =>
+{
+    opt.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+});
 
 var app = builder.Build();
 
