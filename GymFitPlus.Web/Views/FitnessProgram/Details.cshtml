@@ -1,7 +1,6 @@
 ﻿@model FitnessProgramDetailViewModel
 @{
     ViewBag.Title = Model.Name;
-    int count = 0;
 }
 @if (ViewBag.Success != null && ViewBag.Success)
 {
@@ -11,17 +10,17 @@
     </div>
 }
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <h1 class="float-end">@Model.Name</h1>
         </div>
-
-        <div class="col-md-3">
-            <a asp-controller="FitnessProgram" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary float-end">Edit</a>
+        <div class="col-sm-4">
+            <button type="button" class="btn bg-transparent border-0" data-bs-toggle="modal" data-bs-target="#ProgramNameModal">
+                <i class="fa fa-pencil fa-lg" style="font-size: 30px; color: gray;"></i>
+            </button>
         </div>
-
-        <div class="col-md-3 float-end">
+        <div class="col-md-4">
             <form asp-controller="FitnessProgram" asp-action="Delete" method="post">
                 <input asp-for="Id" hidden />
                 <input type="submit" class="btn btn-danger float-end" value="Delete" />
@@ -39,28 +38,74 @@
                         <th scope="col">Sets</th>
                         <th scope="col">Reps</th>
                         <th scope="col">Weight</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    @foreach (var item in Model.Exercises)
+                    @foreach (var item in Model.Exercises.OrderBy(x => x.Order))
                     {
+                        string idForModle = $"element{item.FitnessProgramId}{item.ExerciseId}";
+
                         <tr>
-                            <th scope="row">@(count++)</th>
+                            <th scope="row">@item.Order</th>
                             <td>@item.ExerciseName</td>
-                            <td>@item.Sets</td>
-                            <td>@item.Reps</td>
-                            <td>@item.Weight</td>
+                            <td style="text-align:center">@item.Sets</td>
+                            <td style="text-align:center">@item.Reps</td>
+                            <td style="text-align:center">@item.Weight</td>
+                            <td style="text-align:center">
+                                <div class="btn-group dropend">
+                                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        &#8942;
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#@idForModle" class="dropdown-item">Edit</button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item">Remove</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="modal fade" id="@idForModle" tabindex="-1" aria-labelledby="EditExerciseLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Edit @item.ExerciseName</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                @await Component.InvokeAsync(
+                                                         "EditExerciseInProgramComponent",
+                                                         new
+                                                         {
+                                                             exerciseId = item.ExerciseId,
+                                                             programId = item.FitnessProgramId
+                                                         })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <div class="d-grid gap-2">
+                                <a asp-controller="FitnessProgram"
+                                   asp-action="AddExerciseToProgram"
+                                   asp-route-programId="@Model.Id" ,
+                                   asp-route-exerciseCount="@Model.Exercises.Count()"
+                                   class="btn btn-primary">
+                                    Add Exercise
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
-            <a asp-controller="FitnessProgram" asp-action="AddExerciseToProgram" asp-route-programId="@Model.Id" class="btn btn-primary float-end">Add Exercise</a>
-        </div>
-    </div>
-
 </div>

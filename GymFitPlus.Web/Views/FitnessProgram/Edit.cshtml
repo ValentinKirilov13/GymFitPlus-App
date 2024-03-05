@@ -6,13 +6,12 @@
 
 <div class="container-fluid">
     <form asp-controller="FitnessProgram" asp-action="Edit" method="post">
-        <input asp-for="Id" hidden />
+       
         <div class="row">
             <div class="col-md-5">
                 <h1 class="float-end">
                     <input asp-for="Name" type="text" required />
                 </h1>
-                <span asp-validation-for="Name"></span>
             </div>
         </div>
         <div class="row">
@@ -29,7 +28,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach (var item in Model.Exercises)
                         {
                             <tr>
@@ -72,6 +70,9 @@
             </div>
             <form id="myForm">
                 <div class="modal-body">
+                    <input asp-for="Id" hidden />
+
+                    <label asp-for="Name" class="col-form-label-sm"></label>
                     <input asp-for ="Name" class="form-control" type="text" required />
                     <span asp-validation-for="Name" id="Name-error" class="text-danger"></span>
                 </div>
@@ -84,7 +85,6 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
