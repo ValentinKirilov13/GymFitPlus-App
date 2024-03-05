@@ -8,6 +8,10 @@ namespace GymFitPlus.Infrastructure.Data.Models
     public class FitnessProgramExercise
     {
         [Required]
+        [Comment("Fitness program order")]
+        public int Order { get; set; }
+
+        [Required]
         [Comment("Fitness program identifier")]
         public int FitnessProgramId { get; set; }
 
