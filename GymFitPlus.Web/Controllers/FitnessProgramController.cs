@@ -107,50 +107,20 @@ namespace GymFitPlus.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Errors = true;
-
-                return View("Details", await _fitnessProgramService.FindFitnessProgramByIdAsync(viewModel.FitnessProgramId));
-                //return ViewComponent("EditExerciseInProgramComponent", new
-                //{
-                //    exerciseId = viewModel.ExerciseId,
-                //    programId = viewModel.FitnessProgramId
-                //});
+                return View(viewModel);
             }
 
-            ViewBag.Errors = false;
-
             await _fitnessProgramService.EditFitnessProgramExercise(viewModel);
-
 
             return RedirectToAction("Details", new { id = viewModel.FitnessProgramId });
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
-            return View(program);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Edit(FitnessProgramFormViewModel model)
+        public async Task<IActionResult> RemoveExerciseInProgram(int exerciseId, int programId)
         {
-            if (ModelState.IsValid)
-            {
-                await _fitnessProgramService.EditFitnessProgram(model);
+            await _fitnessProgramService.RemoveExerciseFromProgramAsync(exerciseId, programId);
 
-                return Json(new { success = true, id = model.Id });
-            }
-
-            var errors = ModelState.ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
-            );
-
-            return Json(new { success = false, errors });
+            return RedirectToAction("Details", new { id = programId });
         }
-
-
     }
 }
