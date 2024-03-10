@@ -41,6 +41,10 @@ namespace GymFitPlus.Infrastructure.Constants
         {
             public const int NameMaxLenght = 50;
             public const int NameMinLenght = 5;
+
+            public const double ExercisePropertiesMaxValue = 200;
+            public const double ExercisePropertiesMinValue = 0;
+
         }
 
     }
