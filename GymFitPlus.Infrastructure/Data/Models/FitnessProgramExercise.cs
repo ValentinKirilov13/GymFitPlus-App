@@ -37,6 +37,6 @@ namespace GymFitPlus.Infrastructure.Data.Models
 
         [Required]
         [Comment("Weight for the exercise")]
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 }
