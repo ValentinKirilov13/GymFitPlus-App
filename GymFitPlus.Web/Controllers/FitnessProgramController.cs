@@ -2,6 +2,7 @@
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -76,13 +77,47 @@ namespace GymFitPlus.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditProgramName(FitnessProgramDetailViewModel viewModel)
+        {
+            TempData["Succssed"] = false;
+
+            if (ModelState.IsValid)
+            {
+                TempData["Succssed"] = await _fitnessProgramService.EditFitnessProgramAsync(viewModel);
+                TempData["Action"] = "edited program name";
+            }
+            else
+            {
+                var errors = ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList();
+
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var error in errors)
+                {
+                    sb.AppendLine(error);
+                }
+
+                TempData["Errors"] = sb.ToString().TrimEnd();
+            }
+
+            return RedirectToAction("Details", new { id = viewModel.Id });
+        }
+
+
+
         [HttpGet]
         public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount)
         {
+            var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(programId);
+
             var model = new FitnessProgramExercisesInfoViewModel();
             model.FitnessProgramId = programId;
             model.Order = ++exerciseCount;
-            model.Exercises = await _exerciseService.GetAllExerciseForProgramAsync();
+            model.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(exercisesIdsNotToGet);
 
             return View(model);
         }
@@ -92,33 +127,39 @@ namespace GymFitPlus.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.Exercises = await _exerciseService.GetAllExerciseForProgramAsync();
+                var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(viewModel.FitnessProgramId);
+                viewModel.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(exercisesIdsNotToGet);
                 return View(viewModel);
             }
 
             TempData["Succssed"] = await _fitnessProgramService.AddExerciseToProgramAsync(viewModel);
 
+            TempData["Action"] = "added exercise in program";
 
             return RedirectToAction("Details", new { id = viewModel.FitnessProgramId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExerciseInProgram(FitnessProgramExercisesInfoViewModel viewModel)
+        public async Task<IActionResult> EditExerciseFromProgram(FitnessProgramExercisesInfoViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
 
-            await _fitnessProgramService.EditFitnessProgramExercise(viewModel);
+            TempData["Succssed"] = await _fitnessProgramService.EditExerciseFromProgramAsync(viewModel);
+
+            TempData["Action"] = "edited exercise";
 
             return RedirectToAction("Details", new { id = viewModel.FitnessProgramId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveExerciseInProgram(int exerciseId, int programId)
+        public async Task<IActionResult> RemoveExerciseFromProgram(int exerciseId, int programId)
         {
-            await _fitnessProgramService.RemoveExerciseFromProgramAsync(exerciseId, programId);
+            TempData["Succssed"] = await _fitnessProgramService.RemoveExerciseFromProgramAsync(exerciseId, programId);
+
+            TempData["Action"] = "removed exercise";
 
             return RedirectToAction("Details", new { id = programId });
         }

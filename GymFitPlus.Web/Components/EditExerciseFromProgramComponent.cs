@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymFitPlus.Web.Components
 {
-    public class EditExerciseInProgramComponent : ViewComponent
+    public class EditExerciseFromProgramComponent : ViewComponent
     {
         private readonly IFitnessProgramService _fitnessProgramService;
 
-        public EditExerciseInProgramComponent(IFitnessProgramService fitnessProgramService)
+        public EditExerciseFromProgramComponent(IFitnessProgramService fitnessProgramService)
         {
             _fitnessProgramService = fitnessProgramService;
         }

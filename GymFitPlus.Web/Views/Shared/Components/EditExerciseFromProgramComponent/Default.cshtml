@@ -3,11 +3,10 @@
 @{
     ViewBag.Title = "Partial";
 }
+<form asp-controller="FitnessProgram" asp-action="EditExerciseFromProgram" method="post">
 
-<form asp-controller="FitnessProgram" asp-action="EditExerciseInProgram" method="post">
-
-    <input asp-for="FitnessProgramId" hidden>
-    <input asp-for="ExerciseId" hidden>
+    <input asp-for="FitnessProgramId" hidden >
+    <input asp-for="ExerciseId" hidden >
 
     <div class="col-md-4">
         <label asp-for="Order" class="form-label"></label>
@@ -37,7 +36,3 @@
         <button class="btn btn-primary" type="submit">Submit form</button>
     </div>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
