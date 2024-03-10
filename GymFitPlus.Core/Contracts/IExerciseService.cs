@@ -9,6 +9,6 @@ namespace GymFitPlus.Core.Contracts
         Task AddExerciseAsync(ExerciseDetailViewModel viewModel);
         Task DeleteExerciseAsync(int id);
         Task EditExerciseAsync(ExerciseDetailViewModel viewModel);
-        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync();
+        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(IEnumerable<int> exercisesIdsNotToGet);
     }
 }

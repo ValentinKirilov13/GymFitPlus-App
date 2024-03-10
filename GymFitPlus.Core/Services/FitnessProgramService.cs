@@ -15,7 +15,7 @@ namespace GymFitPlus.Core.Services
             _repository = repository;
         }
 
-        public async Task AddFitnessProgramAsync(FitnessProgramFormViewModel viewModel, Guid userId)
+        public async Task<bool> AddFitnessProgramAsync(FitnessProgramFormViewModel viewModel, Guid userId)
         {
             var fitnessProgram = new FitnessProgram()
             {
@@ -24,18 +24,31 @@ namespace GymFitPlus.Core.Services
             };
 
             await _repository.AddAsync(fitnessProgram);
-            await _repository.SaveChangesAsync();
-        }
 
-        public async Task DeleteFitnessProgramAsync(int id)
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+        public async Task<bool> EditFitnessProgramAsync(FitnessProgramFormViewModel viewModel)
         {
-            var model = await FindByIdAsync(id) ?? throw new NullReferenceException();
+            var model = await FindByIdAsync(viewModel.Id);
+
+            model.Name = viewModel.Name;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+        public async Task<bool> DeleteFitnessProgramAsync(int id)
+        {
+            var model = await FindByIdAsync(id);
 
             model.IsDelete = true;
 
-            await _repository.SaveChangesAsync();
-        }
+            int affectedRows = await _repository.SaveChangesAsync();
 
+            return affectedRows > 0;
+        }
         public async Task<FitnessProgramDetailViewModel> FindFitnessProgramByIdAsync(int id)
         {
             return await _repository
@@ -60,7 +73,6 @@ namespace GymFitPlus.Core.Services
                 })
                 .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
-
         public async Task<IEnumerable<FitnessProgramFormViewModel>> AllFitnessProgramsAsync(Guid userId)
         {
             return await _repository
@@ -74,6 +86,7 @@ namespace GymFitPlus.Core.Services
                 })
                 .ToListAsync();
         }
+
 
         public async Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel)
         {
@@ -91,26 +104,9 @@ namespace GymFitPlus.Core.Services
 
             int affectedRows = await _repository.SaveChangesAsync();
 
-            if (affectedRows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return affectedRows > 0;
         }
-
-        public async Task EditFitnessProgram(FitnessProgramFormViewModel viewModel)
-        {
-            var model = await FindByIdAsync(viewModel.Id) ?? throw new NullReferenceException();
-
-            model.Name = viewModel.Name;
-
-            await _repository.SaveChangesAsync();
-        }
-
-        public async Task EditFitnessProgramExercise(FitnessProgramExercisesInfoViewModel viewModel)
+        public async Task<bool> EditExerciseFromProgramAsync(FitnessProgramExercisesInfoViewModel viewModel)
         {
             FitnessProgramExercise model = await FindExerciseFromProgramAsync(viewModel.ExerciseId, viewModel.FitnessProgramId);
 
@@ -119,17 +115,24 @@ namespace GymFitPlus.Core.Services
             model.Weight = viewModel.Weight;
             model.Order = viewModel.Order;
 
-            await _repository.SaveChangesAsync();
-        }
+            int affectedRows = await _repository.SaveChangesAsync();
 
-        public async Task RemoveExerciseFromProgramAsync(int exerciseId, int programId)
+            await ReOrderExercisesAsync(viewModel.FitnessProgramId);
+
+            return affectedRows > 0;
+        }
+        public async Task<bool> RemoveExerciseFromProgramAsync(int exerciseId, int programId)
         {
             FitnessProgramExercise model = await FindExerciseFromProgramAsync(exerciseId, programId);
 
             _repository.Remove(model);
-            await _repository.SaveChangesAsync();
-        }
 
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            await ReOrderExercisesAsync(programId);
+
+            return affectedRows > 0;         
+        }
         public async Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId)
         {
             return await _repository
@@ -148,27 +151,46 @@ namespace GymFitPlus.Core.Services
                                      x.ExerciseId == exerciseId &&
                                      x.FitnessProgramId == programId) ?? throw new NullReferenceException();
         }
-
-
-
-        private async Task<FitnessProgram?> FindByIdAsync(int id)
+        public async Task<IEnumerable<int>> GetAllExerciseFromProgramAsync(int programId)
         {
             return await _repository
                 .All<FitnessProgram>()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Where(x => x.Id == programId)
+                .Select(x => x.FitnessProgramsExercises.Select(x => x.ExerciseId))
+                .FirstAsync();   
         }
 
+
+        private async Task<FitnessProgram> FindByIdAsync(int id)
+        {
+            return await _repository
+                .All<FitnessProgram>()
+                .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
+        }
         private async Task<FitnessProgramExercise> FindExerciseFromProgramAsync(int exerciseId, int programId)
         {
+            return await _repository
+                .All<FitnessProgramExercise>()
+                .FirstOrDefaultAsync(x =>
+                                x.FitnessProgramId == programId &&
+                                x.ExerciseId == exerciseId) ?? throw new NullReferenceException();
+        }
+        private async Task ReOrderExercisesAsync(int programId)
+        {
+            int startOrder = 1;
+
             var model = await _repository
                 .All<FitnessProgram>()
                 .Where(x => x.Id == programId)
-                .Select(x => x.FitnessProgramsExercises)
+                .Select(x => x.FitnessProgramsExercises.OrderBy(x => x.Order).ToList())
                 .FirstAsync();
 
-            return model.FirstOrDefault(x =>
-                                x.FitnessProgramId == programId &&
-                                x.ExerciseId == exerciseId) ?? throw new NullReferenceException();
+            foreach (var item in model)
+            {
+                item.Order = startOrder++;
+            }
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

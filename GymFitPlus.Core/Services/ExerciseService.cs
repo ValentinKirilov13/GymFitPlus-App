@@ -74,10 +74,11 @@ namespace GymFitPlus.Core.Services
                 })
                 .ToListAsync();
         }
-        public async Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync()
+        public async Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(IEnumerable<int> exercisesIdsNotToGet)
         {
             return await _repository
                 .AllReadOnly<Exercise>()
+                .Where(x => !exercisesIdsNotToGet.Contains(x.Id))
                 .Select(x => new ExerciseForProgramViewModel()
                 {
                     Id = x.Id,
