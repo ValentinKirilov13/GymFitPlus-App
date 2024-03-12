@@ -19,7 +19,7 @@ namespace GymFitPlus.Web.ModelBinders
 
                 try
                 {
-                    string strValue = string.Join("/", valueResult.FirstValue.Split("-").ToArray().Reverse()).ToString();
+                    string strValue = valueResult.FirstValue.ToString();
 
                     success = DateTime.TryParseExact(
                               strValue,
