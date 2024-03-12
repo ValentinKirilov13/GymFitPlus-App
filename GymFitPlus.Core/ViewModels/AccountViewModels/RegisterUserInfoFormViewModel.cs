@@ -29,7 +29,6 @@ namespace GymFitPlus.Core.ViewModels.AccountViewModels
         public DateTime BirthDate { get; set; } = DateTime.Today;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [Range(GenderTypeEnumMinValue, GenderTypeEnumMaxValue)]
         public GenderType Gender { get; set; }
 
         [MaxLength(int.MaxValue, ErrorMessage = PhotoErrorMessage)]

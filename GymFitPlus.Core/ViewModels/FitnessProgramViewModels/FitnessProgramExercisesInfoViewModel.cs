@@ -7,11 +7,10 @@ namespace GymFitPlus.Core.ViewModels.FitnessProgramViewModels
 {
     public class FitnessProgramExercisesInfoViewModel
     {
-        [Required(ErrorMessage = RequiredErrorMessage)]
         public int FitnessProgramId { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
         public int ExerciseId { get; set; }
+
         public string ExerciseName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
