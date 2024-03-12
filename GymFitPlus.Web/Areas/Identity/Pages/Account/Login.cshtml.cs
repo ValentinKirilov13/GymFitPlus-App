@@ -7,7 +7,7 @@ namespace GymFitPlus.Web.Areas.Identity.Pages.Account
     {
         public IActionResult OnGetAsync()
         {
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("LogInSignUp", "Account");
         }
     }
 }

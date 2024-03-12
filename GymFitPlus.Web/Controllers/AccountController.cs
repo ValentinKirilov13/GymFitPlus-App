@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -28,11 +29,9 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         [UserIsNotAuthenticated]
-        public IActionResult Login()
+        public IActionResult LogInSignUp()
         {
-            var model = new LoginViewModel();
-
-            return View(model);
+            return View("LogIn_SignUp");
         }
 
         [HttpPost]
@@ -49,7 +48,7 @@ namespace GymFitPlus.Web.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
-                        return RedirectToAction(nameof(Dashboard));
+                        return RedirectToAction(nameof(RegisterUserInfo));
                     }
                     else
                     {
@@ -58,7 +57,7 @@ namespace GymFitPlus.Web.Controllers
                     }
                 }
 
-                return View(model);
+                return View("LogIn_SignUp",model);
             }
             catch (Exception ex)
             {
@@ -67,16 +66,6 @@ namespace GymFitPlus.Web.Controllers
                 //TODO Custom Erro pages
                 return RedirectToAction();
             }          
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        [UserIsNotAuthenticated]
-        public IActionResult Register()
-        {
-            var model = new RegisterViewModel();
-
-            return View(model);
         }
 
         [HttpPost]
@@ -105,7 +94,9 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                return View(model);
+
+                ViewBag.Register = bool.Parse("true");
+                return View("LogIn_SignUp", model);
             }
             catch (Exception ex) 
             {
@@ -149,7 +140,7 @@ namespace GymFitPlus.Web.Controllers
                     return RedirectToAction(nameof(Dashboard));
                 }
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && model.BirthDate != DateTime.Today && model.Gender != default)
                 {
                     IdentityResult result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
 
@@ -164,6 +155,17 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
+                
+                if (model.BirthDate == DateTime.Today)
+                {
+                    ModelState.AddModelError("BirthDate", string.Format(RequiredErrorMessage, "BirthDate"));
+                }
+
+                if(model.Gender == default)
+                {
+                    ModelState.AddModelError("Gender", string.Format(RequiredErrorMessage, "Gender"));
+                }
+                
                 return View(model);
             }
             catch (Exception ex)

@@ -1,14 +1,9 @@
-﻿@using GymFitPlus.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<ul class="navbar-nav">
+﻿<ul class="navbar-nav">
 
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
@@ -19,10 +14,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+            <a class="nav-link" asp-controller="Account" asp-action="LogInSignUp">Log In / Sign Up</a>
         </li>
     }
 </ul>
