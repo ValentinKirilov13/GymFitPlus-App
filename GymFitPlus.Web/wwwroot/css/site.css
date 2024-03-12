@@ -14,5 +14,41 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: #1f2029;
+}
+
+#guestNavBar {
+    background: #2a2b38;
+}
+
+    #guestNavBar a {
+        color: #ffffff;
+        font-weight:bold
+    }
+
+    #guestNavBar a:hover {
+        color: #ffeba7;
+    }
+        #guestNavBar a #fit {
+            color: #ff206e;
+        }
+
+footer {
+    background: #2a2b38;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #ffeba7;
 }
