@@ -1,0 +1,39 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Register page";
+}
+
+<div class="section text-center">
+    <h4 class="mb-2 pb-3">Sign Up</h4>
+    <form asp-action="Register" asp-controller="Account" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <input asp-for="Username" type="text" class="form-style" placeholder="Enter your username">
+            <i class="input-icon ph--user-bold"></i>
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-2">
+            <input asp-for="Email" type="email" class="form-style" placeholder="Your Email">
+            <i class="input-icon mdi--at"></i>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-2">
+            <input asp-for="Password" type="password" class="form-style" placeholder="Your Password">
+            <i class="input-icon humbleicons--lock-open"></i>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-2">
+            <input asp-for="ConfirmPassword" type="password" class="form-style" placeholder="Confirm your password">
+            <i class="input-icon uil--lock-alt"></i>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+    </form>
+</div>
+
