@@ -140,7 +140,17 @@ namespace GymFitPlus.Web.Controllers
                     return RedirectToAction(nameof(Dashboard));
                 }
 
-                if (ModelState.IsValid && model.BirthDate != DateTime.Today && model.Gender != default)
+                if (model.BirthDate == DateTime.Today)
+                {
+                    ModelState.AddModelError("BirthDate", string.Format(RequiredErrorMessage, "BirthDate"));
+                }
+
+                if (model.Gender == default)
+                {
+                    ModelState.AddModelError("Gender", string.Format(RequiredErrorMessage, "Gender"));
+                }
+
+                if (ModelState.IsValid)
                 {
                     IdentityResult result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
 
@@ -155,33 +165,16 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                
-                if (model.BirthDate == DateTime.Today)
-                {
-                    ModelState.AddModelError("BirthDate", string.Format(RequiredErrorMessage, "BirthDate"));
-                }
-
-                if(model.Gender == default)
-                {
-                    ModelState.AddModelError("Gender", string.Format(RequiredErrorMessage, "Gender"));
-                }
-                
+                                              
                 return View(model);
             }
-            catch (Exception ex)
+            catch (NullReferenceException)
             {
-                _logger.LogError(ex.Message);
-
-                if (ex is NullReferenceException)
-                {
-                    // Handle FileNotFoundException
-                    return RedirectToAction();
-                }
-                else
-                {
-                    //TODO Custom Erro pages
-                    return RedirectToAction();
-                }             
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }           
         }
 

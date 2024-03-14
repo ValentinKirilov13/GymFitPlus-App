@@ -50,5 +50,16 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        public static IServiceCollection AddApplicationAuthentication(this IServiceCollection services)
+        {
+            services
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = PathString.FromUriComponent("/Account/LogInSignUp");
+                });
+
+            return services;
+        }
     }
 }
