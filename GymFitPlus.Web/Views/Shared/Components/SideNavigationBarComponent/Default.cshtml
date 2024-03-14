@@ -1,0 +1,32 @@
+﻿<nav role="navigation" class="nav__cont">
+    <div id="menuToggle">
+        <input type="checkbox" />
+        <span id="burger"></span>
+        <span id="burger"></span>
+        <span id="burger"></span>
+        <ul class="nav" id="menu">
+            <li class="GymNameButton">
+                <a asp-area="" asp-controller="Home" asp-action="Index">Gym<span id="fit">Fit</span>+</a>
+            </li>
+            <li class="nav__items">
+                <a asp-area="" asp-controller="Account" asp-action="Dashboard">Dashboard</a>
+            </li>
+            <li class="nav__items">
+                <a href="">Networking</a>
+            </li>
+
+            <li class="nav__items">
+                <a href="">Exercise</a>
+            </li>
+
+            <li class="nav__items">
+                <a href="">Recipes</a>
+            </li>
+
+            <li class="nav__items">
+                <a asp-area="" asp-controller="FitnessProgram" asp-action="Index">My Fitness Program</a>
+            </li>
+            <partial name="_LoginPartial" />
+        </ul>
+    </div>
+</nav>
