@@ -1,0 +1,167 @@
+﻿.nav {
+    list-style-type: none;
+    color: white;
+}
+
+    .nav:first-child {
+        padding-top: 1.5rem;
+    }
+
+    .nav__items a, .nav__items button {
+        position: relative;
+        display: block;
+        top: -35px;
+        padding-left: 25px;
+        padding-right: 15px;
+        transition: all 0.3s ease;
+        margin-left: 25px;
+        margin-right: 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 100;
+        font-size: 1.35em;
+    }
+
+        .nav__items a:after, .nav__items button:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 2px;
+            background: radial-gradient(circle at 94.02% 88.03%, #ff206e, transparent 100%);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: -10;
+        }
+
+
+    .nav__items:hover a:after, .nav__items:hover button:after {
+        opacity: 1;
+    }
+
+#divButton{
+    padding:2rem;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .nav__cont {
+        position: fixed;
+        width: 200px;
+        top: 0;
+        height: 100%;
+        background-color: #2a2b38;
+        overflow: hidden;
+        box-shadow: 4px 7px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav__items {
+        padding-top: 1.5rem;
+        padding-bottom: 4rem;
+    }
+
+    #menuToggle input {
+        visibility: hidden;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .nav__items {
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .GymNameButton {
+        top: -69px;
+        left: 40px;
+    }
+
+    #menuToggle {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        height: 100%;
+        z-index: 5;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+        #menuToggle input {
+            display: block;
+            width: 40px;
+            height: 32px;
+            position: absolute;
+            top: -7px;
+            left: -5px;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 2;
+            -webkit-touch-callout: none;
+        }
+
+
+        #menuToggle #burger {
+            display: block;
+            width: 33px;
+            height: 4px;
+            margin-bottom: 5px;
+            position: relative;
+            background: #cdcdcd;
+            border-radius: 3px;
+            z-index: 1;
+            transform-origin: 4px 0px;
+            transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
+        }
+
+            #menuToggle #burger:first-child {
+                transform-origin: 0% 0%;
+            }
+
+            #menuToggle #burger:nth-last-child(2) {
+                transform-origin: 0% 100%;
+            }
+
+        #menuToggle input:checked ~ #burger {
+            opacity: 1;
+            transform: rotate(45deg) translate(-2px, -1px);
+            background: #ff206e;
+        }
+
+            #menuToggle input:checked ~ #burger:nth-last-child(3) {
+                opacity: 0;
+                transform: rotate(0deg) scale(0.2, 0.2);
+            }
+
+            #menuToggle input:checked ~ #burger:nth-last-child(2) {
+                transform: rotate(-45deg) translate(0, -1px);
+            }
+
+    #menu {
+        position: fixed;
+        width: 300px;
+        margin: -100px 0 0 -50px;
+        padding: 50px;
+        padding-top: 125px;
+        background: #2a2b38;
+        list-style-type: none;
+        -webkit-font-smoothing: antialiased;
+        /*transform-origin: 0% 0%;*/
+        transform: translate(-100%, 0);
+        transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+        height: 110%;
+    }
+
+    #menuToggle input:checked ~ ul {
+        transform: none;
+    }
+    nav {
+        height: 100%;
+    }
+
+}
+
+
