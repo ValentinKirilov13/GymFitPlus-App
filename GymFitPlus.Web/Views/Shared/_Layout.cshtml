@@ -17,6 +17,7 @@
         @if (SignInManager.IsSignedIn(User) && ViewBag.RegState == null)
         {
             @await Component.InvokeAsync("SideNavigationBarComponent")
+            <button class="back-arrow" onclick="goBack()">&#8592; Go Back</button>
         }
         else if (!SignInManager.IsSignedIn(User))
         {
