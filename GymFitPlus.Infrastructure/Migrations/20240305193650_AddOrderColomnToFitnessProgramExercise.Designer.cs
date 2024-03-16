@@ -134,7 +134,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasComment("Excercise identifier");
+                        .HasComment("Exercise identifier");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
@@ -142,28 +142,28 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)")
-                        .HasComment("Excercise description");
+                        .HasComment("Exercise description");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasColumnType("varbinary(max)")
-                        .HasComment("Excercise image");
+                        .HasComment("Exercise image");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit")
-                        .HasComment("Excercise status");
+                        .HasComment("Exercise status");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasComment("Excercise name");
+                        .HasComment("Exercise name");
 
                     b.HasKey("Id");
 
                     b.ToTable("Exercises");
 
-                    b.HasComment("Table of excercise");
+                    b.HasComment("Table of Exercise");
 
                     b.HasData(
                         new
@@ -195,7 +195,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit")
-                        .HasComment("Excercise status");
+                        .HasComment("Exercise status");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -248,7 +248,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.ToTable("FitnessProgramsExercises");
 
-                    b.HasComment("Table of excercise in one fitness program");
+                    b.HasComment("Table of Exercise in one fitness program");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
