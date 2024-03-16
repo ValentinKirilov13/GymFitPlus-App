@@ -7,46 +7,46 @@
         padding-top: 1.5rem;
     }
 
-    .nav__items a, .nav__items button {
-        position: relative;
-        display: block;
-        top: -35px;
-        padding-left: 25px;
-        padding-right: 15px;
-        transition: all 0.3s ease;
-        margin-left: 25px;
-        margin-right: 10px;
-        text-decoration: none;
-        color: white;
-        font-weight: 100;
-        font-size: 1.35em;
+.nav__items a, .nav__items button {
+    position: relative;
+    display: block;
+    top: -35px;
+    padding-left: 25px;
+    padding-right: 15px;
+    transition: all 0.3s ease;
+    margin-left: 25px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: 100;
+    font-size: 1.35em;
+}
+
+    .nav__items a:after, .nav__items button:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 2px;
+        background: radial-gradient(circle at 94.02% 88.03%, #ff206e, transparent 100%);
+        opacity: 0;
+        transition: all 0.5s ease;
+        z-index: -10;
     }
 
-        .nav__items a:after, .nav__items button:after {
-            content: "";
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 2px;
-            background: radial-gradient(circle at 94.02% 88.03%, #ff206e, transparent 100%);
-            opacity: 0;
-            transition: all 0.5s ease;
-            z-index: -10;
-        }
 
+.nav__items:hover a:after, .nav__items:hover button:after {
+    opacity: 1;
+}
 
-    .nav__items:hover a:after, .nav__items:hover button:after {
-        opacity: 1;
-    }
-
-#divButton{
-    padding:2rem;
+#divButton {
+    padding: 2rem;
 }
 
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 800px) {
     .nav__cont {
         position: fixed;
         width: 200px;
@@ -59,7 +59,7 @@
 
     .nav__items {
         padding-top: 1.5rem;
-        padding-bottom: 4rem;
+        padding-bottom: 2.5rem;
     }
 
     #menuToggle input {
@@ -68,7 +68,7 @@
 }
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
 
     .nav__items {
         padding-top: 1rem;
@@ -149,7 +149,6 @@
         background: #2a2b38;
         list-style-type: none;
         -webkit-font-smoothing: antialiased;
-        /*transform-origin: 0% 0%;*/
         transform: translate(-100%, 0);
         transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
         height: 110%;
@@ -158,10 +157,8 @@
     #menuToggle input:checked ~ ul {
         transform: none;
     }
+
     nav {
         height: 100%;
     }
-
 }
-
-
