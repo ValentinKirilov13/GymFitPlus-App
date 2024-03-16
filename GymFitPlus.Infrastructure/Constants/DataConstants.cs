@@ -1,6 +1,4 @@
-﻿using GymFitPlus.Infrastructure.Enums;
-
-namespace GymFitPlus.Infrastructure.Constants
+﻿namespace GymFitPlus.Infrastructure.Constants
 {
     public static class DataConstants
     {
@@ -28,13 +26,13 @@ namespace GymFitPlus.Infrastructure.Constants
         public static class ExerciseConstants
         {
             public const int NameMaxLenght = 50;
-            public const int NameMinLenght = 5;
+            public const int NameMinLenght = 3;
 
             public const int DescriptionMaxLenght = 400;
             public const int DescriptionMinLenght = 50;
 
-            public const int ImgUrlMaxLenght = 200;
-            public const int ImgUrlMinLenght = 50;
+            public const int VideoUrlMaxLenght = 200;
+            public const int VideoUrlMinLenght = 10;
         }
 
         public static class FitnessProgramConstants

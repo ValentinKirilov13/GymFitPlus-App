@@ -9,8 +9,8 @@ namespace GymFitPlus.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Exercise> builder)
         {
-            builder
-                .HasData(SeedData.SeedExsersise);
+            //builder
+            //    .HasData(SeedData.SeedExsersise);
         }
     }
 }
