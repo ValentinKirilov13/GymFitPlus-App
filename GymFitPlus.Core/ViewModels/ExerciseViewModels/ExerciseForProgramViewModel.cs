@@ -9,7 +9,9 @@ namespace GymFitPlus.Core.ViewModels.ExerciseViewModels
         public int Id { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(NameMaxLenght, MinimumLength = NameMinLenght, ErrorMessage = LengthErrorMessage)]
+        [StringLength(NameMaxLenght,
+                      MinimumLength = NameMinLenght,
+                      ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
     }
 }
