@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymFitPlus.Infrastructure.Data.Models
 {
-    [Comment("Table of excercise in one fitness program")]
+    [Comment("Table of Exercise in one fitness program")]
     public class FitnessProgramExercise
     {
         [Required]
