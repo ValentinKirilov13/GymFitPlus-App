@@ -28,7 +28,7 @@ body {
 }
 
 .main {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 
@@ -129,7 +129,7 @@ footer {
         box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
     }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1340px) {
 
     .back-arrow {
         position: fixed;
@@ -138,7 +138,7 @@ footer {
     }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1340px) {
     .back-arrow {
         position: fixed;
         top: 10px;

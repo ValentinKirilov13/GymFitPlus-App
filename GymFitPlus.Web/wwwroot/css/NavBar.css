@@ -46,7 +46,7 @@
 }
 
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1340px) {
     .nav__cont {
         position: fixed;
         width: 200px;
@@ -68,7 +68,7 @@
 }
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1340px) {
 
     .nav__items {
         padding-top: 1rem;
@@ -85,7 +85,7 @@
         top: 15px;
         left: 15px;
         height: 100%;
-        z-index: 5;
+        z-index: 11;
         -webkit-user-select: none;
         user-select: none;
     }
@@ -152,6 +152,7 @@
         transform: translate(-100%, 0);
         transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
         height: 110%;
+        box-shadow: 4px 7px 10px rgba(0, 0, 0, 0.4);
     }
 
     #menuToggle input:checked ~ ul {
