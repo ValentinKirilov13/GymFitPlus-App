@@ -2,7 +2,9 @@
 using GymFitPlus.Core.ViewModels.ExerciseViewModels;
 using GymFitPlus.Infrastructure.Data.Common;
 using GymFitPlus.Infrastructure.Data.Models;
+using GymFitPlus.Infrastructure.Enums;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace GymFitPlus.Core.Services
 {
@@ -49,9 +51,9 @@ namespace GymFitPlus.Core.Services
         }
 
 
-        public async Task<IEnumerable<ExerciseAllViewModel>> AllExerciseAsync(/*AllExercisesQueryModel query*/)
+        public async Task<IEnumerable<ExerciseAllViewModel>> AllExerciseAsync(AllExercisesQueryModel query)
         {
-            return await _repository
+            var model = _repository
                 .AllReadOnly<Exercise>()
                 .Where(x => x.IsDelete == false)
                 .Select(x => new ExerciseAllViewModel()
@@ -60,8 +62,46 @@ namespace GymFitPlus.Core.Services
                     Name = x.Name,
                     MuscleGroup = x.MuscleGroup,
                     UsedByProgramsCount = x.FitnessProgramsExercises.Count()
-                })
-                .ToListAsync();
+                });
+
+            if (!string.IsNullOrEmpty(query.SearchTerm))
+            {
+                string normalizedSearchTerm = query
+                                                  .SearchTerm
+                                                  .ToLower();
+                model = model
+                            .Where(m => m.Name
+                                            .ToLower()
+                                            .Contains(normalizedSearchTerm));
+            }
+
+            if (query.Category != default)
+            {
+                model = model
+                            .Where(x => x.MuscleGroup == query.Category);
+            }
+
+            model = query.Sorting switch
+            {
+                ExerciseSorting.MostUsed => model
+                                                .OrderByDescending(m => m.UsedByProgramsCount),
+                ExerciseSorting.A_Z => model
+                                            .OrderBy(m => m.Name),
+                _ => model
+                         .OrderBy(m => m.Id)
+            };
+
+            return await model
+                            .Skip((query.CurrentPage - 1) * query.ExercisePerPage)
+                            .Take(query.ExercisePerPage)
+                            .ToListAsync();
+        }
+        public async Task<int> CountAllExerciseAsync()
+        {
+            return await _repository
+                .AllReadOnly<Exercise>()
+                .Where(x => x.IsDelete == false)
+                .CountAsync();
         }
         public async Task<ExerciseDetailViewModel> FindExerciseByIdAsync(int id)
         {
