@@ -23,7 +23,7 @@ namespace GymFitPlus.Core.Services
             {
                 Name = viewModel.Name,
                 Description = viewModel.Description,
-                VideoUrl = viewModel.VideoUrl,
+                VideoUrl = viewModel.VideoUrl.Split("v=").Reverse().ToArray()[0],
                 MuscleGroup = viewModel.MuscleGroup
             };
 
@@ -36,7 +36,7 @@ namespace GymFitPlus.Core.Services
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
-            model.VideoUrl = viewModel.VideoUrl;
+            model.VideoUrl = viewModel.VideoUrl.Split("v=").Reverse().ToArray()[0];
             model.MuscleGroup = viewModel.MuscleGroup;
 
             await _repository.SaveChangesAsync();

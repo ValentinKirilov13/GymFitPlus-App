@@ -15,5 +15,6 @@ namespace GymFitPlus.Core.Contracts
         Task<bool> RemoveExerciseFromProgramAsync(int exerciseId, int programId);
         Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId);
         Task<IEnumerable<int>> GetAllExerciseFromProgramAsync(int programId);
+        Task<IEnumerable<FitnessProgramFormViewModel>> GetAllFitnessProgramsFilltered(Guid userId, int exerciseId);
     }
 }

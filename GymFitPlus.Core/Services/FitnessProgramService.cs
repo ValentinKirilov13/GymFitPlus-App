@@ -154,11 +154,29 @@ namespace GymFitPlus.Core.Services
         public async Task<IEnumerable<int>> GetAllExerciseFromProgramAsync(int programId)
         {
             return await _repository
-                .All<FitnessProgram>()
+                .AllReadOnly<FitnessProgram>()
                 .Where(x => x.Id == programId)
                 .Select(x => x.FitnessProgramsExercises.Select(x => x.ExerciseId))
                 .FirstAsync();   
         }
+        public async Task<IEnumerable<FitnessProgramFormViewModel>> GetAllFitnessProgramsFilltered(Guid userId, int exerciseId)
+        {
+            return await _repository
+               .AllReadOnly<FitnessProgram>()
+               .Where(x => x.IsDelete == false && 
+                           x.UserId == userId && 
+                          !x.FitnessProgramsExercises
+                                                    .Select(x => x.ExerciseId)
+                                                    .Contains(exerciseId))
+               .Select(x => new FitnessProgramFormViewModel()
+               {
+                   Id = x.Id,
+                   Name = x.Name,
+                   ExerciseCount = x.FitnessProgramsExercises.Count(),
+               })
+               .ToListAsync();
+        }
+
 
 
         private async Task<FitnessProgram> FindByIdAsync(int id)
