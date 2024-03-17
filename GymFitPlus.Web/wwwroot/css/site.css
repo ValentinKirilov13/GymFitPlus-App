@@ -83,6 +83,8 @@ body {
 footer {
     background: #2a2b38;
     width: 100%;
+    position:fixed;
+    bottom:0px;
 }
 
 
@@ -132,7 +134,7 @@ footer {
 @media only screen and (min-width: 1340px) {
 
     .back-arrow {
-        position: fixed;
+        position: absolute;
         top: 10px;
         left: 210px;
     }
@@ -140,7 +142,7 @@ footer {
 
 @media only screen and (max-width: 1340px) {
     .back-arrow {
-        position: fixed;
+        position: absolute;
         top: 10px;
         right: 10px;
     }

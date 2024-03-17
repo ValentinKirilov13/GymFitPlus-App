@@ -5,19 +5,18 @@
 
 .nextPreviousBtn .leftPrevious {
     position: absolute;
-    top: 50px;
+    top: 10px;
     z-index: 10;
 }
 
 .nextPreviousBtn .rightNext {
     position: absolute;
-    top: 50px;
+    top: 10px;
     right: 0px;
     z-index: 10;
 }
 
 .rightNext div {
-    margin-top:9px;
     width: 40px;
     background-color: #1f2029;
     box-shadow: 3px 2px 16px 4px rgba(1,0,0);
@@ -46,7 +45,6 @@
 
 .leftPrevious div {
     width: 40px;
-    margin-top: 9px;
     background-color: #1f2029;
     box-shadow: 3px 2px 16px 4px rgba(1,0,0);
     border-radius: 20px;
