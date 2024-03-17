@@ -1,9 +1,13 @@
 ﻿@model AllExercisesQueryModel
 
 <form asp-controller="Exercise" asp-action="Index" method="get">
-    <div class="row">
-        <div class="form-group col-md-3 d-flex justify-content-between">
-            <div class="form-group ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3 form-group">
+                <input asp-for="SearchTerm" class="form-style" placeholder="Search">
+                <i class="input-icon material-symbols--search"></i>
+            </div>
+            <div class="col-md-3 form-group">
                 <select asp-for="Category" class="form-style" style="color: #ffeba7" aria-required="true">
                     <option disabled selected value="" style="color: #ffffff">Muscle group</option>
                     @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroup)))
@@ -13,32 +17,26 @@
                 </select>
                 <i class="input-icon ion--body-outline"></i>
             </div>
-        </div>
-
-        <div class="form-group col-md-3">
-            <input asp-for="SearchTerm" class="form-control" placeholder="Search">
-        </div>
-
-        <div class="form-group col-md-3">
-            <div class="form-group">
+            <div class="col-md-3 form-group">
                 <select asp-for="Sorting" class="form-style" style="color: #ffeba7" aria-required="true">
-                    <option disabled selected value="" style="color: #ffffff">Muscle group</option>
+                    <option disabled selected value="" style="color: #ffffff">Sorting</option>
                     @foreach (var sorting in Enum.GetValues(typeof(ExerciseSorting)))
                     {
                         <option style="color: #ffffff" value="@sorting">@sorting</option>
                     }
                 </select>
+                <i class="input-icon icons8--alphabetical-sorting"></i>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="form-group mt-4 p-2">
-                <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3 center-div mb-4">
+                <input type="submit" value="Search Exercises" class="btnn search-btnn nav-link d-flex justify-content-center" />
             </div>
         </div>
     </div>
 </form>
-
 
 @{
     var previousPage = Model.CurrentPage - 1;
@@ -49,32 +47,36 @@
 
     var maxPage = Math.Ceiling((double)Model.TotalExerciseCount /
         Model.ExercisePerPage);
+
+    var shouldButtonBeDisabled = Model.CurrentPage == maxPage;
 }
 
-<div class="row mb-5">
-    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-           asp-controller="Exercise"
-           asp-action="Index"
-           asp-route-currentPage="@previousPage"
-           asp-route-category="@Model.Category"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.Sorting)"><<</a>
+<div class="nextPreviousBtn">
+    <div class="leftPrevious">    
+        <div id="targetElementP" class="@(Model.CurrentPage == 1 ? "invisible" : string.Empty)">
+            <a class="btn p-0 @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+               asp-controller="Exercise"
+               asp-action="Index"
+               asp-route-currentPage="@previousPage"
+               asp-route-category="@Model.Category"
+               asp-route-searchTerm="@Model.SearchTerm"
+               asp-route-sorting="@((int)Model.Sorting)">
+                <img id="targetImgP" src="/images/Pagination/PreviousArrow.svg" />
+           </a>
+        </div>
     </div>
-
-    @{
-        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
-        !Model.Exercises.Any();
-    }
-
-    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-primary
-           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
-           asp-controller="Exercise"
-           asp-action="Index"
-           asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-category="@Model.Category"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.Sorting)">>></a>
+    <div class="rightNext">
+        <div id="targetElementN" class="@(shouldButtonBeDisabled ? " invisible" : string.Empty)">
+            <a class="btn p-0 @(shouldButtonBeDisabled ? " disabled" : string.Empty)"
+               asp-controller="Exercise"
+               asp-action="Index"
+               asp-route-currentPage="@(Model.CurrentPage + 1)"
+               asp-route-category="@Model.Category"
+               asp-route-searchTerm="@Model.SearchTerm"
+               asp-route-sorting="@((int)Model.Sorting)">
+                <img id="targetImgN" src="/images/Pagination/NextArrow.svg" />
+            </a>
+        </div>
     </div>
 </div>
+

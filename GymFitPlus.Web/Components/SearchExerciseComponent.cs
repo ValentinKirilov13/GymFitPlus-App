@@ -5,9 +5,9 @@ namespace GymFitPlus.Web.Components
 {
     public class SearchExerciseComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(AllExercisesQueryModel model)
+        public async Task<IViewComponentResult> InvokeAsync(AllExercisesQueryModel query)
         {
-            return await Task.FromResult<IViewComponentResult>(View(model));
+            return await Task.FromResult<IViewComponentResult>(View(query));
         }
     }
 }

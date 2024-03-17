@@ -17,9 +17,11 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery]AllExercisesQueryModel query)
+        public async Task<IActionResult> Index([FromQuery] AllExercisesQueryModel query)
         {
-            IEnumerable<ExerciseAllViewModel> model = await _exerciseService.AllExerciseAsync(/*query*/);
+            IEnumerable<ExerciseAllViewModel> model = await _exerciseService.AllExerciseAsync(query);
+
+            query.TotalExerciseCount = await _exerciseService.CountAllExerciseAsync();
 
             ViewBag.Query = query;
 
@@ -47,9 +49,9 @@ namespace GymFitPlus.Web.Controllers
         {
             if (viewModel.MuscleGroup == default)
             {
-                ModelState.AddModelError(nameof(viewModel.MuscleGroup),string.Format(RequiredErrorMessage,"Muscle group"));
+                ModelState.AddModelError(nameof(viewModel.MuscleGroup), string.Format(RequiredErrorMessage, "Muscle group"));
             }
-          
+
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
