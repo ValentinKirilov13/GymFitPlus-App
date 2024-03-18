@@ -51,5 +51,7 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Link to user YouTube account")]
         [PersonalData]
         public string? YouTubeUrl { get; set; }
+
+        public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
     }
 }
