@@ -91,18 +91,13 @@ namespace GymFitPlus.Core.Services
                          .OrderBy(m => m.Id)
             };
 
+            query.TotalExerciseCount = model.Count();
+
             return await model
                             .Skip((query.CurrentPage - 1) * query.ExercisePerPage)
                             .Take(query.ExercisePerPage)
                             .ToListAsync();
-        }
-        public async Task<int> CountAllExerciseAsync()
-        {
-            return await _repository
-                .AllReadOnly<Exercise>()
-                .Where(x => x.IsDelete == false)
-                .CountAsync();
-        }
+        }       
         public async Task<ExerciseDetailViewModel> FindExerciseByIdAsync(int id)
         {
             return await _repository
@@ -131,7 +126,6 @@ namespace GymFitPlus.Core.Services
                 })
                 .ToListAsync();
         }
-
         private async Task<Exercise> FindByIdAsync(int id)
         {
             return await _repository
