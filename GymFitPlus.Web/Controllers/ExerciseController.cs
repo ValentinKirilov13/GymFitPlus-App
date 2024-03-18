@@ -21,8 +21,6 @@ namespace GymFitPlus.Web.Controllers
         {
             IEnumerable<ExerciseAllViewModel> model = await _exerciseService.AllExerciseAsync(query);
 
-            query.TotalExerciseCount = await _exerciseService.CountAllExerciseAsync();
-
             ViewBag.Query = query;
 
             return View(model);
@@ -32,7 +30,7 @@ namespace GymFitPlus.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             ExerciseDetailViewModel model = await _exerciseService.FindExerciseByIdAsync(id);
-
+            
             return View(model);
         }
 
