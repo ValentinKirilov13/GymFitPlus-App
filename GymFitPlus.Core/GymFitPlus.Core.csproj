@@ -14,4 +14,8 @@
     <ProjectReference Include="..\GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\WorkoutViewModels\" />
+  </ItemGroup>
+
 </Project>
