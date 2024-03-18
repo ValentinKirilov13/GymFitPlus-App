@@ -110,13 +110,14 @@ namespace GymFitPlus.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount)
+        public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount, int exerciseId = -1)
         {
-            var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(programId);
-
             var model = new FitnessProgramExercisesInfoViewModel();
             model.FitnessProgramId = programId;
+            model.ExerciseId = exerciseId;
             model.Order = ++exerciseCount;
+
+            var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(programId);
             model.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(exercisesIdsNotToGet);
 
             return View(model);
@@ -162,6 +163,14 @@ namespace GymFitPlus.Web.Controllers
             TempData["Action"] = "removed exercise";
 
             return RedirectToAction("Details", new { id = programId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProgramsAjax(int withoutExerciseId)
+        {
+            var programs = await _fitnessProgramService.GetAllFitnessProgramsFilltered(User.Id(), withoutExerciseId);
+
+            return Json(programs);
         }
     }
 }

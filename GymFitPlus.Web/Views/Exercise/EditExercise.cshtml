@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Edit Exercise";
 }
+
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
 }
@@ -44,15 +45,47 @@
                     </div>
                     <button type="submit" class="btnn">Edit Exercise</button>
                 </form>
-
-                <form asp-action="DeleteExercise" asp-controller="Exercise" method="post">
-                    <input asp-for="Id" hidden />
-                    <button type="submit" class="btn btn-outline-danger delBtn">Delete Exercise</button>
-                </form>
+                <div>
+                    <button data-bs-toggle="modal"
+                            data-bs-target="#DeleteExercise"
+                            class="btn btn-outline-danger delBtn"
+                            style="font-weight:bold;">
+                        Delete Exercise
+                    </button>
+                    <div class="modal fade" id="DeleteExercise" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content box">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5 text-center">Are you sure you want to delete exercise @Model.Name?</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-outline-warning mt-5 border-0" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <form asp-action="DeleteExercise" asp-controller="Exercise" method="post">
+                                                    <input asp-for="Id" hidden />
+                                                    <button type="submit" class="btn btn-outline-danger delBtn float-end">Yes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    var deleteExercise = document.getElementById('DeleteExercise');
+    document.body.appendChild(deleteExercise);
+</script>
 
 @section Scripts {
     @* <partial name="_ValidationScriptsPartial" /> *@

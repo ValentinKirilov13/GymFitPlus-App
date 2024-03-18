@@ -3,6 +3,12 @@
     ViewBag.Title = "Exercise Details";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ExerciseDetails.css" asp-append-version="true" />
+}
+
 <header class="text-center">
     <h1>@Model.Name Details</h1>
 </header>
@@ -10,11 +16,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3 center-div">
-            <a class="btnn nav-link d-flex justify-content-center" 
-                asp-controller="Exercise" 
-                asp-action="EditExercise"
-                asp-route-id="@Model.Id">
-                Edit Exercise</a>
+            <a class="btnn nav-link d-flex justify-content-center"
+               asp-controller="Exercise"
+               asp-action="EditExercise"
+               asp-route-id="@Model.Id">
+                Edit Exercise
+            </a>
         </div>
     </div>
 </div>
@@ -22,107 +29,32 @@
 <div class="container">
     <div class="row text-center">
         <div class="row justify-content-center">
-            <div class="card col-md-12 box">
-                <div class="card">
-                    
+            <div class="card col-md-12 box myBody mt-4">
+                <div class="card myBody">
+                    <div class="embed-responsive embed-responsive-16by9 myBody">
+                        <iframe class="embed-responsive-item myBody" src="https://www.youtube.com/embed/@(Model.VideoUrl)" allowfullscreen></iframe>
+                    </div>
                     <div class="card-body">
                         <h3 class="card-title">@Model.Name</h3>
-                        <p class="card-text"> Used in @Model.UsedByProgramsCount diffrent fitness programs.</p>
+                        <p class="card-text"> Used in @Model.UsedByProgramsCount fitness programs.</p>
                         <p class="card-text">@Model.Description</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row justify-content-center text-center ">
+        <div class="dropdown-center col-md-12 mt-3">
+            <a class="btnn btnnn nav-link dropdown-toggle" onclick="loadData(@Model.Id)" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                Add To My Fitness Program
+            </a>
+            <ul class="dropdown-menu" id="myList">
+            </ul>
+        </div>
+    </div>
 </div>
 
-@* <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
-</div> *@
-
-<style>
-    h1 {
-        font-weight: bold;
-        color: white;
-        font-size: 60px;
-    }
-
-    .box {
-        /* width: 300px;
-        height: 150px; */
-        background-color: #2a2b38;
-        overflow: hidden;
-        transition: transform 5s, background-color 5s;
-        position: relative;
-        z-index: 1;
-        box-shadow: 43px 6px 60px 4px rgba(0,0,0,0.84);
-        border-radius: 30px;
-        margin-top: 50px;
-        margin-left: 30px;
-    }
-
-        .box span {
-            display: block;
-        }
-
-        .box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 200%;
-            background: linear-gradient(to top, #ffeba7, #ff206e);
-            transition: transform 2s;
-            transform-origin: center top;
-            transform: scaleY(0);
-            z-index: -1;
-        }
-
-        .box:hover::before {
-            transform: scaleY(1);
-        }
-
-
-    .btnn {
-        border-radius: 6px;
-        height: 50px;
-        font-weight: 600;
-        text-transform: uppercase;
-        -webkit-transition: all 200ms linear;
-        transition: all 200ms linear;
-        padding: 0 30px;
-        margin-top: 20px;
-        letter-spacing: 1px;
-        display: -webkit-inline-flex;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-        -webkit-align-items: center;
-        -moz-align-items: center;
-        -ms-align-items: center;
-        align-items: center;
-        -webkit-justify-content: center;
-        -moz-justify-content: center;
-        -ms-justify-content: center;
-        justify-content: center;
-        -ms-flex-pack: center;
-        text-align: center;
-        border: none;
-        background-color: #ffeba7;
-        color: #102770;
-        box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
-    }
-
-        .btnn:active,
-        .btnn:focus {
-            background-color: #ff206e;
-            color: #ffeba7;
-            box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
-        }
-
-        .btnn:hover {
-            background-color: #ff206e;
-            color: #ffeba7;
-            box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
-        }
-</style>
+@section Scripts {
+    <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="~/js/ExerciseDetails.js"></script>
+}
