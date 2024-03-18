@@ -2,7 +2,7 @@
 {
     public static class DataConstants
     {
-        public static class ApplicationUserConstants 
+        public static class ApplicationUserConstants
         {
             public const int NameMaxLenght = 50;
             public const int NameMinLenght = 5;
@@ -45,5 +45,10 @@
 
         }
 
+        public static class WorkoutConstants
+        {
+            public const int NoteMaxLenght = 300;
+            public const int NoteMinLenght = 5;
+        }
     }
 }
