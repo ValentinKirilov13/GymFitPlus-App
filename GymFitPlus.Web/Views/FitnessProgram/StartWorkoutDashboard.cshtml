@@ -1,0 +1,338 @@
+﻿@model FitnessProgramDetailViewModel
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>@Model.Name</h1>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-3 center-div mb-4">
+            <button class="btnn nav-link d-flex justify-content-center" id="startButton">Start Workout</button>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="progress mt-3 mb-3" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar custom-progress-bar" id="progress-bar" style="width:0%">50%</div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table text-light" id="myTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Exercise</th>
+                            <th scope="col" class="text-center">Sets</th>
+                            <th scope="col" class="text-center">Reps</th>
+                            <th scope="col" class="text-center">Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Exercises.OrderBy(x => x.Order))
+                        {
+                            string uniqueID = $"element{item.FitnessProgramId}{item.ExerciseId}edit";
+
+                            <tr>
+                                <th scope="row">@item.Order</th>
+                                <td>
+                                    @item.ExerciseName
+                                    <label class="toggle" for="@uniqueID" style="visibility:hidden;">
+                                        <input type="checkbox" class="toggle__input checkbox" id="@uniqueID" />
+                                        <span class="toggle-track">
+                                            <span class="toggle-indicator">
+                                                <span class="checkMark">
+                                                    <svg viewBox="0 0 24 24" id="ghq-svg-check" role="presentation" aria-hidden="true">
+                                                        <path d="M9.86 18a1 1 0 01-.73-.32l-4.86-5.17a1.001 1.001 0 011.46-1.37l4.12 4.39 8.41-9.2a1 1 0 111.48 1.34l-9.14 10a1 1 0 01-.73.33h-.01z"></path>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </td>
+                                <td class="text-center setsCol">@item.Sets</td>
+                                <td class="text-center">@item.Reps</td>
+                                <td class="text-center">@item.Weight</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="upButton" style="visibility:hidden;">upButton</button>
+<button id="downButton" style="visibility:hidden;">downButton</button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var table = document.getElementById('myTable');
+        var rows = table.querySelectorAll('tbody > tr');
+        var currentIndex = 0;
+        var checkboxes = document.querySelectorAll('.checkbox');
+        var progressBar = document.getElementById('progress-bar');
+        var startButton = document.getElementById('startButton');
+        var upButton = document.getElementById('upButton');
+        var downButton = document.getElementById('downButton');
+        var labels = table.querySelectorAll('tbody > tr > td > label');
+        var elements = document.querySelectorAll('.setsCol');
+
+        function selectRow(row) {
+            row.style.backgroundColor = '#ff206e';
+            row.style.boxShadow = '39px 36px 42px -10px rgba(0,0,0,0.75)';
+            row.style.zIndex = '5';
+            row.style.position = 'relative';
+            row.style.top = '10px';
+            row.style.left = '-10px';
+            row.style.textWeight = 'bold';
+            row.style.fontSize = '30px';
+            row.style.transition = '';
+            row.style.opacity = '';
+            row.style.transition = 'all 0.5s ease-out';
+            elements[currentIndex].classList.add('hideAfter');
+        }
+        function deselectRow(row) {
+            row.style.backgroundColor = '';
+            row.style.boxShadow = '';
+            row.style.zIndex = '';
+            row.style.position = '';
+            row.style.top = '';
+            row.style.left = '';
+            row.style.fontSize = '';
+            row.style.transition = 'opacity 0.5s ease';
+            row.style.opacity = '0.5';
+            elements[currentIndex].classList.remove('hideAfter');
+        }
+        function areAllCheckboxesChecked() {
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (!checkboxes[i].checked) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        function updateProgressBar() {
+            var checkedCount = 0;
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    checkedCount++;
+                }
+            });
+            var progress = (checkedCount / checkboxes.length) * 100;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.ceil(progress) + '%';
+        }
+
+        updateProgressBar();
+
+        startButton.addEventListener('click', function () {
+            upButton.style.visibility = 'visible';
+            downButton.style.visibility = 'visible';
+
+            this.disabled = true;
+            //this.style.visibility = 'hidden';
+
+            labels.forEach(function (label) {
+                label.style.visibility = 'visible';
+            });
+
+            rows.forEach(function (row) {
+                row.style.transition = 'opacity 0.5s ease';
+                row.style.opacity = '0.5';
+            });
+
+            selectRow(rows[currentIndex]);
+        });
+        upButton.addEventListener('click', function () {
+            if (currentIndex > 0) {
+
+                deselectRow(rows[currentIndex]);
+                currentIndex--;
+                selectRow(rows[currentIndex]);
+            }
+        });
+        downButton.addEventListener('click', function () {
+            if (currentIndex < rows.length - 1) {
+                deselectRow(rows[currentIndex]);
+                currentIndex++;
+                selectRow(rows[currentIndex]);
+            }
+        });
+
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+
+                currentIndex = checkbox.closest('tr').rowIndex - 1;
+
+                rows.forEach(function (row) {
+                    deselectRow(row);
+                });
+
+                upButton.style.visibility = 'hidden';
+                upButton.disabled = true;
+                downButton.style.visibility = 'hidden';
+                downButton.disabled = true;
+
+                rows.forEach(function (row) {                  
+                    row.style.transition = '';
+                    row.style.opacity = '';
+                });
+
+                if (!areAllCheckboxesChecked()) {
+
+                    rows.forEach(function (row) {
+                        row.style.transition = 'opacity 0.5s ease';
+                        row.style.opacity = '0.5';
+                    });
+
+                    if (currentIndex < rows.length - 1 && checkbox.checked && !checkboxes[currentIndex + 1].checked) {
+                        currentIndex++;
+                        selectRow(rows[currentIndex]);
+
+                    } else {
+
+                        var firstCheckbox = Array.from(checkboxes).find(function (checkbox) {
+                            return !checkbox.checked;
+                        });
+
+                        currentIndex = firstCheckbox.closest('tr').rowIndex - 1;
+                        selectRow(rows[currentIndex]);
+                    }
+
+                    upButton.style.visibility = 'visible';
+                    upButton.disabled = false;
+                    downButton.style.visibility = 'visible';
+                    downButton.disabled = false;                   
+                }
+            });
+            checkbox.addEventListener('change', updateProgressBar);
+        });
+    });
+</script>
+
+
+<style>
+    td {
+        position: relative;
+    }
+
+    .setsCol::after {
+        content: 'x';
+        position: absolute;
+        right: -4px;
+        visibility: hidden;
+    }
+
+    .hideAfter::after {
+        visibility: visible;
+    }
+
+    .custom-progress-bar {
+        background-color: #ff206e;
+    }
+
+    .progress {
+        background-color: #1f2029;
+    }
+
+    .toggle {
+        align-items: center;
+        border-radius: 100px;
+        display: flex;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+        .toggle:last-of-type {
+            margin: 0;
+        }
+
+    .toggle__input {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+        .toggle__input:not([disabled]):active + .toggle-track, .toggle__input:not([disabled]):focus + .toggle-track {
+            border: 1px solid transparent;
+            box-shadow: 0px 0px 0px 2px #ff206e;
+        }
+
+        .toggle__input:disabled + .toggle-track {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+    .toggle-track {
+        background: #1f2029;
+        border: 1px solid #ff206e;
+        border-radius: 100px;
+        cursor: pointer;
+        display: flex;
+        height: 30px;
+        margin-right: 12px;
+        position: relative;
+        width: 60px;
+    }
+
+    .toggle-indicator {
+        align-items: center;
+        background: #ffeba7;
+        border-radius: 24px;
+        bottom: 2px;
+        display: flex;
+        height: 24px;
+        justify-content: center;
+        left: 2px;
+        outline: solid 2px transparent;
+        position: absolute;
+        transition: 0.25s;
+        width: 24px;
+    }
+
+    .checkMark {
+        fill: #ffeba7;
+        height: 25px;
+        width: 20px;
+        opacity: 0;
+        transition: opacity 0.25s ease-in-out;
+    }
+
+    .toggle__input:checked + .toggle-track .toggle-indicator {
+        background: #ff206e;
+        transform: translateX(30px);
+    }
+
+        .toggle__input:checked + .toggle-track .toggle-indicator .checkMark {
+            opacity: 1;
+            transition: opacity 0.25s ease-in-out;
+        }
+
+    /* media screen and (-ms-high-contrast: active) {
+                                  .toggle-track {
+                                    border-radius: 0;
+                                  }
+                                } */
+</style>
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    } *@

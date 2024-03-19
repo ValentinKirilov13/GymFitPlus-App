@@ -8,6 +8,11 @@
             <li class="GymNameButton">
                 <a asp-area="" asp-controller="Home" asp-action="Index">Gym<span id="fit">Fit</span>+</a>
             </li>
+
+            <li class="nav__items">
+                <a asp-area="" asp-controller="FitnessProgram" asp-action="Index" asp-route-startWorkout="true">Start Workout</a>
+            </li>
+
             <li class="nav__items">
                 <a asp-area="" asp-controller="Account" asp-action="Dashboard">Dashboard</a>
             </li>
@@ -26,10 +31,11 @@
             <li class="nav__items">
                 <a asp-area="" asp-controller="FitnessProgram" asp-action="Index">My Fitness Program</a>
             </li>
-
+           
             <li class="nav__items">
-                <a href="">Start Workout</a>
+                <a asp-area="" asp-controller="Workout" asp-action="Index">Workout</a>
             </li>
+
             <partial name="_LoginPartial" />
         </ul>
     </div>

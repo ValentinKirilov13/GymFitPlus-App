@@ -23,9 +23,14 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool startWorkout = false)
         {
             IEnumerable<FitnessProgramFormViewModel> allPrograms = await _fitnessProgramService.AllFitnessProgramsAsync(User.Id());
+
+            if (startWorkout)
+            {
+                return View("StartWorkout", allPrograms);
+            }
 
             return View(allPrograms);
         }
@@ -52,7 +57,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, bool startWorkout = false)
         {
             if (TempData["Succssed"] != null)
             {
@@ -65,6 +70,11 @@ namespace GymFitPlus.Web.Controllers
             }
 
             var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
+
+            if (startWorkout)
+            {
+                return View("StartWorkoutDashboard", program);
+            }
 
             return View(program);
         }
