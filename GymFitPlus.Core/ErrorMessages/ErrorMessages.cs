@@ -18,5 +18,7 @@ namespace GymFitPlus.Core.ErrorMessages
         public const string PhotoErrorMessage = "File is too big. Max alloed is 2 GB";
 
         public const string ExercisePropertiesErrorMessages = "The value is not valid! Must be between {1} and {2}.";
+
+        public const string DurationErrorMessages = $"The value is not valid!";
     }
 }

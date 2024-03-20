@@ -49,6 +49,9 @@
         {
             public const int NoteMaxLenght = 300;
             public const int NoteMinLenght = 5;
+
+            public const int DurationMaxValue = int.MaxValue;
+            public const int DurationMinValue = 0;
         }
     }
 }
