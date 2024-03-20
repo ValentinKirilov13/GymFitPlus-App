@@ -1,6 +1,12 @@
 html {
     font-size: 14px;
 }
+.example {
+    -webkit-transform: rotate(30deg); /* Chrome, Safari, and Opera */
+    -ms-transform: rotate(30deg); /* IE 9 */
+    -moz-transform: rotate(30deg); /* Firefox */
+    transform: rotate(30deg); /* Standard syntax */
+}
 
 @media (min-width: 768px) {
     html {
@@ -83,8 +89,6 @@ body {
 footer {
     background: #2a2b38;
     width: 100%;
-    position:fixed;
-    bottom:0px;
 }
 
 
