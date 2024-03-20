@@ -1,6 +1,8 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
+using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
 using System.Text;
 
@@ -70,9 +72,30 @@ namespace GymFitPlus.Web.Controllers
             }
 
             var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
+            
 
             if (startWorkout)
             {
+                TempData["FitnessProgramId"] = program.Id;
+
+                if (TempData.Get<WorkoutDetailViewModel>("WorkoutModel") != null && TempData["WorkoutModelErrors"] != null)
+                {
+                    if (TempData["WorkoutModelErrors"] is string[] errors && errors.Any())
+                    {
+                        foreach (var error in errors)
+                        {
+                            ModelState.AddModelError("", error);
+                        }
+                    }
+
+                    ViewBag.ValidationError = true;
+                    ViewBag.WorkoutModel = TempData.Get<WorkoutDetailViewModel>("WorkoutModel");                                    
+                }
+                else
+                {
+                    ViewBag.WorkoutModel = new WorkoutDetailViewModel() { FitnessProgramId = program.Id };
+                }
+
                 return View("StartWorkoutDashboard", program);
             }
 

@@ -1,7 +1,10 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -10,31 +13,59 @@ namespace GymFitPlus.Web.Controllers
         private readonly IWorkoutService _workoutService;
         private readonly ILogger<WorkoutController> _logger;
 
-        public WorkoutController(IWorkoutService workoutService, 
+        public WorkoutController(IWorkoutService workoutService,
                                  ILogger<WorkoutController> logger)
         {
             _workoutService = workoutService;
             _logger = logger;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int skip = 0, int take = 0)
         {
-            IEnumerable<WorkoutAllViewModel> model = await _workoutService.GetAllWorkoutsAsync(User.Id());
-            return View(model);
+            if (take > 0)
+            {
+                IEnumerable<WorkoutAllViewModel> model = await _workoutService.GetAllWorkoutsAsync(User.Id());
+
+                model = model.OrderByDescending(x => x.Date).Skip(skip).Take(take);
+                return Json(model);
+            }
+
+            return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int workoutId)
         {
-            WorkoutDetailViewModel model = await _workoutService.GetByIdWorkoutAsync(workoutId,User.Id());
- 
+            WorkoutDetailViewModel model = await _workoutService.GetByIdWorkoutAsync(workoutId, User.Id());
+
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateWorkout(WorkoutDetailViewModel viewModel)
         {
+            int? fitnessProgramId = (int?)TempData["FitnessProgramId"];
+
+            if (fitnessProgramId != viewModel.FitnessProgramId)
+            {
+                return Forbid();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                List<string> errors = ModelState.Values
+                 .SelectMany(v => v.Errors)
+                 .Select(e => e.ErrorMessage)
+                 .ToList();
+
+                TempData["WorkoutModelErrors"] = errors;
+                TempData.Put("WorkoutModel", viewModel);
+                return RedirectToAction(nameof(Details), "FitnessProgram", new { id = viewModel.FitnessProgramId, startWorkout = true });
+            }
+
             viewModel.UserId = User.Id();
             viewModel.Date = DateTime.Today;
 
