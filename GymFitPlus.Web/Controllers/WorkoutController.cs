@@ -2,9 +2,7 @@
 using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -40,9 +38,8 @@ namespace GymFitPlus.Web.Controllers
         {
             WorkoutDetailViewModel model = await _workoutService.GetByIdWorkoutAsync(workoutId, User.Id());
 
-            return View(model);
+            return Json(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateWorkout(WorkoutDetailViewModel viewModel)
