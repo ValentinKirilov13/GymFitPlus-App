@@ -1,1 +1,121 @@
-﻿
+﻿@{
+    ViewBag.Title = "My Workouts";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkoutDashboard.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>All my workouts</h1>
+</header>
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-md-3 center-div mb-0" style="position:relative;">
+            <div id="startDiv">
+                <a class="btnn nav-link d-flex justify-content-center mt-0"
+                   id="startButton"
+                   asp-controller="FitnessProgram"
+                   asp-action="Index"
+                   asp-route-startWorkout="true">
+                    Start Workout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr style="margin-top:70px;" />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table text-light" id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Program</th>
+                            <th scope="col" class="text-center">Duration</th>
+                            <th scope="col" class="text-center">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    var screenHeight = window.screen.height;
+
+    var skip = 0;
+    var take = Math.ceil(screenHeight / 42.5);
+
+    function fetchRecords() {
+        $.ajax({
+            url: '/Workout/Index',
+            type: 'GET',
+            data: { skip: skip, take: take },
+            success: function (data) {
+
+                data.forEach(function (d) {
+                    addRow(d);
+                });
+
+                skip += take; 
+            },
+            error: function () {
+                console.error('Error fetching records.');
+            }
+        });
+    }
+
+    function addRow(record) {
+        var table = document.getElementById("recordsTable");
+        var newRow = document.createElement("tr");
+
+        var id = document.createElement("th");
+        var programName = document.createElement("td");
+        var duration = document.createElement("td");
+        var date = document.createElement("td");
+        var dateActual = new Date(record.date);
+        var formattedDate = dateActual.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short'
+        });
+
+        id.textContent = record.id;
+        programName.textContent = record.fitnessProgramName;
+        duration.textContent = record.duration + " " + "minutes";
+        duration.classList.add("text-center");     
+        date.textContent = formattedDate;
+        date.classList.add("text-center");
+
+        newRow.appendChild(id);
+        newRow.appendChild(programName);
+        newRow.appendChild(duration);
+        newRow.appendChild(date);
+
+        table.querySelector("tbody").appendChild(newRow);
+    }
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            fetchRecords();
+        }
+    });
+
+    $(document).ready(function () {
+        fetchRecords(); 
+    });
+</script>

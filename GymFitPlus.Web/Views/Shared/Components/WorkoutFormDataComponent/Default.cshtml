@@ -1,0 +1,21 @@
+﻿@model WorkoutDetailViewModel
+
+<form asp-controller="Workout" asp-action="CreateWorkout" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger ms-5"></div>
+
+    <input asp-for="FitnessProgramId" hidden />
+
+    <input asp-for="Duration" type="text" name="Duration" id="timerInput" readonly hidden />
+    <span asp-validation-for="Duration" class="text-danger ms-5"></span>
+
+    <div class="form-group">
+        <input asp-for="Note" type="text" name="Note" class="form-style" placeholder="Write note..." />
+        <span asp-validation-for="Note" class="text-danger ms-5"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <button id="stopButton" class="form-style btnn">Finish Workout</button>
+    </div>
+
+</form>
