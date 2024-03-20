@@ -13,6 +13,21 @@
     display: none;
 }
 
+.spanData {
+    color: #ff206e;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#myCustomTrHover tr:hover {
+    background-color: #ff206e;
+    cursor: pointer;
+}
+
+#recordsTable thead {
+    color: #ff206e;
+}
+
 #timer {
     font-size: 70px;
     position: relative;
