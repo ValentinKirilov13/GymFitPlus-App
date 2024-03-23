@@ -1,13 +1,12 @@
 ﻿using GymFitPlus.Infrastructure.Data.Configuration;
 using GymFitPlus.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymFitPlus.Infrastructure.Data
 {
     public class ApplicationDbContext
-      : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+      : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }

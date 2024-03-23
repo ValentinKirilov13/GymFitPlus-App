@@ -48,7 +48,7 @@ namespace GymFitPlus.Web.Controllers
 
             if (fitnessProgramId != viewModel.FitnessProgramId)
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             if (!ModelState.IsValid)
