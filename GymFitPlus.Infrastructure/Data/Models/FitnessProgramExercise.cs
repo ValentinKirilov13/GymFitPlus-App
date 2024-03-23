@@ -38,5 +38,10 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Required]
         [Comment("Weight for the exercise")]
         public double Weight { get; set; }
+
+        [Required]
+        [Comment("Date Of Update")]
+        [Column(TypeName = "date")]
+        public DateTime DateOfUpdate { get; set; }
     }
 }
