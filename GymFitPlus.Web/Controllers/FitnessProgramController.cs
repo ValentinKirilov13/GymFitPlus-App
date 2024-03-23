@@ -1,6 +1,7 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using GymFitPlus.Core.ViewModels.WorkoutViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
@@ -72,7 +73,7 @@ namespace GymFitPlus.Web.Controllers
             }
 
             var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
-            
+
 
             if (startWorkout)
             {
@@ -89,7 +90,7 @@ namespace GymFitPlus.Web.Controllers
                     }
 
                     ViewBag.ValidationError = true;
-                    ViewBag.WorkoutModel = TempData.Get<WorkoutDetailViewModel>("WorkoutModel");                                    
+                    ViewBag.WorkoutModel = TempData.Get<WorkoutDetailViewModel>("WorkoutModel");
                 }
                 else
                 {

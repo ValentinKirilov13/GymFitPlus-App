@@ -76,7 +76,7 @@ namespace GymFitPlus.Web.Controllers
         {
             if (viewModel.UserId != User.Id())
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             await _workoutService.DeleteWorkoutAsync(viewModel, User.Id());

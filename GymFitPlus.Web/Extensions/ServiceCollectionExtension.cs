@@ -59,6 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .ConfigureApplicationCookie(options =>
                 {
                     options.LoginPath = PathString.FromUriComponent("/Account/LogInSignUp");
+                    options.AccessDeniedPath = PathString.FromUriComponent("/Home/Error?statusCode={0}");
                 });
 
             return services;
