@@ -6,12 +6,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 builder.Services.AddApplicationServices();
-builder.Services.AddApplicationAuthentication();    
+builder.Services.AddApplicationAuthentication();
 
 builder.Services.AddControllersWithViews(opt =>
 {
     opt.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
     opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name:"MyAllowedOrigins",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:7121");
+        });
 });
 
 var app = builder.Build();
@@ -33,8 +42,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("MyAllowedOrigins");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
