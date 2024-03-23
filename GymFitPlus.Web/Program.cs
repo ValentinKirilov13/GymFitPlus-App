@@ -47,9 +47,6 @@ app.UseCors("MyAllowedOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors();
-
 app.MapDefaultControllerRoute();
-app.MapRazorPages();
 
 await app.RunAsync();
