@@ -72,9 +72,9 @@ namespace GymFitPlus.Core.Services
                .Where(x => x.Id == userId)
                .Select(x => new UserInfoViewModel()
                {
-                   FullName = $"{x.FirstName} {x.LastName}",
-                   Age = DateTime.Today.Year - x.BirthDate.Year,
-                   Gander = x.Gender.ToString(),
+                   FullName = x.FirstName != null && x.LastName != null ? $"{x.FirstName} {x.LastName}" : null,
+                   Age = x.BirthDate != null ? DateTime.Today.Year - x.BirthDate.Value.Year : null,
+                   Gander = x.Gender != null ? x.Gender.ToString() : null,
                    Image = x.Image,
                    FacebookUrl = x.FacebookUrl,
                    InstagramUrl = x.InstagramUrl,
