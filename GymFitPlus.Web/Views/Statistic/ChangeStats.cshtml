@@ -1,0 +1,104 @@
+﻿@model UserStatsViewModel
+@{
+    ViewBag.Title = "Change Stats";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>Change Statistics</h1>
+</header>
+<hr/>
+
+<div class="container">
+    <div class="row text-center">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 p-5 box">
+                <form asp-action="ChangeStats" asp-controller="Statistic" method="post">
+
+                    <div class="form-group">
+                        <input asp-for="Weight" type="text" class="form-style" placeholder="Weight">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="Height" type="text" class="form-style" placeholder="Height">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="Height" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="ChestCircumference" type="text" class="form-style" placeholder="ChestCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="ChestCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="BackCircumference" type="text" class="form-style" placeholder="BackCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="BackCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="RightArmCircumference" type="text" class="form-style" placeholder="RightArmCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="RightArmCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="LeftArmCircumference" type="text" class="form-style" placeholder="LeftArmCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="LeftArmCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="WaistCircumference" type="text" class="form-style" placeholder="WaistCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="WaistCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="GluteusCircumference" type="text" class="form-style" placeholder="GluteusCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="GluteusCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="RightLegCircumference" type="text" class="form-style" placeholder="RightLegCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="RightLegCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="LeftLegCircumference" type="text" class="form-style" placeholder="LeftLegCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="LeftLegCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="RightCalfCircumference" type="text" class="form-style" placeholder="RightCalfCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="RightCalfCircumference" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="LeftCalfCircumference" type="text" class="form-style" placeholder="LeftCalfCircumference">
+                        <i class="input-icon ph--user-bold"></i>
+                        <span asp-validation-for="LeftCalfCircumference" class="text-danger"></span>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary btn-block mt-5">Complete</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+}
