@@ -10,7 +10,7 @@
             public const string DateFormat = "yyyy-MM-dd";
 
             public const int UrlMaxLenght = 200;
-            public const int UrlMinLenght = 50;
+            public const int UrlMinLenght = 10;
 
             public const double GenderTypeEnumMaxValue = 3;
             public const double GenderTypeEnumMinValue = 1;
@@ -52,6 +52,12 @@
 
             public const int DurationMaxValue = int.MaxValue;
             public const int DurationMinValue = 0;
+        }
+
+        public static class StatisticConstants
+        {
+            public const double StatsMaxValue = 300;
+            public const double StatsMinValue = 0;
         }
     }
 }
