@@ -6,60 +6,16 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
 }
 
-<style>
-    .myTitle {
-        font-size: 15px;
-    }
 
-    .myContent {
-        font-size: 30px;
-        color: #ff206e;
-        overflow-wrap:break-word;
-    }
-
-    .myContentLinks {
-        font-size: 20px;
-        color: #ff206e;
-        cursor: pointer;
-        display:block;
-        margin-top:60px;
-        text-decoration:none;
-    }
-
-        .myContentLinks:hover {
-            color: #ffeba7;
-        }
-
-    .profileImg{
-        border-radius: 20%;
-        width: 100%;
-        height: auto;
-    }
-
-    #direction{
-        font-size:60px;
-    }
-
-    #value{
-        margin-left:20px;
-        font-size: 60px;
-    }
-
-    #dimension{
-        margin-left: 10px;
-        font-size: 60px;
-    }
-
-</style>
-
-<div class="container">
+<div class="container mt-5 pt-5">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 mb-2">
             @if (Model.Image != null)
             {
-                <img class="profileImg" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" class="img-fluid" alt="File Preview">
+                <img class="profileImg img-fluid" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="File Preview">
             }
             else
             {
@@ -68,11 +24,11 @@
         </div>
         <div class="col-md-4 text-center">
             <p class="myTitle">FullName:</p>
-            <p class="myContent">@(Model.FullName != null ? Model.FullName : "...............")</p>
+            <p class="myContent">@(Model.FullName != null ? Model.FullName : "-")</p>
             <p class="myTitle">Age:</p>
-            <p class="myContent">@(Model.Age != null ? Model.Age : "...............")</p>
+            <p class="myContent">@(Model.Age != null ? Model.Age : "-")</p>
             <p class="myTitle">Gander:</p>
-            <p class="myContent">@(Model.Gander != null ? Model.Gander : "...............")</p>
+            <p class="myContent">@(Model.Gander != null ? Model.Gander : "-")</p>
         </div>
         <div class="col-md-4 text-center">
             <a class="myContentLinks" href="@(Model.FacebookUrl != null ? Model.FacebookUrl : "#")" target="_blank">Facebook</a>
@@ -82,10 +38,10 @@
     </div>
     <div class="row mt-3">
         <div class="col-md-4 text-center">
-            <a asp-action="ChangeStats" asp-controller="Statistic" class="btnn nav-link">Update stats for today</a>
+            <a asp-action="ChangeStats" asp-controller="Statistic" class="btnn btnn2 nav-link">Update stats</a>
         </div>
         <div class="col-md-6 text-center">
-            <p class="mt-1">
+            <p class="differents">
                 <span id="direction">Up:</span> <span id="value">3</span> <span id="dimension">kg</span>
             </p>
         </div>       
@@ -95,32 +51,32 @@
             <div id="carouselExample" class="carousel slide">
                 <div class="carousel-inner text-center">
                     <div class="carousel-item active">
-                        <button class="btnn mt-0" onclick="getStats('Weight')">Weight</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('Weight')">Weight</button>
                         <button class="btnn mt-0" onclick="getStats('Height')">Height</button>
                     </div>
 
                     <div class="carousel-item">
-                        <button class="btnn mt-0" onclick="getStats('ChestCircumference')">Chest Circumference</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('ChestCircumference')">Chest Circumference</button>
                         <button class="btnn mt-0" onclick="getStats('BackCircumference')">Back Circumference</button>
                     </div>
 
                     <div class="carousel-item">
-                        <button class="btnn mt-0" onclick="getStats('LeftArmCircumference')">Left Arm Circumference</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('LeftArmCircumference')">Left Arm Circumference</button>
                         <button class="btnn mt-0" onclick="getStats('RightArmCircumference')">Right Arm Circumference</button>
                     </div>
 
                     <div class="carousel-item">
-                        <button class="btnn mt-0" onclick="getStats('WaistCircumference')">Waist Circumference</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('WaistCircumference')">Waist Circumference</button>
                         <button class="btnn mt-0" onclick="getStats('GluteusCircumference')">Gluteus Circumference</button>
                     </div>
 
                     <div class="carousel-item">
-                        <button class="btnn mt-0" onclick="getStats('LeftLegCircumference')">Left Leg Circumference</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('LeftLegCircumference')">Left Leg Circumference</button>
                         <button class="btnn mt-0" onclick="getStats('RightLegCircumference')">Right Leg Circumference</button>
                     </div>
 
                     <div class="carousel-item">
-                        <button class="btnn mt-0" onclick="getStats('LeftCalfCircumference')">Left Calf Circumference</button>
+                        <button class="btnn mt-0 mb-2" onclick="getStats('LeftCalfCircumference')">Left Calf Circumference</button>
                         <button class="btnn mt-0" onclick="getStats('RightCalfCircumference')">Right Calf Circumference</button>
                     </div>
                 </div>

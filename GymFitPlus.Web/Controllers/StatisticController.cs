@@ -53,8 +53,7 @@ namespace GymFitPlus.Web.Controllers
         public async Task<IActionResult> GetStats(string statsType)
         {
             var viewModel = await _statisticService.GetUserConcreteStatsAsync(statsType, User.Id());
-
-        
+       
             return Json(viewModel);
         }
     }
