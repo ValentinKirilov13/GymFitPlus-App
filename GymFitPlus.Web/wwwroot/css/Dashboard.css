@@ -1,0 +1,63 @@
+﻿.myTitle {
+    font-size: 15px;
+}
+
+.myContent {
+    font-size: 30px;
+    color: #ff206e;
+    overflow-wrap: break-word;
+}
+
+.myContentLinks {
+    font-size: 20px;
+    color: #ff206e;
+    cursor: pointer;
+    display: block;
+    margin-top: 60px;
+    text-decoration: none;
+}
+
+    .myContentLinks:hover {
+        color: #ffeba7;
+    }
+
+.profileImg {
+    border-radius: 20%;
+    width: 100%;
+    height: auto;
+}
+
+#direction {
+    font-size: 60px;
+}
+
+#value {
+    margin-left: 20px;
+    font-size: 60px;
+}
+
+#dimension {
+    margin-left: 10px;
+    font-size: 60px;
+}
+
+.btnn2 {
+    padding-top: 12px;
+}
+
+#myChart {
+    height: 500px;
+}
+
+.differents {
+    margin-top: 4px;
+}
+
+@media only screen and (max-width: 900px) {
+    #direction, #value, #dimension {
+        font-size: 48px;
+    }
+    .differents{
+        margin-top:15px;
+    }
+}

@@ -4,8 +4,15 @@
         this.y = y;
     }
 }
-
 const ctx = document.getElementById('myChart');
+
+const directionElement = document.getElementById('direction');
+const changeValueElement = document.getElementById('value');
+const dimensionElement = document.getElementById('dimension');
+
+let direction = '';
+let changeValue = '';
+let color = '';
 
 let myListOfData = [];
 let myLabel = '';
@@ -24,6 +31,7 @@ let cfg = {
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -65,7 +73,7 @@ function getStats(statsTypeParam) {
         success: function (result) {
             myListOfData.length = 0;
 
-            let propertyName = capitalizeFirstLetter(statsTypeParam);        
+            let propertyName = capitalizeFirstLetter(statsTypeParam);
 
             result.forEach(function (res) {
 
@@ -74,13 +82,33 @@ function getStats(statsTypeParam) {
                 myListOfData.push(new Point(date, res[propertyName]));
             });
 
-            console.log(myListOfData);           
+            changeValue = myListOfData[0].y - myListOfData[myListOfData.length - 1].y;
+
+            if (changeValue < 0) {
+                direction = 'Up:';
+                color = '#449e48';
+            }
+            else if (changeValue > 0) {
+                direction = 'Down:';
+                color = '#ae0000';
+            }
+            else {
+                direction = 'Same:';
+                color = '#7c7c7c';
+            }
 
             if (propertyName === 'weight') {
 
                 myLabel = 'Kg';
                 myTitle = 'Weight';
                 myDimensions = 'kg';
+
+                if (changeValue < 0) {
+                    color = '#ae0000';
+                }
+                else if (changeValue > 0) {
+                    color = '#449e48';
+                }
 
             } else if (propertyName === 'height') {
 
@@ -112,6 +140,7 @@ function getStats(statsTypeParam) {
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         title: {
                             display: true,
@@ -143,7 +172,14 @@ function getStats(statsTypeParam) {
             }
 
             myChart = new Chart(ctx, cfg);
-            
+
+            directionElement.textContent = direction;
+            changeValueElement.textContent = Math.abs(changeValue);
+            dimensionElement.textContent = myDimensions;
+
+            directionElement.style.color = color;
+            changeValueElement.style.color = color;
+            dimensionElement.style.color = color;
         }
     });
 }
