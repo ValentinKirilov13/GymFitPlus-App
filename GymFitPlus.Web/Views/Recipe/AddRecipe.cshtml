@@ -1,0 +1,84 @@
+﻿@model RecipeDetailsViewModel
+@{
+    ViewBag.Title = "Add Recipe";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AddRecipe.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>Add Recipe</h1>
+</header>
+
+<div class="container">
+    <div class="row text-center">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 p-5 box">
+                <form asp-action="AddRecipe" asp-controller="Recipe" method="post" enctype="multipart/form-data">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="container">
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input asp-for="ImageForForm" type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                <label for="imageUpload"></label>
+                                <span asp-validation-for="ImageForForm" class="text-danger"></span>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview">
+                                </div>
+                                <h4 class="mt-2">Picture Of food</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input asp-for="Name" type="text" class="form-style" placeholder="Name">
+                        <i class="input-icon material-symbols-light--exercise-outline"></i>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select asp-for="Category" class="form-style" style="color: #ffeba7" aria-required="true">
+                            <option disabled selected value="" style="color: #ffffff">Select the type of food from this recipe</option>
+                            @foreach (var recipeType in Enum.GetValues(typeof(RecipeType)))
+                            {
+                                <option style="color: #ffffff" value="@recipeType">@recipeType</option>
+                            }
+                        </select>
+                        <i class="input-icon ion--body-outline"></i>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input asp-for="ProteinPerHundredGrams" type="text" id="protein" class="form-style" placeholder="Protein content in 100 grams">
+                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <span asp-validation-for="ProteinPerHundredGrams" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input asp-for="CarbsPerHundredGrams" type="text" id="carbs" class="form-style" placeholder="Carb content in 100 grams">
+                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <span asp-validation-for="CarbsPerHundredGrams" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input asp-for="FatPerHundredGrams" type="text" id="fats" class="form-style" placeholder="Fat content in 100 grams">
+                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <span asp-validation-for="FatPerHundredGrams" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <textarea asp-for="Description" class="form-style" placeholder="Description of ingredients and method of preparation"></textarea>
+                        <i class="input-icon fluent--text-description-ltr-24-regular"></i>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btnn">Add Recipe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+   @*  <partial name="_ValidationScriptsPartial" /> *@
+    <script src="~/js/AddExercise.js"></script>
+    <script src="~/js/AddRecipe.js"></script>
+}
