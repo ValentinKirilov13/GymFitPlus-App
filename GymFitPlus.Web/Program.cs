@@ -11,6 +11,8 @@ builder.Services.AddApplicationAuthentication();
 builder.Services.AddControllersWithViews(opt =>
 {
     opt.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+    opt.ModelBinderProviders.Insert(1, new DoubleParseModelBinderProvider());
+
     opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
