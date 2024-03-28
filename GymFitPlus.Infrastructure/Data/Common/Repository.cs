@@ -32,6 +32,12 @@ namespace GymFitPlus.Infrastructure.Data.Common
             await DbSet<T>().AddAsync(entity);
         }
 
+        public void Remove<T>(T entity) where T : class
+        {
+             DbSet<T>().Remove(entity);
+        }
+
+
         public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();

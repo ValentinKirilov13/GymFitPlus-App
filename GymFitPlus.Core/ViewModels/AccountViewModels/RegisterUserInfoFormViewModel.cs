@@ -8,31 +8,26 @@ namespace GymFitPlus.Core.ViewModels.AccountViewModels
 {
     public class RegisterUserInfoFormViewModel
     {
-        [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(
             NameMaxLenght,
             MinimumLength = NameMinLenght,
             ErrorMessage = LengthErrorMessage)]
         [Display(Name = "First name")]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(
             NameMaxLenght,
             MinimumLength = NameMinLenght,
             ErrorMessage = LengthErrorMessage)]
         [Display(Name = "Last name")]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = "Birthdate")]
-        public DateTime BirthDate { get; set; } = DateTime.Today;
+        public DateTime? BirthDate { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Range(GenderTypeEnumMinValue, GenderTypeEnumMaxValue)]
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
 
-        [MaxLength(int.MaxValue, ErrorMessage = PhotoErrorMessage)]
+        [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
         public IFormFile[]? Image { get; set; }
 
         [StringLength(

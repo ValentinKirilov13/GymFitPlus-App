@@ -1,0 +1,118 @@
+﻿@model FitnessProgramDetailViewModel
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkoutDashboard.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>@Model.Name</h1>
+</header>
+
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-md-3 center-div mb-0" style="position:relative;">
+            <div id="startDiv">
+                <button class="btnn nav-link d-flex justify-content-center" id="startButton">Start Workout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center ">
+        <div class="col-md-3 center-div mb-5 pb-5" style="position:relative;">
+            <div class="d-flex justify-content-center" id="divTimer">
+                <p id="timer"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="progress mt-3 mb-3" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar custom-progress-bar" id="progress-bar" style="width:0%">50%</div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table text-light" id="myTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Exercise</th>
+                            <th scope="col" class="text-center">Sets</th>
+                            <th scope="col" class="text-center">Reps</th>
+                            <th scope="col" class="text-center">Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Exercises.OrderBy(x => x.Order))
+                        {
+                            string uniqueID = $"element{item.FitnessProgramId}{item.ExerciseId}edit";
+
+                            <tr>
+                                <th scope="row">@item.Order</th>
+                                <td>
+                                    @item.ExerciseName
+                                    <label class="toggle" for="@uniqueID" style="visibility:hidden;">
+                                        <input type="checkbox" class="toggle__input checkbox" id="@uniqueID" />
+                                        <span class="toggle-track">
+                                            <span class="toggle-indicator">
+                                                <span class="checkMark">
+                                                    <svg viewBox="0 0 24 24" id="ghq-svg-check" role="presentation" aria-hidden="true">
+                                                        <path d="M9.86 18a1 1 0 01-.73-.32l-4.86-5.17a1.001 1.001 0 011.46-1.37l4.12 4.39 8.41-9.2a1 1 0 111.48 1.34l-9.14 10a1 1 0 01-.73.33h-.01z"></path>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </td>
+                                <td class="text-center setsCol">@item.Sets</td>
+                                <td class="text-center">@item.Reps</td>
+                                <td class="text-center">@item.Weight</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="finishForm">
+    @await Component.InvokeAsync("WorkoutFormDataComponent", new { viewModel = ViewBag.WorkoutModel })
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <button id="upButton">
+            <img src="~/images/pagination/UpArrow.svg" />
+        </button>
+
+    </div>
+
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <button id="downButton">
+            <img src="~/images/pagination/DownArrow.svg" />
+        </button>
+    </div>
+</div>
+
+
+@section Scripts {
+   @*  <partial name="_ValidationScriptsPartial" /> *@
+    <script src="~/js/StartWorkoutDashboard.js"></script>
+    @if (ViewBag.ValidationError != null && ViewBag.ValidationError)
+    {
+        <script>
+            var timerInput = document.getElementById('timerInput');
+            displayValidation(timerInput.value);
+        </script>
+    }
+}
+

@@ -7,31 +7,27 @@ using static GymFitPlus.Infrastructure.Constants.DataConstants.ApplicationUserCo
 
 namespace GymFitPlus.Infrastructure.Data.Models
 {
+    [Comment("Table with registered application users")]
     public class ApplicationUser : IdentityUser<Guid>
     {
-        [Required]
         [MaxLength(NameMaxLenght)]
         [Comment("User first name")]
         [PersonalData]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; }
 
-        [Required]
         [MaxLength(NameMaxLenght)]
         [Comment("User last name")]
         [PersonalData]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }
 
-        [Required]
         [Comment("User birth date")]
         [Column(TypeName = "date")]
         [PersonalData]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        [Required]
         [Comment("User gender")]
         [PersonalData]
-        [Range(GenderTypeEnumMinValue,GenderTypeEnumMaxValue)]
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
 
         [Comment("User profile image")]
         [PersonalData]
@@ -51,5 +47,10 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Link to user YouTube account")]
         [PersonalData]
         public string? YouTubeUrl { get; set; }
+
+        public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
+        public ICollection<FitnessProgram> FitnessPrograms { get; set; } = new List<FitnessProgram>();
+        public ICollection<UserSatistics> UserSatistics { get; set; } = new List<UserSatistics>();
+        public ICollection<UserRecipe> UsersRecipes { get; set; } = new List<UserRecipe>();
     }
 }

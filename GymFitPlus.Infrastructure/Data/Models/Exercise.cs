@@ -1,31 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GymFitPlus.Infrastructure.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static GymFitPlus.Infrastructure.Constants.DataConstants.ExerciseConstants;
 
 namespace GymFitPlus.Infrastructure.Data.Models
 {
-    [Comment("Table of excercise")]
+    [Comment("Table of Exercise")]
     public class Exercise
     {
         [Key]
-        [Comment("Excercise identifier")]
+        [Comment("Exercise identifier")]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(NameMaxLenght)]
-        [Comment("Excercise name")]
+        [Comment("Exercise name")]
         public string Name { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(DescriptionMaxLenght)]
-        [Comment("Excercise description")]
+        [Comment("Exercise description")]
         public string Description { get; set; } = string.Empty;
 
         [Required]
-        [Comment("Excercise image")]
-        public byte[] Image { get; set; } = null!;
+        [MaxLength(VideoUrlMaxLenght)]
+        [Comment("Exercise video link")]
+        public string VideoUrl { get; set; } = string.Empty;
 
-        [Comment("Excercise status")]
+        [Required]
+        [Comment("Exercise muscle group target")]
+        public MuscleGroup MuscleGroup { get; set; }
+
+        [Comment("Exercise status")]
         public bool IsDelete { get; set; } = false;
 
         public ICollection<FitnessProgramExercise> FitnessProgramsExercises { get; set; } = new List<FitnessProgramExercise>();

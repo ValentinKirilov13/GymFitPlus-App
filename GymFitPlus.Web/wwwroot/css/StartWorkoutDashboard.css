@@ -1,0 +1,169 @@
+﻿
+#upButton, #downButton {
+    visibility: hidden;
+    background-color: #1f2029;
+}
+
+    #upButton img, #downButton img {
+        height: 30px;
+        background-color: #1f2029;
+    }
+
+#finishForm {
+    display: none;
+}
+
+.spanData {
+    color: #ff206e;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#myCustomTrHover tr:hover {
+    background-color: #ff206e;
+    cursor: pointer;
+}
+
+#recordsTable thead {
+    color: #ff206e;
+}
+
+#timer {
+    font-size: 70px;
+    position: relative;
+    left: 50%;
+    font-weight: bold;
+    color: #ff206e;
+}
+
+#startButton {
+    position: relative;
+    z-index: 5;
+    left: 50%;
+}
+
+#startDiv {
+    position: absolute;
+    left: -50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#divTimer {
+    position: absolute;
+    z-index: -1;
+    left: -50%;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+td {
+    position: relative;
+}
+
+.setsCol::after {
+    content: 'x';
+    position: absolute;
+    right: -4px;
+    visibility: hidden;
+}
+
+.hideAfter::after {
+    visibility: visible;
+}
+
+.custom-progress-bar {
+    background-color: #ff206e;
+}
+
+.progress {
+    background-color: #1f2029;
+}
+
+.toggle {
+    align-items: center;
+    border-radius: 100px;
+    display: flex;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+    .toggle:last-of-type {
+        margin: 0;
+    }
+
+.toggle__input {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+    .toggle__input:not([disabled]):active + .toggle-track, .toggle__input:not([disabled]):focus + .toggle-track {
+        border: 1px solid transparent;
+        box-shadow: 0px 0px 0px 2px #ff206e;
+    }
+
+    .toggle__input:disabled + .toggle-track {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+.toggle-track {
+    background: #1f2029;
+    border: 1px solid #ff206e;
+    border-radius: 100px;
+    cursor: pointer;
+    display: flex;
+    height: 30px;
+    margin-right: 12px;
+    position: relative;
+    width: 60px;
+}
+
+.toggle-indicator {
+    align-items: center;
+    background: #ffeba7;
+    border-radius: 24px;
+    bottom: 2px;
+    display: flex;
+    height: 24px;
+    justify-content: center;
+    left: 2px;
+    outline: solid 2px transparent;
+    position: absolute;
+    transition: 0.25s;
+    width: 24px;
+}
+
+.checkMark {
+    fill: #ffeba7;
+    height: 25px;
+    width: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.toggle__input:checked + .toggle-track .toggle-indicator {
+    background: #ff206e;
+    transform: translateX(30px);
+}
+
+    .toggle__input:checked + .toggle-track .toggle-indicator .checkMark {
+        opacity: 1;
+        transition: opacity 0.25s ease-in-out;
+    }
+
+@media screen and (-ms-high-contrast: active) {
+    .toggle-track {
+        border-radius: 0;
+    }
+}

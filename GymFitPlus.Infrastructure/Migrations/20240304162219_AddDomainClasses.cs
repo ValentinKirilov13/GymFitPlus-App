@@ -13,18 +13,18 @@ namespace GymFitPlus.Infrastructure.Migrations
                 name: "Exercises",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false, comment: "Excercise identifier")
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Exercise identifier")
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Excercise name"),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false, comment: "Excercise description"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false, comment: "Excercise image"),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false, comment: "Excercise status")
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Exercise name"),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false, comment: "Exercise description"),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false, comment: "Exercise image"),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false, comment: "Exercise status")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Exercises", x => x.Id);
                 },
-                comment: "Table of excercise");
+                comment: "Table of Exercise");
 
             migrationBuilder.CreateTable(
                 name: "FitnessPrograms",
@@ -34,7 +34,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Fitness program name"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "Fitness program creator/owner"),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false, comment: "Excercise status")
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false, comment: "Exercise status")
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 },
-                comment: "Table of excercise in one fitness program");
+                comment: "Table of Exercise in one fitness program");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FitnessPrograms_UserId",

@@ -21,12 +21,15 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Fitness program creator/owner")]
         public Guid UserId { get; set; }
 
-        [Comment("Excercise status")]
+        [Comment("Exercise status")]
         public bool IsDelete { get; set; } = false;
 
         [Required]
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
+
+
+        public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
 
         public ICollection<FitnessProgramExercise> FitnessProgramsExercises { get; set; } = new List<FitnessProgramExercise>();
     }

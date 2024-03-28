@@ -7,7 +7,16 @@ namespace GymFitPlus.Core.ViewModels.ExerciseViewModels
     public class ExerciseDetailViewModel : ExerciseAllViewModel
     {
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(DescriptionMaxLenght, MinimumLength = DescriptionMinLenght, ErrorMessage = LengthErrorMessage)]
+        [StringLength(DescriptionMaxLenght, 
+                      MinimumLength = DescriptionMinLenght, 
+                      ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(VideoUrlMaxLenght,
+                      MinimumLength = VideoUrlMinLenght,
+                      ErrorMessage = LengthErrorMessage)]
+        [Display(Name = "Video link")]
+        public string VideoUrl { get; set; } = string.Empty;
     }
 }

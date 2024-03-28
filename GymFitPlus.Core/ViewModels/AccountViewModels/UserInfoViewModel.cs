@@ -2,9 +2,9 @@
 {
     public class UserInfoViewModel
     {
-        public string FullName { get; set; } = string.Empty;
-        public int Age { get; set; }
-        public string Gander { get; set; } = string.Empty;
+        public string? FullName { get; set; }
+        public int? Age { get; set; }
+        public string? Gander { get; set; }
         public byte[]? Image { get; set; }
         public string? FacebookUrl { get; set; }
         public string? InstagramUrl { get; set; }

@@ -28,11 +28,9 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         [UserIsNotAuthenticated]
-        public IActionResult Login()
+        public IActionResult LogInSignUp()
         {
-            var model = new LoginViewModel();
-
-            return View(model);
+            return View("LogIn_SignUp");
         }
 
         [HttpPost]
@@ -58,7 +56,7 @@ namespace GymFitPlus.Web.Controllers
                     }
                 }
 
-                return View(model);
+                return View("LogIn_SignUp", model);
             }
             catch (Exception ex)
             {
@@ -66,17 +64,7 @@ namespace GymFitPlus.Web.Controllers
 
                 //TODO Custom Erro pages
                 return RedirectToAction();
-            }          
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        [UserIsNotAuthenticated]
-        public IActionResult Register()
-        {
-            var model = new RegisterViewModel();
-
-            return View(model);
+            }
         }
 
         [HttpPost]
@@ -105,9 +93,11 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                return View(model);
+
+                ViewBag.Register = bool.Parse("true");
+                return View("LogIn_SignUp", model);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
 
@@ -119,24 +109,9 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> RegisterUserInfo()
         {
-            try
-            {
-                if (await _accountService.IsCurrentUserFullRegisteredAsync(User.Id()))
-                {
-                    return RedirectToAction(nameof(Dashboard));
-                }
+            var model = await _accountService.GetUserInfoForEdit(User.Id().ToString());
 
-                var model = new RegisterUserInfoFormViewModel();
-
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-
-                //TODO Custom Erro pages
-                return RedirectToAction();
-            }         
+            return View(model);
         }
 
         [HttpPost]
@@ -144,11 +119,6 @@ namespace GymFitPlus.Web.Controllers
         {
             try
             {
-                if (await _accountService.IsCurrentUserFullRegisteredAsync(User.Id()))
-                {
-                    return RedirectToAction(nameof(Dashboard));
-                }
-
                 if (ModelState.IsValid)
                 {
                     IdentityResult result = await _accountService.RegisterUserInfoAsync(model, User.Id().ToString());
@@ -164,23 +134,17 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
+
                 return View(model);
             }
-            catch (Exception ex)
+            catch (NullReferenceException)
             {
-                _logger.LogError(ex.Message);
-
-                if (ex is NullReferenceException)
-                {
-                    // Handle FileNotFoundException
-                    return RedirectToAction();
-                }
-                else
-                {
-                    //TODO Custom Erro pages
-                    return RedirectToAction();
-                }             
-            }           
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -205,7 +169,7 @@ namespace GymFitPlus.Web.Controllers
 
                 //TODO Custom Erro pages
                 return RedirectToAction();
-            }            
+            }
         }
     }
 }

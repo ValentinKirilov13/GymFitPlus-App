@@ -1,28 +1,29 @@
-﻿function previewImage(event) {
-
-    const fileInput = event.target;
-    const imagePreview = document.getElementById('imagePreview');
-
-    if (fileInput.files.length > 0) {
-        const selectedFile = fileInput.files[0];
-
-        if (selectedFile.type.startsWith('image/')) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                imagePreview.src = e.target.result;
-            };
-
-            reader.readAsDataURL(selectedFile);
-        } else {
-
-            alert('Please select a valid image file.');
-            fileInput.value = ''; // Clear the file input
-            imagePreview.src = ''; // Clear the image preview
+﻿function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
         }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$("#imageUpload").change(function () {
+    readURL(this);
+});
 
+document.addEventListener('DOMContentLoaded', function () {
+    var dateInput = document.getElementById('dateInput');
+    dateInput.value = '';
+});
+
+function showHiddenDiv() {
+    var hiddenDiv = document.getElementById('hiddenDiv');
+
+    if (hiddenDiv.style.display === 'none') {
+        hiddenDiv.style.display = 'block';
     } else {
-
-        imagePreview.src = '';
+        hiddenDiv.style.display = 'none';
     }
 }

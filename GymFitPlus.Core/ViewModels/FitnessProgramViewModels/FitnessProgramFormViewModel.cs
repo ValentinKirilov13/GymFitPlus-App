@@ -13,6 +13,7 @@ namespace GymFitPlus.Core.ViewModels.FitnessProgramViewModels
             NameMaxLenght,
             MinimumLength = NameMinLenght,
             ErrorMessage = LengthErrorMessage)]
+        [Display(Name = "Program Name")]
         public string Name { get; set; } = string.Empty;
 
         public int ExerciseCount { get; set; }

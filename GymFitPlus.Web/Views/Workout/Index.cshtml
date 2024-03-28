@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "My Workouts";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkoutDashboard.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>@ViewBag.Title</h1>
+</header>
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-md-3 center-div mb-0" style="position:relative;">
+            <div id="startDiv">
+                <a class="btnn nav-link d-flex justify-content-center mt-0"
+                   id="startButton"
+                   asp-controller="FitnessProgram"
+                   asp-action="Index"
+                   asp-route-startWorkout="true">
+                    Start Workout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr style="margin-top:70px;" />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table text-light" id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Program</th>
+                            <th scope="col" class="text-center">Duration</th>
+                            <th scope="col" class="text-center">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myCustomTrHover"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button"
+        class="btn btn-primary d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#detailsModal"
+        id="detailsModalButton">
+</button>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color:#2a2b38; border-radius:50px;">
+            <header class="text-center p-1">
+                <h1>Workout Details</h1>
+            </header>
+            <div class="container">
+                <div class="row text-center">
+                    <div class="row justify-content-center" style="width:100%; height:100%;">
+                        <div class="card col-md-12 box myBody mt-4 shadow-none" style="width:100%; height:100%;">
+                            <div class="card myBody" style="border-radius: 50px;">
+                                <div class="card-body">
+                                    <p>Fitness Program Name: <span class="spanData" id="programName"></span></p>
+                                    <p class="card-text"> Duration of workout: <span class="spanData" id="duration"></span><span class="spanData">minutes</span></p>
+                                    <p class="card-text">On: <span class="spanData" id="date"></span></p>
+                                    <p class="card-text">Note: <span class="spanData" id="note"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-warning border-0" data-bs-dismiss="modal">Close</button>
+                <form asp-action="DeleteWorkout" asp-controller="Workout" method="post">
+                    <input id="deleteElementId" type="text" hidden name="Id" readonly/>
+                    <input id="userId" type="text" hidden name="UserId" readonly/>
+                    <button type="submit" class="btn btn-outline-danger border-0">Delete Workout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/WorkoutIndex.js"></script>
+}
+

@@ -1,7 +1,6 @@
-﻿using GymFitPlus.Web.Models;
+﻿using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -15,13 +14,9 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [AllowAnonymous]
+        [UserIsNotAuthenticated]
         public IActionResult Index()
-        {
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Dashboard","Account");
-            }
-
+        {          
             return View();
         }
 
@@ -31,10 +26,26 @@ namespace GymFitPlus.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (statusCode == 400)
+            {
+                return View("Error400");
+            }
+
+            if (statusCode == 403)
+            {
+                return View("Error403");
+            }
+
+            if (statusCode == 404)
+            {
+                return View("Error404");
+            }
+
+            return View();
         }
     }
 }

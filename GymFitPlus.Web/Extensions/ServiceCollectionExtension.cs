@@ -17,6 +17,12 @@ namespace Microsoft.Extensions.DependencyInjection
                .AddScoped<IExerciseService, ExerciseService>();
             services
                .AddScoped<IFitnessProgramService, FitnessProgramService>();
+            services
+               .AddScoped<IWorkoutService, WorkoutService>();
+            services
+               .AddScoped<IStatisticService, StatisticService>();
+            services
+               .AddScoped<IRecipeService, RecipeService>();
 
             return services;
         }
@@ -41,12 +47,29 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services)
         {
             services
-                .AddDefaultIdentity<ApplicationUser>(options =>
+                .AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
-
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 1;
                 })
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationAuthentication(this IServiceCollection services)
+        {
+            services
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = PathString.FromUriComponent("/Account/LogInSignUp");
+                    options.AccessDeniedPath = PathString.FromUriComponent("/Home/Error?statusCode={0}");
+                });
 
             return services;
         }

@@ -1,20 +1,20 @@
-﻿using GymFitPlus.Core.ViewModels.ExerciseViewModels;
-using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 
 namespace GymFitPlus.Core.Contracts
 {
     public interface IFitnessProgramService
     {
-        Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
-        Task AddFitnessProgramAsync(FitnessProgramFormViewModel viewModel, Guid userId);
-        Task<IEnumerable<FitnessProgramFormViewModel>> AllFitnessProgramsAsync(Guid userId);
-        Task DeleteFitnessProgramAsync(int id);
+        Task<bool> AddFitnessProgramAsync(FitnessProgramFormViewModel viewModel, Guid userId);
+        Task<bool> EditFitnessProgramAsync(FitnessProgramFormViewModel viewModel);
+        Task<bool> DeleteFitnessProgramAsync(int id);
         Task<FitnessProgramDetailViewModel> FindFitnessProgramByIdAsync(int id);
-        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync();
+        Task<IEnumerable<FitnessProgramFormViewModel>> AllFitnessProgramsAsync(Guid userId);
+
+        Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
+        Task<bool> EditExerciseFromProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
+        Task<bool> RemoveExerciseFromProgramAsync(int exerciseId, int programId);
+        Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId);
+        Task<IEnumerable<int>> GetAllExerciseFromProgramAsync(int programId);
+        Task<IEnumerable<FitnessProgramFormViewModel>> GetAllFitnessProgramsFilltered(Guid userId, int exerciseId);
     }
 }

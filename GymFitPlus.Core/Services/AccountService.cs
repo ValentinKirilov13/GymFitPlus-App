@@ -1,6 +1,7 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.AccountViewModels;
 using GymFitPlus.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,20 +52,6 @@ namespace GymFitPlus.Core.Services
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<bool> IsCurrentUserFullRegisteredAsync(Guid userId)
-        {
-            var currUser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new NullReferenceException();
-
-            if (string.IsNullOrEmpty(currUser.FirstName) && string.IsNullOrEmpty(currUser.LastName))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         public async Task<UserInfoViewModel> GetUserForDashboardAsync(Guid userId)
         {
             return await _userManager.Users
@@ -72,15 +59,52 @@ namespace GymFitPlus.Core.Services
                .Where(x => x.Id == userId)
                .Select(x => new UserInfoViewModel()
                {
-                   FullName = $"{x.FirstName} {x.LastName}",
-                   Age = DateTime.Today.Year - x.BirthDate.Year,
-                   Gander = x.Gender.ToString(),
+                   FullName = x.FirstName != null && x.LastName != null ? $"{x.FirstName} {x.LastName}" : null,
+                   Age = x.BirthDate != null ? DateTime.Today.Year - x.BirthDate.Value.Year : null,
+                   Gander = x.Gender != null ? x.Gender.ToString() : null,
                    Image = x.Image,
                    FacebookUrl = x.FacebookUrl,
                    InstagramUrl = x.InstagramUrl,
                    YouTubeUrl = x.YouTubeUrl
                })
                .FirstOrDefaultAsync() ?? throw new NullReferenceException();
+        }
+
+        public async Task<RegisterUserInfoFormViewModel> GetUserInfoForEdit(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId) ?? throw new NullReferenceException();
+
+            var viewModel = new RegisterUserInfoFormViewModel();
+
+            viewModel.FirstName = user.FirstName;
+            viewModel.LastName = user.LastName;
+            viewModel.BirthDate = user.BirthDate;
+            viewModel.Gender = user.Gender;
+            viewModel.FacebookUrl = user.FacebookUrl;
+            viewModel.InstagramUrl = user.InstagramUrl;
+            viewModel.YouTubeUrl = user.YouTubeUrl;
+            viewModel.PhoneNumber = user.PhoneNumber;
+
+
+            if (user.Image != null && user.Image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream(user.Image))
+                {
+                    var formFile = new FormFile(memoryStream, 0, user.Image.Length, "", "UserImage")
+                    {
+                        Headers = new HeaderDictionary(),
+                        ContentDisposition = "form-data",
+                        ContentType = "image/jpeg",
+                    };
+
+                    var formFileArray = new IFormFile[1];
+                    formFileArray[0] = formFile;
+
+                    viewModel.Image = formFileArray;
+                }
+            }
+
+            return viewModel;
         }
     }
 }

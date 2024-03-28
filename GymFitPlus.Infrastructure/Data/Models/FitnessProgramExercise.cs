@@ -4,9 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymFitPlus.Infrastructure.Data.Models
 {
-    [Comment("Table of excercise in one fitness program")]
+    [Comment("Table of Exercise in one fitness program")]
     public class FitnessProgramExercise
     {
+        [Required]
+        [Comment("Fitness program order")]
+        public int Order { get; set; }
+
         [Required]
         [Comment("Fitness program identifier")]
         public int FitnessProgramId { get; set; }
@@ -33,6 +37,11 @@ namespace GymFitPlus.Infrastructure.Data.Models
 
         [Required]
         [Comment("Weight for the exercise")]
-        public int Weight { get; set; }
+        public double Weight { get; set; }
+
+        [Required]
+        [Comment("Date Of Update")]
+        [Column(TypeName = "date")]
+        public DateTime DateOfUpdate { get; set; }
     }
 }
