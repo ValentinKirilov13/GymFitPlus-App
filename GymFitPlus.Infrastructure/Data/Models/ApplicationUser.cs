@@ -51,5 +51,6 @@ namespace GymFitPlus.Infrastructure.Data.Models
         public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
         public ICollection<FitnessProgram> FitnessPrograms { get; set; } = new List<FitnessProgram>();
         public ICollection<UserSatistics> UserSatistics { get; set; } = new List<UserSatistics>();
+        public ICollection<UserRecipe> UsersRecipes { get; set; } = new List<UserRecipe>();
     }
 }
