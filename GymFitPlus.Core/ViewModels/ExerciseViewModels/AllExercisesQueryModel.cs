@@ -12,7 +12,7 @@ namespace GymFitPlus.Core.ViewModels.ExerciseViewModels
 
         public string SearchTerm { get; set; } = string.Empty;
 
-        public ExerciseSorting Sorting { get; set; }
+        public Sorting Sorting { get; set; }
 
         public int TotalExerciseCount { get; set; }
     }

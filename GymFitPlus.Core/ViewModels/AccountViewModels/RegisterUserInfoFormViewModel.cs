@@ -27,7 +27,7 @@ namespace GymFitPlus.Core.ViewModels.AccountViewModels
 
         public GenderType? Gender { get; set; }
 
-        [MaxLength(int.MaxValue, ErrorMessage = PhotoErrorMessage)]
+        [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
         public IFormFile[]? Image { get; set; }
 
         [StringLength(
