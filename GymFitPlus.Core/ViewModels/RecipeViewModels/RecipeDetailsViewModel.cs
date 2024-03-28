@@ -15,5 +15,11 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
 
         [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
         public IFormFile[]? ImageForForm { get; set; }
+
+
+        [StringLength(NoteMaxLenght,
+                     MinimumLength = NoteMinLenght,
+                     ErrorMessage = LengthErrorMessage)]
+        public string? Note { get; set; }
     }
 }

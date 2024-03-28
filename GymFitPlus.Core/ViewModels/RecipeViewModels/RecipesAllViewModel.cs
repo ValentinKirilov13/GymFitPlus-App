@@ -19,18 +19,21 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
         [Range(MacrosMinValue,
                MacrosMaxValue,
                ErrorMessage = RangeErrorMessages)]
+        [Display(Name = "Protein content in 100 grams")]
         public double ProteinPerHundredGrams { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(MacrosMinValue,
                MacrosMaxValue,
                ErrorMessage = RangeErrorMessages)]
+        [Display(Name = "Carb content in 100 grams")]
         public double CarbsPerHundredGrams { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(MacrosMinValue,
                MacrosMaxValue,
                ErrorMessage = RangeErrorMessages)]
+        [Display(Name = "Fat content in 100 grams")]
         public double FatPerHundredGrams { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
@@ -38,6 +41,6 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
 
         public int FavoriteByUsers { get; set; }
 
-        public byte[] Image { get; set; } = null!;       
+        public byte[]? Image { get; set; }       
     }
 }
