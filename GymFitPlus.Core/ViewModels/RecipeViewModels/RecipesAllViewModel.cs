@@ -16,6 +16,24 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(MacrosMinValue,
+               MacrosMaxValue,
+               ErrorMessage = RangeErrorMessages)]
+        public double ProteinPerHundredGrams { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(MacrosMinValue,
+               MacrosMaxValue,
+               ErrorMessage = RangeErrorMessages)]
+        public double CarbsPerHundredGrams { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(MacrosMinValue,
+               MacrosMaxValue,
+               ErrorMessage = RangeErrorMessages)]
+        public double FatPerHundredGrams { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public RecipeType Category { get; set; }
 
         public int FavoriteByUsers { get; set; }

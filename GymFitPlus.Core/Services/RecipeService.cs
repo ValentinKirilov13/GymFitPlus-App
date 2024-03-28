@@ -27,7 +27,10 @@ namespace GymFitPlus.Core.Services
                     Name = x.Name,
                     Image = x.Image,
                     Category = x.Category,
-                    FavoriteByUsers = x.UsersRecipes.Count
+                    FavoriteByUsers = x.UsersRecipes.Count,
+                    ProteinPerHundredGrams = x.ProteinPerHundredGrams,
+                    FatPerHundredGrams = x.FatPerHundredGrams,
+                    CarbsPerHundredGrams = x.CarbsPerHundredGrams
                 });
 
             if (!string.IsNullOrEmpty(query.SearchTerm))
@@ -51,8 +54,19 @@ namespace GymFitPlus.Core.Services
             {
                 Sorting.Interactions => model
                                             .OrderByDescending(m => m.FavoriteByUsers),
+
                 Sorting.Аlphabetical => model
                                             .OrderBy(m => m.Name),
+
+                Sorting.Proteins => model
+                                        .OrderByDescending(m => m.ProteinPerHundredGrams),
+
+                Sorting.Fats => model
+                                    .OrderByDescending(m => m.FatPerHundredGrams),
+
+                Sorting.Carbohydrates => model
+                                             .OrderByDescending(m => m.CarbsPerHundredGrams),
+
                 _ => model
                          .OrderByDescending(m => m.Id)
             };
@@ -94,7 +108,7 @@ namespace GymFitPlus.Core.Services
                 ProteinPerHundredGrams = viewModel.ProteinPerHundredGrams,
                 CarbsPerHundredGrams = viewModel.CarbsPerHundredGrams,
                 FatPerHundredGrams = viewModel.FatPerHundredGrams,
-                Category = viewModel.Category,                              
+                Category = viewModel.Category,
             };
 
             if (viewModel.ImageForForm != null && viewModel.ImageForForm.Length > 0)

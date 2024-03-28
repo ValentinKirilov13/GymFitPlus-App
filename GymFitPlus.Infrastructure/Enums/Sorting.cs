@@ -4,6 +4,8 @@
     {
         Interactions = 1,
         Аlphabetical,
-        Newest
+        Proteins,
+        Carbohydrates,
+        Fats
     }
 }
