@@ -4,7 +4,6 @@ using GymFitPlus.Infrastructure.Data.Common;
 using GymFitPlus.Infrastructure.Data.Models;
 using GymFitPlus.Infrastructure.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GymFitPlus.Core.Services
 {

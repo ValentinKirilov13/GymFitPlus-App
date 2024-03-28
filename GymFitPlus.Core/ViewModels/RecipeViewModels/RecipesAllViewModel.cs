@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GymFitPlus.Infrastructure.Enums;
+using System.ComponentModel.DataAnnotations;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 using static GymFitPlus.Infrastructure.Constants.DataConstants.RecipeConstants;
 
@@ -13,7 +14,12 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
             MinimumLength = NameMinLenght,
             ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
-  
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public RecipeType Category { get; set; }
+
+        public int FavoriteByUsers { get; set; }
+
         public byte[] Image { get; set; } = null!;       
     }
 }

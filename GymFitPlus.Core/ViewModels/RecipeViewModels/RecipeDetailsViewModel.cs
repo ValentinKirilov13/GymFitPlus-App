@@ -32,9 +32,6 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
                       ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public RecipeType Category { get; set; }
-
         [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
         public IFormFile[]? ImageForForm { get; set; }
     }
