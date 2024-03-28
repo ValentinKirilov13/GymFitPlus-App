@@ -3,6 +3,6 @@
     public enum RecipeType
     {
         Salty = 1,
-        Sweet
+        Sweety
     }
 }

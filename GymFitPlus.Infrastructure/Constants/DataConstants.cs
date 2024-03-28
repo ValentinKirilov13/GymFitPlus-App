@@ -21,6 +21,8 @@
             public const int UserPhoneMaxLength = 15;
 
             public const int UserPhoneMinLength = 7;
+
+            public const int ImageMaxLenght = int.MaxValue;
         }
 
         public static class ExerciseConstants
@@ -70,6 +72,11 @@
 
             public const int NoteMaxLenght = 300;
             public const int NoteMinLenght = 5;
+
+            public const double MacrosMaxValue = 300;
+            public const double MacrosMinValue = 0;
+
+            public const int ImageMaxLenght = int.MaxValue;
         }
 
     }
