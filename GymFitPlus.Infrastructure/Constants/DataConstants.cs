@@ -59,5 +59,18 @@
             public const double StatsMaxValue = 300;
             public const double StatsMinValue = 0;
         }
+
+        public static class RecipeConstants
+        {
+            public const int NameMaxLenght = 100;
+            public const int NameMinLenght = 5;
+
+            public const int DescriptionMaxLenght = 1000;
+            public const int DescriptionMinLenght = 5;
+
+            public const int NoteMaxLenght = 300;
+            public const int NoteMinLenght = 5;
+        }
+
     }
 }
