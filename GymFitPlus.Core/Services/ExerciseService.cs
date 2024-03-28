@@ -83,9 +83,9 @@ namespace GymFitPlus.Core.Services
 
             model = query.Sorting switch
             {
-                ExerciseSorting.MostUsed => model
+                Sorting.Interactions => model
                                                 .OrderByDescending(m => m.UsedByProgramsCount),
-                ExerciseSorting.A_Z => model
+                Sorting.Аlphabetical => model
                                             .OrderBy(m => m.Name),
                 _ => model
                          .OrderBy(m => m.Id)
