@@ -21,6 +21,6 @@ namespace GymFitPlus.Core.ErrorMessages
 
         public const string DurationErrorMessages = $"The value is not valid!";
 
-        public const string StatisticRangeErrorMessages = "The value is not valid! Must be between {1} and {2}.";
+        public const string RangeErrorMessages = "The value is not valid! Must be between {1} and {2}.";
     }
 }
