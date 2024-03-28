@@ -20,7 +20,7 @@
             <div class="col-md-3 form-group">
                 <select asp-for="Sorting" class="form-style" style="color: #ffeba7" aria-required="true">
                     <option disabled selected value="" style="color: #ffffff">Sorting</option>
-                    @foreach (var sorting in Enum.GetValues(typeof(ExerciseSorting)))
+                    @foreach (var sorting in Enum.GetValues(typeof(Sorting)))
                     {
                         <option style="color: #ffffff" value="@sorting">@sorting</option>
                     }
