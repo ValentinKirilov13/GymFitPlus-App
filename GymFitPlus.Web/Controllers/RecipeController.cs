@@ -1,6 +1,8 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.RecipeViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
@@ -17,9 +19,11 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] AllRecipesQueryModel query)
+        public async Task<IActionResult> Index([FromQuery] AllRecipesQueryModel query, bool favourite)
         {
-            IEnumerable<RecipesAllViewModel> model = await _recipeService.AllRecipesAsync(query);
+            IEnumerable<RecipesAllViewModel> model = await _recipeService.AllRecipesAsync(query, favourite, User.Id());
+
+            ViewBag.IsFavourite = favourite;
 
             ViewBag.Query = query;
 
@@ -27,9 +31,21 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, bool favourite)
         {
-            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id);
+            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, favourite, User.Id());
+
+            ViewBag.IsFavourite = favourite;
+
+            if (TempData["NoteError"] != null)
+            {
+                string? errorMessage = TempData["NoteError"]?.ToString();
+
+                if (errorMessage != null)
+                {
+                    ModelState.AddModelError(nameof(model.Note), errorMessage);
+                }
+            }
 
             return View(model);
         }
@@ -38,7 +54,7 @@ namespace GymFitPlus.Web.Controllers
         public IActionResult AddRecipe()
         {
             RecipeDetailsViewModel model = new RecipeDetailsViewModel();
-                      
+
             return View(model);
         }
 
@@ -49,7 +65,7 @@ namespace GymFitPlus.Web.Controllers
             {
                 ModelState.AddModelError(nameof(viewModel.Category), string.Format(RequiredErrorMessage, "Recipe type"));
             }
-      
+
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -63,7 +79,7 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> EditRecipe(int id)
         {
-            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id);
+            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, false, User.Id());
 
             return View(model);
         }
@@ -104,16 +120,28 @@ namespace GymFitPlus.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AllFavoriteRecipes()
-        {
-            return View();
-        }
-
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> AddToFavorite(RecipeDetailsViewModel viewModel)
         {
-            return View();
+            await _recipeService.AddRecipeToFavouriteAsync(viewModel, User.Id());
+
+            return RedirectToAction(nameof(Index), new { favourite = true });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFavouriteRecipe(RecipeDetailsViewModel viewModel)
+        {
+            if (ModelState["Note"] != null && ModelState["Note"]?.ValidationState == ModelValidationState.Valid)
+            {
+                await _recipeService.EditFavouriteRecipeAsync(viewModel, User.Id());
+            }
+            else
+            {
+                TempData["NoteError"] = ModelState["Note"]?.Errors[0].ErrorMessage;
+            }
+
+
+            return RedirectToAction(nameof(Details), new { favourite = true, id = viewModel.Id });
         }
     }
 }
