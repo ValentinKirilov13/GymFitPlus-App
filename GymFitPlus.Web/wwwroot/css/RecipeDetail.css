@@ -1,0 +1,33 @@
+﻿.myTitles {
+    color: #5f606a;
+    font-size: 20px;
+}
+
+#proteins {
+    color: #56c65b;
+    font-size: 30px;
+}
+
+#carbs {
+    color: #0360d6;
+    font-size: 30px;
+}
+
+#fats {
+    color: #ae0000;
+    font-size: 30px;
+}
+
+.myBody2 {
+    padding: 50px;
+    border-radius: 50px;
+}
+
+.profileImg {
+    height: 350px;
+}
+
+#favoriteButnn{
+    height:30px;
+    width:300px;
+}

@@ -198,3 +198,12 @@ h1 {
 #checkForButtons {
     margin-left: 50px;
 }
+
+.tabLinks {
+    text-decoration-color: #ff206e;
+}
+
+    .tabLinks:hover {
+        color: #ffeba7;
+        font-size: 50px;
+    }
