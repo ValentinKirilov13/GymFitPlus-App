@@ -1,6 +1,10 @@
 ﻿@model RecipeDetailsViewModel
 @{
     ViewBag.Title = "Add Recipe";
+
+    string imgSrc = Model.Image != null
+                    ? String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.Image))
+                    : "/images/Recipes/food.svg";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
@@ -27,7 +31,10 @@
                                 <span asp-validation-for="ImageForForm" class="text-danger"></span>
                             </div>
                             <div class="avatar-preview">
-                                <div id="imagePreview">
+                                <div id="imagePreview"
+                                     style="background-image: url(@imgSrc);
+                                            background-size: cover;
+                                            background-position: center;">
                                 </div>
                                 <h4 class="mt-2">Picture Of food</h4>
                             </div>
