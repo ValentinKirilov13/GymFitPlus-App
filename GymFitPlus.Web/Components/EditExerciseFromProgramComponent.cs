@@ -6,18 +6,29 @@ namespace GymFitPlus.Web.Components
 {
     public class EditExerciseFromProgramComponent : ViewComponent
     {
-        private readonly IFitnessProgramService _fitnessProgramService;
+        private readonly IExerciseService _exerciseService;
 
-        public EditExerciseFromProgramComponent(IFitnessProgramService fitnessProgramService)
+        public EditExerciseFromProgramComponent(IExerciseService exerciseService)
         {
-            _fitnessProgramService = fitnessProgramService;
+            _exerciseService = exerciseService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int exerciseId, int programId)
+        public async Task<IViewComponentResult> InvokeAsync(
+             Dictionary<string, string> errors,
+             int exerciseId,
+             int programId)
         {
-            FitnessProgramExercisesInfoViewModel model = await _fitnessProgramService.GetExerciseFromProgramToEditAsync(exerciseId, programId);
+            FitnessProgramExercisesInfoViewModel viewModel = await _exerciseService.GetExerciseFromProgramToEditAsync(exerciseId, programId);
 
-            return await Task.FromResult<IViewComponentResult>(View(model));
+            if (errors != null)
+            {
+                foreach (var er in errors)
+                {
+                    ModelState.AddModelError(er.Key, er.Value);
+                }
+            }
+            
+            return await Task.FromResult<IViewComponentResult>(View(viewModel));
         }
     }
 }
