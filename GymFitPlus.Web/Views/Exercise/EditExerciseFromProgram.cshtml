@@ -1,0 +1,43 @@
+﻿@model FitnessProgramExercisesInfoViewModel
+
+@{
+    ViewBag.Title = "Partial";
+}
+
+<form asp-controller="Exercise" asp-action="EditExerciseFromProgram" method="post">
+
+    <input asp-for="FitnessProgramId" hidden>
+    <input asp-for="ExerciseId" hidden>
+
+    <div class="col-md-4">
+        <label asp-for="Order" class="form-label"></label>
+        <input asp-for="Order" type="text" class="form-control" required>
+        <span asp-validation-for="Order" class="alert-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Sets" class="form-label"></label>
+        <input asp-for="Sets" type="text" class="form-control" required>
+        <span asp-validation-for="Sets" class="alert-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Reps" class="form-label"></label>
+        <input asp-for="Reps" type="text" class="form-control" required>
+        <span asp-validation-for="Reps" class="alert-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Weight" class="form-label"></label>
+        <input asp-for="Weight" type="text" class="form-control" required>
+        <span asp-validation-for="Weight" class="alert-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+</form>
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
