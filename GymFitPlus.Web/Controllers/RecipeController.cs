@@ -143,5 +143,13 @@ namespace GymFitPlus.Web.Controllers
 
             return RedirectToAction(nameof(Details), new { favourite = true, id = viewModel.Id });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFromFavorite(RecipeDetailsViewModel viewModel)
+        {
+            await _recipeService.DeleteRecipeFromFavouriteAsync(viewModel, User.Id());
+
+            return RedirectToAction(nameof(Index), new { favourite = true });
+        }
     }
 }
