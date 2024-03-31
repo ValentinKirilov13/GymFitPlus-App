@@ -207,3 +207,30 @@ h1 {
         color: #ffeba7;
         font-size: 50px;
     }
+
+.tabLinksClicked {
+    color: #ffeba7;
+    font-size: 50px;
+}
+
+.divForHeaders {
+    height: 92px;
+}
+
+.linkHeight {
+    height: 575px;
+}
+
+.cardSize {
+    height: 575px;
+    border-radius: 60px;
+}
+
+.imgSize {
+    height: 250px;
+    border-radius: 60px;
+}
+
+.card-title {
+    color: #ff206e;
+}
