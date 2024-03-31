@@ -1,7 +1,6 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using GymFitPlus.Core.ViewModels.WorkoutViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
@@ -12,16 +11,13 @@ namespace GymFitPlus.Web.Controllers
     public class FitnessProgramController : BaseController
     {
         private readonly IFitnessProgramService _fitnessProgramService;
-        private readonly IExerciseService _exerciseService;
         private readonly ILogger<FitnessProgramController> _logger;
 
         public FitnessProgramController(
             IFitnessProgramService fitnessProgramService,
-            IExerciseService exerciseService,
             ILogger<FitnessProgramController> logger)
         {
             _fitnessProgramService = fitnessProgramService;
-            _exerciseService = exerciseService;
             _logger = logger;
         }
 
@@ -62,18 +58,7 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id, bool startWorkout = false)
         {
-            if (TempData["Succssed"] != null)
-            {
-                string? succeeded = TempData["Succssed"]?.ToString();
-
-                if (succeeded != null)
-                {
-                    ViewBag.Success = bool.Parse(succeeded);
-                }
-            }
-
             var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
-
 
             if (startWorkout)
             {
@@ -139,64 +124,6 @@ namespace GymFitPlus.Web.Controllers
             }
 
             return RedirectToAction("Details", new { id = viewModel.Id });
-        }
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount, int exerciseId = -1)
-        {
-            var model = new FitnessProgramExercisesInfoViewModel();
-            model.FitnessProgramId = programId;
-            model.ExerciseId = exerciseId;
-            model.Order = ++exerciseCount;
-
-            var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(programId);
-            model.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(exercisesIdsNotToGet);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddExerciseToProgram(FitnessProgramExercisesInfoViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                var exercisesIdsNotToGet = await _fitnessProgramService.GetAllExerciseFromProgramAsync(viewModel.FitnessProgramId);
-                viewModel.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(exercisesIdsNotToGet);
-                return View(viewModel);
-            }
-
-            TempData["Succssed"] = await _fitnessProgramService.AddExerciseToProgramAsync(viewModel);
-
-            TempData["Action"] = "added exercise in program";
-
-            return RedirectToAction("Details", new { id = viewModel.FitnessProgramId });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditExerciseFromProgram(FitnessProgramExercisesInfoViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
-
-            TempData["Succssed"] = await _fitnessProgramService.EditExerciseFromProgramAsync(viewModel);
-
-            TempData["Action"] = "edited exercise";
-
-            return RedirectToAction("Details", new { id = viewModel.FitnessProgramId });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RemoveExerciseFromProgram(int exerciseId, int programId)
-        {
-            TempData["Succssed"] = await _fitnessProgramService.RemoveExerciseFromProgramAsync(exerciseId, programId);
-
-            TempData["Action"] = "removed exercise";
-
-            return RedirectToAction("Details", new { id = programId });
         }
 
         [HttpGet]

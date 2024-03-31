@@ -1,5 +1,6 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.ExerciseViewModels;
+using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using Microsoft.AspNetCore.Mvc;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
@@ -103,6 +104,74 @@ namespace GymFitPlus.Web.Controllers
             await _exerciseService.DeleteExerciseAsync(viewModel.Id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount, int exerciseId = -1)
+        {
+            var model = new FitnessProgramExercisesInfoViewModel
+            {
+                FitnessProgramId = programId,
+                ExerciseId = exerciseId,
+                Order = ++exerciseCount,
+                Exercises = await _exerciseService.GetAllExerciseForProgramAsync(programId)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExerciseToProgram(FitnessProgramExercisesInfoViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.Exercises = await _exerciseService.GetAllExerciseForProgramAsync(viewModel.FitnessProgramId);
+                return View(viewModel);
+            }
+
+            await _exerciseService.AddExerciseToProgramAsync(viewModel);
+          
+            return RedirectToAction(nameof(FitnessProgramController.Details), 
+                                    "FitnessProgram", 
+                                    new { id = viewModel.FitnessProgramId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExerciseFromProgram(FitnessProgramExercisesInfoViewModel viewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                await _exerciseService.EditExerciseFromProgramAsync(viewModel);
+            }
+            else
+            {
+                Dictionary<string, string> errors = new();
+
+                foreach (var error in ModelState)
+                {
+                    foreach (var item in error.Value.Errors)
+                    {
+                        errors.Add(error.Key, item.ErrorMessage);
+                    }
+                }
+            
+                TempData["FitnessProgramExerciseViewModelErrors"] = errors;
+            }
+           
+            return RedirectToAction(nameof(FitnessProgramController.Details),
+                                   "FitnessProgram",
+                                   new { id = viewModel.FitnessProgramId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveExerciseFromProgram(int exerciseId, int programId)
+        {
+            await _exerciseService.RemoveExerciseFromProgramAsync(exerciseId, programId);
+
+            return RedirectToAction(nameof(FitnessProgramController.Details),
+                                   "FitnessProgram",
+                                   new { id = programId });
         }
     }
 }
