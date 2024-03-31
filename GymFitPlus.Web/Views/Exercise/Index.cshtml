@@ -5,6 +5,11 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+
+    @if (Model.Any() == false)
+    {
+        <link rel="stylesheet" href="~/css/SideButtonHide.css" asp-append-version="true" />
+    }
 }
 
 <header class="text-center">
@@ -54,24 +59,7 @@ else
                 <h3 id="checkForButtons">Nothing was found for your search</h3>
             </div>
         </div>
-    </div>
-    <style>      
-        #targetElementP {
-            visibility: hidden;
-        }
-
-            #targetElementP a {
-                pointer-events: none;
-            }
-
-        #targetElementN {
-            visibility: hidden;
-        }
-
-            #targetElementN a {
-                pointer-events: none;
-            }
-    </style>
+    </div>  
 }
 
 

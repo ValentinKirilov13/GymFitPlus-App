@@ -12,25 +12,28 @@
     <link rel="stylesheet" href="~/css/RecipeDetail.css" asp-append-version="true" />
 }
 
-<header class="text-center">
-    <h1>@Model.Name Details</h1>
-</header>
+@if (!isFavourite)
+{
+    <header class="text-center">
+        <h1>@Model.Name Details</h1>
+    </header>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-3 center-div">
-            <a class="btnn nav-link d-flex justify-content-center"
-               asp-controller="Recipe"
-               asp-action="EditRecipe"
-               asp-route-id="@Model.Id">
-                Edit Recipe
-            </a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3 center-div">
+                <a class="btnn nav-link d-flex justify-content-center"
+                   asp-controller="Recipe"
+                   asp-action="EditRecipe"
+                   asp-route-id="@Model.Id">
+                    Edit Recipe
+                </a>
+            </div>
         </div>
     </div>
-</div>
+}
 
 <div class="container">
-    <div class="row text-center">
+    <div class="row text-center mt-5">
         <div class="row justify-content-center">
             <div class="card col-md-12 box myBody mt-4">
                 <div class="card myBody myBody2">
@@ -64,7 +67,7 @@
                                         <span asp-validation-for="Note" class="text-danger"></span>
                                     </div>
 
-                                    <input id="favoriteButnn" style="visibility: hidden;" type="submit" class="btnn nav-link d-flex justify-content-center ms-4" value=" Add Note"/>
+                                    <input id="favoriteButnn" style="visibility: hidden;" type="submit" class="btnn nav-link d-flex justify-content-center ms-4" value=" Add Note" />
                                 </form>
                             }
                         </div>
@@ -97,6 +100,20 @@
                     <hr />
                     <p class="myTitles">Description of ingredients and method of preparation:</p>
                     <p class="card-text">@Model.Description</p>
+
+                    @if (isFavourite)
+                    {
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6 center-div">
+                                    <form asp-action="DeleteFromFavorite" asp-controller="Recipe" method="post">
+                                        <input asp-for="Id" hidden />
+                                        <input type="submit" class="btn btn-outline-danger border-0 fw-bold fs-5" value=" Remove Recipe from Favorite" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
