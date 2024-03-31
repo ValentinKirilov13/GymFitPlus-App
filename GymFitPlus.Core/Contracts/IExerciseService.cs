@@ -1,4 +1,5 @@
 ﻿using GymFitPlus.Core.ViewModels.ExerciseViewModels;
+using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 
 namespace GymFitPlus.Core.Contracts
 {
@@ -9,6 +10,10 @@ namespace GymFitPlus.Core.Contracts
         Task AddExerciseAsync(ExerciseDetailViewModel viewModel);
         Task DeleteExerciseAsync(int id);
         Task EditExerciseAsync(ExerciseDetailViewModel viewModel);
-        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(IEnumerable<int> exercisesIdsNotToGet);
+        Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(int programId);
+        Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
+        Task<bool> EditExerciseFromProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
+        Task<bool> RemoveExerciseFromProgramAsync(int exerciseId, int programId);
+        Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId);
     }
 }
