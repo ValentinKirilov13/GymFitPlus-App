@@ -215,10 +215,24 @@ namespace GymFitPlus.Core.Services
         {
             var model = await _repository
                 .All<UserRecipe>()
-                .Where(x => x.Recipe.IsDelete == false )
+                .Where(x => x.Recipe.IsDelete == false)
                 .FirstOrDefaultAsync(x => x.Recipe.Id == viewModel.Id && x.UserId == userId) ?? throw new NullReferenceException();
 
             model.Note = viewModel.Note;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> DeleteRecipeFromFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId)
+        {
+            var model = await _repository
+                .AllReadOnly<UserRecipe>()
+                .Where(x => x.Recipe.IsDelete == false)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.RecipeId == viewModel.Id) ?? throw new NullReferenceException();
+
+            _repository.Remove(model);
 
             int affectedRows = await _repository.SaveChangesAsync();
 

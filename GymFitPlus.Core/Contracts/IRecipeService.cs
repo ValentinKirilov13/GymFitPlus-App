@@ -11,5 +11,6 @@ namespace GymFitPlus.Core.Contracts
         Task<bool> DeleteRecipeAsync(int id);
         Task<bool> AddRecipeToFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId);
         Task<bool> EditFavouriteRecipeAsync(RecipeDetailsViewModel viewModel, Guid userId);
+        Task<bool> DeleteRecipeFromFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId);
     }
 }
