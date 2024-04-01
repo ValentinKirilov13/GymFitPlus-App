@@ -21,6 +21,8 @@ namespace GymFitPlus.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ApplicationUserConfiguration());
+            builder.ApplyConfiguration(new ApplicationRoleConfiguration());
             builder.ApplyConfiguration(new FitnessProgramExerciseConfiguration());
             builder.ApplyConfiguration(new ExerciseConfiguration());
             builder.ApplyConfiguration(new WorkoutConfiguration());

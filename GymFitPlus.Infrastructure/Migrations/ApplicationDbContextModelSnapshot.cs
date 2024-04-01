@@ -192,7 +192,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
 
                     b.HasComment("Table of Exercise");
                 });
@@ -224,7 +224,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FitnessPrograms");
+                    b.ToTable("FitnessPrograms", (string)null);
 
                     b.HasComment("Table with fitness programs");
                 });
@@ -263,7 +263,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("ExerciseId");
 
-                    b.ToTable("FitnessProgramsExercises");
+                    b.ToTable("FitnessProgramsExercises", (string)null);
 
                     b.HasComment("Table of Exercise in one fitness program");
                 });
@@ -316,7 +316,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
 
                     b.HasComment("Table of recipes");
                 });
@@ -340,7 +340,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("UsersRecipes");
+                    b.ToTable("UsersRecipes", (string)null);
 
                     b.HasComment("Table of users and recipes");
                 });
@@ -414,7 +414,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserSatistics");
+                    b.ToTable("UserSatistics", (string)null);
 
                     b.HasComment("Table with statistics of users");
                 });
@@ -455,7 +455,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workouts");
+                    b.ToTable("Workouts", (string)null);
 
                     b.HasComment("Table with users workouts");
                 });
