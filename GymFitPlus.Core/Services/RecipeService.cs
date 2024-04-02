@@ -28,6 +28,7 @@ namespace GymFitPlus.Core.Services
                     Image = x.Image,
                     Category = x.Category,
                     FavoriteByUsers = x.UsersRecipes.Count,
+                    CaloriesPerHundredGrams = x.CaloriesPerHundredGrams,
                     ProteinPerHundredGrams = x.ProteinPerHundredGrams,
                     FatPerHundredGrams = x.FatPerHundredGrams,
                     CarbsPerHundredGrams = x.CarbsPerHundredGrams
@@ -45,6 +46,7 @@ namespace GymFitPlus.Core.Services
                     Image = x.Recipe.Image,
                     Category = x.Recipe.Category,
                     FavoriteByUsers = x.Recipe.UsersRecipes.Count,
+                    CaloriesPerHundredGrams = x.Recipe.CaloriesPerHundredGrams,
                     ProteinPerHundredGrams = x.Recipe.ProteinPerHundredGrams,
                     FatPerHundredGrams = x.Recipe.FatPerHundredGrams,
                     CarbsPerHundredGrams = x.Recipe.CarbsPerHundredGrams
@@ -86,6 +88,9 @@ namespace GymFitPlus.Core.Services
                 Sorting.Carbohydrates => model
                                              .OrderByDescending(m => m.CarbsPerHundredGrams),
 
+                Sorting.Calories => model
+                                        .OrderByDescending(m => m.CaloriesPerHundredGrams),
+
                 _ => model
                          .OrderByDescending(m => m.Id)
             };
@@ -109,6 +114,7 @@ namespace GymFitPlus.Core.Services
                      Id = x.Id,
                      Name = x.Name,
                      Description = x.Description,
+                     CaloriesPerHundredGrams = x.CaloriesPerHundredGrams,
                      ProteinPerHundredGrams = x.ProteinPerHundredGrams,
                      CarbsPerHundredGrams = x.CarbsPerHundredGrams,
                      FatPerHundredGrams = x.FatPerHundredGrams,
@@ -131,6 +137,7 @@ namespace GymFitPlus.Core.Services
             {
                 Name = viewModel.Name,
                 Description = viewModel.Description,
+                CaloriesPerHundredGrams = viewModel.CaloriesPerHundredGrams,
                 ProteinPerHundredGrams = viewModel.ProteinPerHundredGrams,
                 CarbsPerHundredGrams = viewModel.CarbsPerHundredGrams,
                 FatPerHundredGrams = viewModel.FatPerHundredGrams,
@@ -170,6 +177,7 @@ namespace GymFitPlus.Core.Services
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
+            model.CaloriesPerHundredGrams = viewModel.CaloriesPerHundredGrams;
             model.ProteinPerHundredGrams = viewModel.ProteinPerHundredGrams;
             model.CarbsPerHundredGrams = viewModel.CarbsPerHundredGrams;
             model.FatPerHundredGrams = viewModel.FatPerHundredGrams;
