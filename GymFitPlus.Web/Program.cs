@@ -29,6 +29,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
@@ -50,5 +51,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
+app.MapRazorPages();
 
 await app.RunAsync();
