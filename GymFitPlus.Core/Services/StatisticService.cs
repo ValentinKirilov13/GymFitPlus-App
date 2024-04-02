@@ -19,8 +19,8 @@ namespace GymFitPlus.Core.Services
 
         public async Task<IEnumerable<UserStatsViewModel>> GetUserConcreteStatsAsync(string stats, Guid userId)
         {
-            IQueryable<UserSatistics> statistics = _repository
-                 .AllReadOnly<UserSatistics>()
+            IQueryable<UserStatistics> statistics = _repository
+                 .AllReadOnly<UserStatistics>()
                  .Where(x => x.UserId == userId)
                  .OrderBy(x => x.DateOfМeasurements);
 
@@ -126,7 +126,7 @@ namespace GymFitPlus.Core.Services
         public async Task<UserStatsViewModel> GetUserLastAllStatsAsync(Guid userId)
         {
             return await _repository
-                .AllReadOnly<UserSatistics>()
+                .AllReadOnly<UserStatistics>()
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.DateOfМeasurements)
                 .Select(x => new UserStatsViewModel()
@@ -150,13 +150,13 @@ namespace GymFitPlus.Core.Services
         public async Task UpdateUserStatsAsync(UserStatsViewModel viewModel)
         {
             var statsFromDb = await _repository
-                .All<UserSatistics>()
+                .All<UserStatistics>()
                 .Where(x => x.UserId == viewModel.UserId)
                 .FirstOrDefaultAsync(x => x.DateOfМeasurements == DateTime.Today);
 
             if (statsFromDb == null)
             {
-                var statsModel = new UserSatistics()
+                var statsModel = new UserStatistics()
                 {
                     UserId = viewModel.UserId,
                     DateOfМeasurements = viewModel.DateOfМeasurements,

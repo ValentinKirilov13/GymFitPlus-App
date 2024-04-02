@@ -5,21 +5,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GymFitPlus.Infrastructure.Data.Configuration
 {
-    public class UserRecipeConfiguration : IEntityTypeConfiguration<UserRecipe>
+    public class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
     {
         private readonly SeedData _seedData;
-        public UserRecipeConfiguration(SeedData seedData)
+
+        public ApplicationRoleConfiguration(SeedData seedData)
         {
             _seedData = seedData;
         }
 
-        public void Configure(EntityTypeBuilder<UserRecipe> builder)
+        public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {
             builder
-                .HasKey(pk => new { pk.UserId, pk.RecipeId });
-
-            builder
-                .HasData(_seedData.UserRecipes);
+                .HasData(new ApplicationRole[] { _seedData.AdminRole });
         }
     }
 }

@@ -16,7 +16,7 @@ namespace GymFitPlus.Core.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<RecipesAllViewModel>> AllRecipesAsync(AllRecipesQueryModel query)
+        public async Task<IEnumerable<RecipesAllViewModel>> AllRecipesAsync(AllRecipesQueryModel query, bool favourite, Guid userId)
         {
             var model = _repository
                 .AllReadOnly<Recipe>()
@@ -28,10 +28,31 @@ namespace GymFitPlus.Core.Services
                     Image = x.Image,
                     Category = x.Category,
                     FavoriteByUsers = x.UsersRecipes.Count,
+                    CaloriesPerHundredGrams = x.CaloriesPerHundredGrams,
                     ProteinPerHundredGrams = x.ProteinPerHundredGrams,
                     FatPerHundredGrams = x.FatPerHundredGrams,
                     CarbsPerHundredGrams = x.CarbsPerHundredGrams
                 });
+
+            if (favourite)
+            {
+                model = _repository
+                .AllReadOnly<UserRecipe>()
+                .Where(x => x.Recipe.IsDelete == false && x.UserId == userId)
+                .Select(x => new RecipesAllViewModel()
+                {
+                    Id = x.Recipe.Id,
+                    Name = x.Recipe.Name,
+                    Image = x.Recipe.Image,
+                    Category = x.Recipe.Category,
+                    FavoriteByUsers = x.Recipe.UsersRecipes.Count,
+                    CaloriesPerHundredGrams = x.Recipe.CaloriesPerHundredGrams,
+                    ProteinPerHundredGrams = x.Recipe.ProteinPerHundredGrams,
+                    FatPerHundredGrams = x.Recipe.FatPerHundredGrams,
+                    CarbsPerHundredGrams = x.Recipe.CarbsPerHundredGrams
+                });
+            }
+
 
             if (!string.IsNullOrEmpty(query.SearchTerm))
             {
@@ -67,11 +88,15 @@ namespace GymFitPlus.Core.Services
                 Sorting.Carbohydrates => model
                                              .OrderByDescending(m => m.CarbsPerHundredGrams),
 
+                Sorting.Calories => model
+                                        .OrderByDescending(m => m.CaloriesPerHundredGrams),
+
                 _ => model
                          .OrderByDescending(m => m.Id)
             };
 
             query.TotalRecipesCount = model.Count();
+            query.IsFavourite = favourite;
 
             return await model
                             .Skip((query.CurrentPage - 1) * query.RecipesPerPage)
@@ -79,7 +104,7 @@ namespace GymFitPlus.Core.Services
                             .ToListAsync();
         }
 
-        public async Task<RecipeDetailsViewModel> FindRecipeByIdAsync(int id)
+        public async Task<RecipeDetailsViewModel> FindRecipeByIdAsync(int id, bool favourite, Guid userId)
         {
             return await _repository
                  .AllReadOnly<Recipe>()
@@ -89,12 +114,19 @@ namespace GymFitPlus.Core.Services
                      Id = x.Id,
                      Name = x.Name,
                      Description = x.Description,
+                     CaloriesPerHundredGrams = x.CaloriesPerHundredGrams,
                      ProteinPerHundredGrams = x.ProteinPerHundredGrams,
                      CarbsPerHundredGrams = x.CarbsPerHundredGrams,
                      FatPerHundredGrams = x.FatPerHundredGrams,
                      Image = x.Image,
                      Category = x.Category,
                      FavoriteByUsers = x.UsersRecipes.Count,
+                     Note = favourite
+                            ? x.UsersRecipes
+                             .Where(ur => ur.UserId == userId && ur.RecipeId == x.Id)
+                             .Select(ur => ur.Note)
+                             .FirstOrDefault()
+                            : null
                  })
                  .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
@@ -105,6 +137,7 @@ namespace GymFitPlus.Core.Services
             {
                 Name = viewModel.Name,
                 Description = viewModel.Description,
+                CaloriesPerHundredGrams = viewModel.CaloriesPerHundredGrams,
                 ProteinPerHundredGrams = viewModel.ProteinPerHundredGrams,
                 CarbsPerHundredGrams = viewModel.CarbsPerHundredGrams,
                 FatPerHundredGrams = viewModel.FatPerHundredGrams,
@@ -144,6 +177,7 @@ namespace GymFitPlus.Core.Services
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
+            model.CaloriesPerHundredGrams = viewModel.CaloriesPerHundredGrams;
             model.ProteinPerHundredGrams = viewModel.ProteinPerHundredGrams;
             model.CarbsPerHundredGrams = viewModel.CarbsPerHundredGrams;
             model.FatPerHundredGrams = viewModel.FatPerHundredGrams;
@@ -157,6 +191,56 @@ namespace GymFitPlus.Core.Services
                     model.Image = memoryStream.ToArray();
                 }
             }
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> AddRecipeToFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId)
+        {
+            var model = await FindByIdAsync(viewModel.Id);
+
+            int affectedRows = default;
+
+            if (await _repository.AllReadOnly<UserRecipe>().AnyAsync(x => x.UserId == userId && x.RecipeId == viewModel.Id) == false)
+            {
+                var userRecipe = new UserRecipe()
+                {
+                    RecipeId = model.Id,
+                    UserId = userId,
+                };
+
+                await _repository.AddAsync(userRecipe);
+
+                affectedRows = await _repository.SaveChangesAsync();
+            }
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> EditFavouriteRecipeAsync(RecipeDetailsViewModel viewModel, Guid userId)
+        {
+            var model = await _repository
+                .All<UserRecipe>()
+                .Where(x => x.Recipe.IsDelete == false)
+                .FirstOrDefaultAsync(x => x.Recipe.Id == viewModel.Id && x.UserId == userId) ?? throw new NullReferenceException();
+
+            model.Note = viewModel.Note;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> DeleteRecipeFromFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId)
+        {
+            var model = await _repository
+                .AllReadOnly<UserRecipe>()
+                .Where(x => x.Recipe.IsDelete == false)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.RecipeId == viewModel.Id) ?? throw new NullReferenceException();
+
+            _repository.Remove(model);
 
             int affectedRows = await _repository.SaveChangesAsync();
 

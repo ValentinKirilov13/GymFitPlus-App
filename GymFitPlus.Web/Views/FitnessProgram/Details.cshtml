@@ -3,24 +3,6 @@
     ViewBag.Title = Model.Name;
 }
 
-@if (ViewBag.Success != null)
-{
-    if (ViewBag.Success)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> You successfuly @TempData["Action"]!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Failure!</strong> Something went wrong <br /> @TempData["Errors"].
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-}
-
 <div class="container">
     <div class="row">
         <div class="col-md-4">
@@ -140,7 +122,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form asp-action="RemoveExerciseFromProgram" method="post"
-                                                          asp-controller="FitnessProgram"
+                                                          asp-controller="Exercise"
                                                           asp-route-exerciseId="@item.ExerciseId"
                                                           asp-route-programId="@item.FitnessProgramId">
 
@@ -160,10 +142,12 @@
                                                     <h1 class="modal-title fs-5">Edit @item.ExerciseName</h1>
                                                 </div>
                                                 <div class="modal-body">
+
                                                     @await Component.InvokeAsync(
                                                              "EditExerciseFromProgramComponent",
                                                              new
                                                              {
+                                                                 errors = TempData["FitnessProgramExerciseViewModelErrors"],
                                                                  exerciseId = item.ExerciseId,
                                                                  programId = item.FitnessProgramId
                                                              })
@@ -179,7 +163,7 @@
                         <tr>
                             <td colspan="6">
                                 <div class="d-grid gap-2">
-                                    <a asp-controller="FitnessProgram"
+                                    <a asp-controller="Exercise"
                                        asp-action="AddExerciseToProgram"
                                        asp-route-programId="@Model.Id" ,
                                        asp-route-exerciseCount="@Model.Exercises.Count()"

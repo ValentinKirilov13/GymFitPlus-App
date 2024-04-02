@@ -15,5 +15,7 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
         public Sorting Sorting { get; set; }
 
         public int TotalRecipesCount { get; set; }
+
+        public bool IsFavourite { get; set; }
     }
 }

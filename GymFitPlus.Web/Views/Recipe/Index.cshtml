@@ -1,27 +1,48 @@
-﻿@model IEnumerable<ExerciseAllViewModel>
+﻿@model IEnumerable<RecipesAllViewModel>
 @{
-    ViewBag.Title = "Explore Exercises";
+    ViewBag.Title = "Explore Recipes";
+
+    bool isFavourite = ViewBag.IsFavourite != null ? ViewBag.IsFavourite : false;
+
 }
+
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+
+    @if (Model.Any() == false)
+    {
+        <link rel="stylesheet" href="~/css/SideButtonHide.css" asp-append-version="true" />
+    }
 }
 
-<header class="text-center">
-    <h1>Explore Exercises</h1>
-</header>
-
+<div class="row">
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-action="Index" asp-controller="Recipe" asp-route-favourite="false" class="tabLinks">
+                <h1 class="@(!isFavourite ? "tabLinksClicked" : "tabLinks")">All Recipes</h1>
+            </a>
+        </header>
+    </div>
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-action="Index" asp-controller="Recipe" asp-route-favourite="true" class="tabLinks" style="">
+                <h1 class="@(isFavourite ? "tabLinksClicked" : "tabLinks")">My Recipes</h1>
+            </a>
+        </header>
+    </div>
+</div>
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3 center-div mb-4">
-            <a class="btnn nav-link d-flex justify-content-center" asp-controller="Exercise" asp-action="AddExercise">Add Exercise</a>
+            <a class="btnn nav-link d-flex justify-content-center" asp-controller="Recipe" asp-action="AddRecipe">Add Recipe</a>
         </div>
     </div>
 </div>
 <hr />
 
-@await Component.InvokeAsync("SearchExerciseComponent", ViewBag.Query)
+@await Component.InvokeAsync("SearchRecipesComponent", ViewBag.Query)
 
 @if (Model.Any())
 {
@@ -30,13 +51,20 @@
             <div class="row justify-content-center mt-0" id="sourceElement">
                 @foreach (var item in Model)
                 {
+                    string imgSrc = item.Image != null
+                    ? String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.Image))
+                    : "/images/Recipes/food.svg";
+
                     <div class="card col-md-2 box mt-3">
-                        <a asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn">
-                            <div class="card h-100 ">
-                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top" />
-                                <div class="card-body">
-                                    <h3 class="card-title">@item.Name</h3>
-                                    <p class="card-text"> Used in @item.UsedByProgramsCount fitness programs.</p>
+                        <a asp-controller="Recipe" asp-action="Details" asp-route-id="@item.Id" asp-route-favourite="@isFavourite" class="btn linkHeight p-0">
+                            <div class="card h-100 cardSize">
+                                <img src="@imgSrc" class="card-img-top imgSize" />
+                                <div class="card-body p-0">
+                                    <h4 class="card-title">@item.Name</h4>
+                                    <p>P: @item.ProteinPerHundredGrams</p>
+                                    <p>C: @item.CarbsPerHundredGrams</p>
+                                    <p>F: @item.FatPerHundredGrams</p>
+                                    <p class="card-text fs-0">This recipe is a favorite of @item.FavoriteByUsers users.</p>
                                 </div>
                             </div>
                         </a>
@@ -55,23 +83,6 @@ else
             </div>
         </div>
     </div>
-    <style>      
-        #targetElementP {
-            visibility: hidden;
-        }
-
-            #targetElementP a {
-                pointer-events: none;
-            }
-
-        #targetElementN {
-            visibility: hidden;
-        }
-
-            #targetElementN a {
-                pointer-events: none;
-            }
-    </style>
 }
 
 

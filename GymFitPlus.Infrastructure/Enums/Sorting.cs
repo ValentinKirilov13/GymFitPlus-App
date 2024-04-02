@@ -6,6 +6,7 @@
         Аlphabetical,
         Proteins,
         Carbohydrates,
-        Fats
+        Fats,
+        Calories
     }
 }

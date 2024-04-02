@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymFitPlus.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318121300_AddWorkoutEntity")]
-    partial class AddWorkoutEntity
+    [Migration("20240402180153_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,6 +24,34 @@ namespace GymFitPlus.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.ApplicationRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,7 +61,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date")
                         .HasComment("User birth date");
 
@@ -54,12 +82,11 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasComment("Link to user Facebook account");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("User first name");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int")
                         .HasComment("User gender");
 
@@ -73,7 +100,6 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasComment("Link to user Instagram account");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("User last name");
@@ -127,6 +153,8 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasComment("Table with registered application users");
                 });
 
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Exercise", b =>
@@ -213,6 +241,10 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasComment("Exercise identifier");
 
+                    b.Property<DateTime>("DateOfUpdate")
+                        .HasColumnType("date")
+                        .HasComment("Date Of Update");
+
                     b.Property<int>("Order")
                         .HasColumnType("int")
                         .HasComment("Fitness program order");
@@ -236,6 +268,160 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.ToTable("FitnessProgramsExercises");
 
                     b.HasComment("Table of Exercise in one fitness program");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Recipe identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("CaloriesPerHundredGrams")
+                        .HasColumnType("float")
+                        .HasComment("Calories in 100 grams of food");
+
+                    b.Property<double>("CarbsPerHundredGrams")
+                        .HasColumnType("float")
+                        .HasComment("Carbohidrates in 100 grams of food");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int")
+                        .HasComment("Recipe category");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasComment("Recipe description about needed products and way of cooking");
+
+                    b.Property<double>("FatPerHundredGrams")
+                        .HasColumnType("float")
+                        .HasComment("Fat in 100 grams of food");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)")
+                        .HasComment("Food image");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit")
+                        .HasComment("Recipe status");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Recipe name");
+
+                    b.Property<double>("ProteinPerHundredGrams")
+                        .HasColumnType("float")
+                        .HasComment("Protein in 100 grams of food");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Recipes");
+
+                    b.HasComment("Table of recipes");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserRecipe", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("User identifier");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
+                        .HasComment("Recipe identifier");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasComment("User note to current recipe");
+
+                    b.HasKey("UserId", "RecipeId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("UsersRecipes");
+
+                    b.HasComment("Table of users and recipes");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Statistics identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("BackCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Back circumference of user in centimeters");
+
+                    b.Property<double>("ChestCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Chest circumference of user in centimeters");
+
+                    b.Property<DateTime>("DateOfМeasurements")
+                        .HasColumnType("date")
+                        .HasComment("Date Of Мeasurements");
+
+                    b.Property<double>("GluteusCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Gluteus circumference of user in centimeters");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float")
+                        .HasComment("Height of user in meters");
+
+                    b.Property<double>("LeftArmCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Left arm circumference of user in centimeters");
+
+                    b.Property<double>("LeftCalfCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Left calf circumference of user in centimeters");
+
+                    b.Property<double>("LeftLegCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Left leg circumference of user in centimeters");
+
+                    b.Property<double>("RightArmCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Right arm circumference of user in centimeters");
+
+                    b.Property<double>("RightCalfCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Right calf circumference of user in centimeters");
+
+                    b.Property<double>("RightLegCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Right leg circumference of user in centimeters");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("Statistics owner");
+
+                    b.Property<double>("WaistCircumference")
+                        .HasColumnType("float")
+                        .HasComment("Waist circumference of user in centimeters");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float")
+                        .HasComment("Weight of user in kilograms");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserStatistics");
+
+                    b.HasComment("Table with statistics of users");
                 });
 
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Workout", b =>
@@ -277,34 +463,6 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.ToTable("Workouts");
 
                     b.HasComment("Table with users workouts");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -417,7 +575,7 @@ namespace GymFitPlus.Infrastructure.Migrations
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", b =>
                 {
                     b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("FitnessPrograms")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -444,6 +602,36 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Navigation("FitnessProgram");
                 });
 
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserRecipe", b =>
+                {
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.Recipe", "Recipe")
+                        .WithMany("UsersRecipes")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany("UsersRecipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserStatistics", b =>
+                {
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany("UserStatistics")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Workout", b =>
                 {
                     b.HasOne("GymFitPlus.Infrastructure.Data.Models.FitnessProgram", "FitnessProgram")
@@ -465,7 +653,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -492,7 +680,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -516,6 +704,12 @@ namespace GymFitPlus.Infrastructure.Migrations
 
             modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("FitnessPrograms");
+
+                    b.Navigation("UserStatistics");
+
+                    b.Navigation("UsersRecipes");
+
                     b.Navigation("Workouts");
                 });
 
@@ -529,6 +723,11 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Navigation("FitnessProgramsExercises");
 
                     b.Navigation("Workouts");
+                });
+
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.Recipe", b =>
+                {
+                    b.Navigation("UsersRecipes");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,10 @@ namespace GymFitPlus.Infrastructure.Data.Models
         public string Name { get; set; } = string.Empty;
 
         [Required]
+        [Comment("Calories in 100 grams of food")]
+        public double CaloriesPerHundredGrams { get; set; }
+
+        [Required]
         [Comment("Protein in 100 grams of food")]
         public double ProteinPerHundredGrams { get; set; }
 
@@ -34,9 +38,8 @@ namespace GymFitPlus.Infrastructure.Data.Models
         [Comment("Recipe description about needed products and way of cooking")]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
         [Comment("Food image")]
-        public byte[] Image { get; set; } = null!;
+        public byte[]? Image { get; set; }
 
         [Required]
         [Comment("Recipe category")]

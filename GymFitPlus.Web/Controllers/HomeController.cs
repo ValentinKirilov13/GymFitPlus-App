@@ -35,9 +35,9 @@ namespace GymFitPlus.Web.Controllers
                 return View("Error400");
             }
 
-            if (statusCode == 403)
+            if (statusCode == 401)
             {
-                return View("Error403");
+                return View("Error401");
             }
 
             if (statusCode == 404)
@@ -46,6 +46,12 @@ namespace GymFitPlus.Web.Controllers
             }
 
             return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("Error401");
         }
     }
 }

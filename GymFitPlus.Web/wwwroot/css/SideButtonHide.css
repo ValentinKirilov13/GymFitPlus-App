@@ -1,0 +1,15 @@
+﻿#targetElementP {
+    visibility: hidden;
+}
+
+    #targetElementP a {
+        pointer-events: none;
+    }
+
+#targetElementN {
+    visibility: hidden;
+}
+
+    #targetElementN a {
+        pointer-events: none;
+    }

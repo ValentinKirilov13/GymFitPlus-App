@@ -31,3 +31,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+
+function showButton() {
+    var button = document.getElementById('favoriteButnn');
+    button.style.visibility = 'visible';
+
+    document.addEventListener('click', function (event) {
+        var target = event.target;
+        var textarea = document.getElementById('myTextarea');
+
+        if (target !== textarea && !textarea.contains(target)) {
+            button.style.visibility = 'hidden';
+        }
+    });
+}
+

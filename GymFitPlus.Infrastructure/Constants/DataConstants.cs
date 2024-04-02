@@ -79,5 +79,9 @@
             public const int ImageMaxLenght = int.MaxValue;
         }
 
+        public static class RoleConstants
+        {
+            public const string AdminRole = "Administrator";
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GymFitPlus.Infrastructure.Data.Models
 {
     [Comment("Table with statistics of users")]
-    public class UserSatistics
+    public class UserStatistics
     {
         [Key]
         [Comment("Statistics identifier")]
