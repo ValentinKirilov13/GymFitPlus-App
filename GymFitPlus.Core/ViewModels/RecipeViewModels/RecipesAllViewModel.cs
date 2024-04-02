@@ -19,6 +19,13 @@ namespace GymFitPlus.Core.ViewModels.RecipeViewModels
         [Range(MacrosMinValue,
                MacrosMaxValue,
                ErrorMessage = RangeErrorMessages)]
+        [Display(Name = "Calories content in 100 grams")]
+        public double CaloriesPerHundredGrams { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(MacrosMinValue,
+               MacrosMaxValue,
+               ErrorMessage = RangeErrorMessages)]
         [Display(Name = "Protein content in 100 grams")]
         public double ProteinPerHundredGrams { get; set; }
 
