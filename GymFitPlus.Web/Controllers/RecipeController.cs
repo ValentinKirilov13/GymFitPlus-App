@@ -1,9 +1,11 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.RecipeViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
+using static GymFitPlus.Infrastructure.Constants.DataConstants.RoleConstants;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -51,6 +53,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = AdminRole)]
         public IActionResult AddRecipe()
         {
             RecipeDetailsViewModel model = new RecipeDetailsViewModel();
@@ -59,6 +62,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> AddRecipe(RecipeDetailsViewModel viewModel)
         {
             if (viewModel.Category == default)
@@ -77,6 +81,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditRecipe(int id)
         {
             RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, false, User.Id());
@@ -85,6 +90,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditRecipe(int id, RecipeDetailsViewModel viewModel)
         {
             if (id != viewModel.Id)
@@ -108,6 +114,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> DeleteRecipe(int id, RecipeDetailsViewModel viewModel)
         {
             if (id != viewModel.Id)
