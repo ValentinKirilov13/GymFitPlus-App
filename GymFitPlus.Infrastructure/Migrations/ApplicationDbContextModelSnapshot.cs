@@ -277,6 +277,10 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<double>("CaloriesPerHundredGrams")
+                        .HasColumnType("float")
+                        .HasComment("Calories in 100 grams of food");
+
                     b.Property<double>("CarbsPerHundredGrams")
                         .HasColumnType("float")
                         .HasComment("Carbohidrates in 100 grams of food");
@@ -296,7 +300,6 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasComment("Fat in 100 grams of food");
 
                     b.Property<byte[]>("Image")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)")
                         .HasComment("Food image");
 
@@ -345,7 +348,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.HasComment("Table of users and recipes");
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserSatistics", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserStatistics", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -414,7 +417,7 @@ namespace GymFitPlus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserSatistics", (string)null);
+                    b.ToTable("UserStatistics", (string)null);
 
                     b.HasComment("Table with statistics of users");
                 });
@@ -511,10 +514,12 @@ namespace GymFitPlus.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -550,10 +555,12 @@ namespace GymFitPlus.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -612,10 +619,10 @@ namespace GymFitPlus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserSatistics", b =>
+            modelBuilder.Entity("GymFitPlus.Infrastructure.Data.Models.UserStatistics", b =>
                 {
                     b.HasOne("GymFitPlus.Infrastructure.Data.Models.ApplicationUser", "User")
-                        .WithMany("UserSatistics")
+                        .WithMany("UserStatistics")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -697,7 +704,7 @@ namespace GymFitPlus.Infrastructure.Migrations
                 {
                     b.Navigation("FitnessPrograms");
 
-                    b.Navigation("UserSatistics");
+                    b.Navigation("UserStatistics");
 
                     b.Navigation("UsersRecipes");
 
