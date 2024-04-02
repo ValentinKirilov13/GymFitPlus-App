@@ -394,14 +394,14 @@ namespace GymFitPlus.Infrastructure.Migrations
                 column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserStatistics_UserId",
-                table: "UserStatistics",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UsersRecipes_RecipeId",
                 table: "UsersRecipes",
                 column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserStatistics_UserId",
+                table: "UserStatistics",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_FitnessProgramId",
@@ -435,10 +435,10 @@ namespace GymFitPlus.Infrastructure.Migrations
                 name: "FitnessProgramsExercises");
 
             migrationBuilder.DropTable(
-                name: "UserStatistics");
+                name: "UsersRecipes");
 
             migrationBuilder.DropTable(
-                name: "UsersRecipes");
+                name: "UserStatistics");
 
             migrationBuilder.DropTable(
                 name: "Workouts");
