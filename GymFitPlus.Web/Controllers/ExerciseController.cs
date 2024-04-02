@@ -1,8 +1,11 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.ExerciseViewModels;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
+using static GymFitPlus.Infrastructure.Constants.DataConstants.RoleConstants;
+
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -36,6 +39,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = AdminRole)]
         public IActionResult AddExercise()
         {
             ExerciseDetailViewModel model = new ExerciseDetailViewModel();
@@ -44,6 +48,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> AddExercise(ExerciseDetailViewModel viewModel)
         {
             if (viewModel.MuscleGroup == default)
@@ -63,6 +68,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditExercise(int id)
         {
             ExerciseDetailViewModel model = await _exerciseService.FindExerciseByIdAsync(id);
@@ -71,6 +77,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditExercise(int id, ExerciseDetailViewModel viewModel)
         {
             if (id != viewModel.Id)
@@ -94,6 +101,7 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> DeleteExercise(int id, ExerciseDetailViewModel viewModel)
         {
             if (id != viewModel.Id)
