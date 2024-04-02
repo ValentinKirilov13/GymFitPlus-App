@@ -7,10 +7,17 @@ namespace GymFitPlus.Infrastructure.Data.Configuration
 {
     public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
     {
+        private readonly SeedData _seedData;
+
+        public ExerciseConfiguration(SeedData seedData)
+        {
+            _seedData = seedData;
+        }
+
         public void Configure(EntityTypeBuilder<Exercise> builder)
         {
-            //builder
-            //    .HasData(SeedData.SeedExsersise);
+            builder
+                .HasData(_seedData.Exercises);
         }
     }
 }

@@ -7,11 +7,17 @@ namespace GymFitPlus.Infrastructure.Data.Configuration
 {
     public class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
     {
+        private readonly SeedData _seedData;
+
+        public ApplicationRoleConfiguration(SeedData seedData)
+        {
+            _seedData = seedData;
+        }
+
         public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {
-            var data = new SeedData();
-
-            builder.HasData(new ApplicationRole[] { data.AdminRole });
+            builder
+                .HasData(new ApplicationRole[] { _seedData.AdminRole });
         }
     }
 }

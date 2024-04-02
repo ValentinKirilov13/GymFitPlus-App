@@ -7,11 +7,17 @@ namespace GymFitPlus.Infrastructure.Data.Configuration
 {
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
+        private readonly SeedData _seedData;
+
+        public ApplicationUserConfiguration(SeedData seedData)
+        {
+            _seedData = seedData;
+        }
+
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            var data = new SeedData();
-
-            builder.HasData(new ApplicationUser[] { data.FirstUser, data.AdminUser });
+            builder
+                .HasData(new ApplicationUser[] { _seedData.FirstUser, _seedData.AdminUser });
         }
     }
 }
