@@ -3,6 +3,7 @@ using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
+using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -44,11 +45,10 @@ namespace GymFitPlus.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateWorkout(WorkoutDetailViewModel viewModel)
         {
-            int? fitnessProgramId = (int?)TempData["FitnessProgramId"];
-
-            if (fitnessProgramId != viewModel.FitnessProgramId)
+            if ((int?)TempData["FitnessProgramId"] != viewModel.FitnessProgramId)
             {
-                return StatusCode(StatusCodes.Status403Forbidden);
+                _logger.LogError("{Message:}", TryToEditNotChoosenOne);
+                return BadRequest();
             }
 
             if (!ModelState.IsValid)
