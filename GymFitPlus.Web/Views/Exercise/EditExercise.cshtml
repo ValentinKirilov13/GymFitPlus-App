@@ -17,6 +17,7 @@
             <div class="col-sm-12 p-5 box">
                 <form asp-action="EditExercise" asp-controller="Exercise" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Id" hidden/>
                     <div class="form-group">
                         <input asp-for="Name" type="text" class="form-style" placeholder="Name">
                         <i class="input-icon material-symbols-light--exercise-outline"></i>
