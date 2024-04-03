@@ -19,7 +19,7 @@ namespace GymFitPlus.Core.Services
             _fitnessProgramService = fitnessProgramService;
         }
 
-        public async Task AddExerciseAsync(ExerciseDetailViewModel viewModel)
+        public async Task<bool> AddExerciseAsync(ExerciseDetailViewModel viewModel)
         {
             Exercise model = new Exercise()
             {
@@ -30,9 +30,11 @@ namespace GymFitPlus.Core.Services
             };
 
             await _repository.AddAsync(model);
-            await _repository.SaveChangesAsync();
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
-        public async Task EditExerciseAsync(ExerciseDetailViewModel viewModel)
+        public async Task<bool> EditExerciseAsync(ExerciseDetailViewModel viewModel)
         {
             var model = await FindByIdAsync(viewModel.Id);
 
@@ -41,15 +43,19 @@ namespace GymFitPlus.Core.Services
             model.VideoUrl = viewModel.VideoUrl.Split("v=").Reverse().ToArray()[0];
             model.MuscleGroup = viewModel.MuscleGroup;
 
-            await _repository.SaveChangesAsync();
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
-        public async Task DeleteExerciseAsync(int id)
+        public async Task<bool> DeleteExerciseAsync(int id)
         {
             var model = await FindByIdAsync(id);
 
             model.IsDelete = true;
 
-            await _repository.SaveChangesAsync();
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
         public async Task<IEnumerable<ExerciseAllViewModel>> AllExerciseAsync(AllExercisesQueryModel query)
         {
@@ -84,11 +90,11 @@ namespace GymFitPlus.Core.Services
             model = query.Sorting switch
             {
                 Sorting.Interactions => model
-                                                .OrderByDescending(m => m.UsedByProgramsCount),
+                                            .OrderByDescending(m => m.UsedByProgramsCount),
                 Sorting.Аlphabetical => model
                                             .OrderBy(m => m.Name),
                 _ => model
-                         .OrderBy(m => m.Id)
+                         .OrderByDescending(m => m.Id)
             };
 
             query.TotalExerciseCount = model.Count();
