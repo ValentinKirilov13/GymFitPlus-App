@@ -53,6 +53,7 @@ namespace GymFitPlus.Core.Services
         {
             return await _repository
                 .AllReadOnly<FitnessProgram>()
+                .Where(x => x.IsDelete == false)
                 .Select(p => new FitnessProgramDetailViewModel()
                 {
                     Id = p.Id,
