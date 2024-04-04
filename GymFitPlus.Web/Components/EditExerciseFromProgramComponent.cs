@@ -18,17 +18,24 @@ namespace GymFitPlus.Web.Components
              int exerciseId,
              int programId)
         {
-            FitnessProgramExercisesInfoViewModel viewModel = await _exerciseService.GetExerciseFromProgramToEditAsync(exerciseId, programId);
-
-            if (errors != null)
+            try
             {
-                foreach (var er in errors)
+                FitnessProgramExercisesInfoViewModel viewModel = await _exerciseService.GetExerciseFromProgramToEditAsync(exerciseId, programId);
+
+                if (errors != null)
                 {
-                    ModelState.AddModelError(er.Key, er.Value);
+                    foreach (var er in errors)
+                    {
+                        ModelState.AddModelError(er.Key, er.Value);
+                    }
                 }
+
+                return await Task.FromResult<IViewComponentResult>(View(viewModel));
+            }           
+            catch (Exception)
+            {               
+                return await Task.FromResult<IViewComponentResult>(View(new FitnessProgramExercisesInfoViewModel()));
             }
-            
-            return await Task.FromResult<IViewComponentResult>(View(viewModel));
         }
     }
 }

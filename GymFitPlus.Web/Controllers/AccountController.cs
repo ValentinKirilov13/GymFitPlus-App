@@ -56,8 +56,8 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     }
                 }
-
-                return View("LogIn_SignUp", model);
+                ViewBag.LoginModel = model;
+                return View("LogIn_SignUp");
             }
             catch (NullReferenceException ex)
             {
@@ -97,9 +97,9 @@ namespace GymFitPlus.Web.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-
+                ViewBag.RegisterModel = model;
                 ViewBag.Register = bool.Parse("true");
-                return View("LogIn_SignUp", model);
+                return View("LogIn_SignUp");
             }
             catch (NullReferenceException ex)
             {
