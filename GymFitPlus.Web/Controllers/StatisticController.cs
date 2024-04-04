@@ -1,7 +1,9 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.StatisticViewModels;
+using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -21,39 +23,80 @@ namespace GymFitPlus.Web.Controllers
         {
             var viewModel = new UserStatsViewModel();
 
+            ViewBag.RegState = "ThirdStateOfRegister";
+
             return View(nameof(ChangeStats), viewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> ChangeStats()
         {
-            var viewModel = await _statisticService.GetUserLastAllStatsAsync(User.Id());
+            try
+            {
+                var viewModel = await _statisticService.GetUserLastAllStatsAsync(User.Id());
 
-            return View(viewModel);
+                return View(viewModel);
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return View(new UserStatsViewModel());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeStats(UserStatsViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(viewModel);
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
+
+                viewModel.UserId = User.Id();
+                viewModel.DateOfМeasurements = DateTime.Today;
+
+                await _statisticService.UpdateUserStatsAsync(viewModel);
+
+                return RedirectToAction(nameof(AccountController.Dashboard), "Account");
             }
-
-            viewModel.UserId = User.Id();
-            viewModel.DateOfМeasurements = DateTime.Today;
-
-            await _statisticService.UpdateUserStatsAsync(viewModel);
-
-            return RedirectToAction(nameof(AccountController.Dashboard), "Account");
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetStats(string statsType)
         {
-            var viewModel = await _statisticService.GetUserConcreteStatsAsync(statsType, User.Id());
-       
-            return Json(viewModel);
+            try
+            {
+                var viewModel = await _statisticService.GetUserConcreteStatsAsync(statsType, User.Id());
+
+                return Json(viewModel);
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
     }
 }

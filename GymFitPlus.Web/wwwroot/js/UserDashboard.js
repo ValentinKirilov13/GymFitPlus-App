@@ -174,7 +174,7 @@ function getStats(statsTypeParam) {
             myChart = new Chart(ctx, cfg);
 
             directionElement.textContent = direction;
-            changeValueElement.textContent = Math.abs(changeValue);
+            changeValueElement.textContent = Math.abs(changeValue).toFixed(1);
             dimensionElement.textContent = myDimensions;
 
             directionElement.style.color = color;

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -58,12 +59,15 @@ namespace GymFitPlus.Web.Controllers
 
                 return View("LogIn_SignUp", model);
             }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-
-                //TODO Custom Erro pages
-                return RedirectToAction();
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
             }
         }
 
@@ -97,21 +101,37 @@ namespace GymFitPlus.Web.Controllers
                 ViewBag.Register = bool.Parse("true");
                 return View("LogIn_SignUp", model);
             }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-
-                //TODO Custom Erro pages
-                return RedirectToAction();
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> RegisterUserInfo()
         {
-            var model = await _accountService.GetUserInfoForEdit(User.Id().ToString());
+            try
+            {
+                var model = await _accountService.GetUserInfoForEdit(User.Id().ToString());
 
-            return View(model);
+                return View(model);
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -126,7 +146,7 @@ namespace GymFitPlus.Web.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User have successfully full registered.");
-                        return RedirectToAction(nameof(Dashboard));
+                        return RedirectToAction(nameof(StatisticController.Index),"Statistic");
                     }
                     foreach (var error in result.Errors)
                     {
@@ -137,12 +157,14 @@ namespace GymFitPlus.Web.Controllers
 
                 return View(model);
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError("{Message:}", ex.Message);
                 return BadRequest();
             }
         }
@@ -150,8 +172,21 @@ namespace GymFitPlus.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            try
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -163,12 +198,15 @@ namespace GymFitPlus.Web.Controllers
 
                 return View(currentUser);
             }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-
-                //TODO Custom Erro pages
-                return RedirectToAction();
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
             }
         }
     }
