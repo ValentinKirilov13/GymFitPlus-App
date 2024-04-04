@@ -30,91 +30,91 @@ namespace GymFitPlus.Core.Services
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  Weight = x.Weight,
+                  Weight = Math.Round(x.Weight, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "Height" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  Height = x.Height,
+                  Height = Math.Round(x.Height, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "ChestCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  ChestCircumference = x.ChestCircumference,
+                  ChestCircumference = Math.Round(x.ChestCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "BackCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  BackCircumference = x.BackCircumference,
+                  BackCircumference = Math.Round(x.BackCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "WaistCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  WaistCircumference = x.WaistCircumference,
+                  WaistCircumference = Math.Round(x.WaistCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "RightArmCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  RightArmCircumference = x.RightArmCircumference,
+                  RightArmCircumference = Math.Round(x.RightArmCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "LeftArmCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  LeftArmCircumference = x.LeftArmCircumference,
+                  LeftArmCircumference = Math.Round(x.LeftArmCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "GluteusCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  GluteusCircumference = x.GluteusCircumference,
+                  GluteusCircumference = Math.Round(x.GluteusCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "LeftLegCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  LeftLegCircumference = x.LeftLegCircumference,
+                  LeftLegCircumference = Math.Round(x.LeftLegCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "RightLegCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  RightLegCircumference = x.RightLegCircumference,
+                  RightLegCircumference = Math.Round(x.RightLegCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "LeftCalfCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  LeftCalfCircumference = x.LeftCalfCircumference,
+                  LeftCalfCircumference = Math.Round(x.LeftCalfCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 "RightCalfCircumference" =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  RightCalfCircumference = x.RightCalfCircumference,
+                  RightCalfCircumference = Math.Round(x.RightCalfCircumference, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               }),
                 _ =>
               statistics.
               Select(x => new UserStatsViewModel()
               {
-                  Weight = x.Weight,
+                  Weight = Math.Round(x.Weight, 1),
                   DateOfМeasurements = x.DateOfМeasurements
               })
             };
