@@ -1,0 +1,93 @@
+﻿@model RecipeDetailsViewModel
+@{
+    ViewBag.Title = "Recipe Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ExerciseDetails.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/RecipeDetail.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>@Model.Name Details</h1>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-3 center-div">
+            <a class="btnn nav-link d-flex justify-content-center"
+               asp-area="Admin"
+               asp-controller="Recipe"
+               asp-action="EditRecipe"
+               asp-route-id="@Model.Id">
+                Edit Recipe
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row text-center mt-5">
+        <div class="row justify-content-center">
+            <div class="card col-md-12 box myBody mt-4">
+                <div class="card myBody myBody2">
+                    <div class="card-body row">
+                        <div class="col-md-6 mb-2">
+                            @if (Model.Image != null)
+                            {
+                                <img class="profileImg img-fluid" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="File Preview">
+                            }
+                            else
+                            {
+                                <img class="profileImg" src="~/images/Recipes/food.svg" />
+                            }
+                        </div>                      
+                    </div>
+                    <h3 class="card-title">@Model.Name</h3>
+                    <p class="card-text"> This recipe is a favorite of @Model.FavoriteByUsers users.</p>
+                    <span>Тhe food tends towards the @Model.Category type. </span>
+                    <hr />   
+                    <p class="myTitles">Calories per 100 g:</p>
+                    <div class="col-md-12 text-center display-4">                      
+                        <p id="calories">
+                            @Model.CaloriesPerHundredGrams
+                        </p>
+                    </div>
+                    <p class="myTitles">Macronutrients per 100 g</p>
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <span class="myTitles">Proteins:</span>
+                            <p id="proteins">
+                                @Model.ProteinPerHundredGrams
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="myTitles">Carbs:</span>
+                            <p id="carbs">
+                                @Model.CarbsPerHundredGrams
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="myTitles">Fats:</span>
+                            <p id="fats">
+                                @Model.FatPerHundredGrams
+                            </p>
+                        </div>
+                    </div>
+                    <hr />
+                    <p class="myTitles">Description of ingredients and method of preparation:</p>
+                    <p class="card-text">@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*  <partial name="_ValidationScriptsPartial" /> *@
+    <script src="~/js/AddExercise.js"></script>
+    <script src="~/js/AddRecipe.js"></script>
+}

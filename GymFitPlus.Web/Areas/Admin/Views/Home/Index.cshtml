@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Admin Panel";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/HomeAdmin.css" asp-append-version="true" />
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <header>
+                <h1 class="display-1">
+                    Admin Panel
+                </h1>
+            </header>
+        </div>
+    </div>
+    <div class="row text-center mt-5">
+        <div>
+            <img src="~/images/Admin/maintenance.svg" class="adminImg" />
+        </div>
+    </div>
+    <div class="row text-center mt-5">
+        <div class="col-md-3">
+            <a asp-area="Admin" asp-controller="Exercise" asp-action="Index" class="adminLinks">
+                Exercises
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-area="Admin" asp-controller="Recipe" asp-action="Index" class="adminLinks">
+                Recipes
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-area="Admin" asp-controller="Account" asp-action="Index" class="adminLinks">
+                Users
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-area="Admin" asp-controller="FitnessProgram" asp-action="Index" class="adminLinks">
+                Fitness Programs
+            </a>
+        </div>
+    </div>
+</div>

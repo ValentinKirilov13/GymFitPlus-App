@@ -1,0 +1,94 @@
+﻿@model ExerciseDetailViewModel
+@{
+    ViewBag.Title = "Edit Exercise";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+}
+
+<header class="text-center">
+    <h1>Edit Exercise</h1>
+</header>
+
+<div class="container">
+    <div class="row text-center">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 p-5 box">
+                <form asp-area="Admin" asp-action="EditExercise" asp-controller="Exercise" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Id" hidden/>
+                    <div class="form-group">
+                        <input asp-for="Name" type="text" class="form-style" placeholder="Name">
+                        <i class="input-icon material-symbols-light--exercise-outline"></i>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select asp-for="MuscleGroup" class="form-style" style="color: #ffeba7" aria-required="true">
+                            <option disabled selected value="" style="color: #ffffff">Select muscle group that this exercise target</option>
+                            @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroup)))
+                            {
+                                <option style="color: #ffffff" value="@muscleGroup">@muscleGroup</option>
+                            }
+                        </select>
+                        <i class="input-icon ion--body-outline"></i>
+                        <span asp-validation-for="MuscleGroup" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input asp-for="VideoUrl" type="text" class="form-style" placeholder="Video link">
+                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <textarea asp-for="Description" type="" class="form-style" style="height:100%;" placeholder="Description"></textarea>
+                        <i class="input-icon fluent--text-description-ltr-24-regular"></i>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btnn">Edit Exercise</button>
+                </form>
+                <div>
+                    <button data-bs-toggle="modal"
+                            data-bs-target="#DeleteExercise"
+                            class="btn btn-outline-danger delBtn"
+                            style="font-weight:bold;">
+                        Delete Exercise
+                    </button>
+                    <div class="modal fade" id="DeleteExercise" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content box">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5 text-center">Are you sure you want to delete exercise @Model.Name?</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-outline-warning mt-5 border-0" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <form asp-area="Admin" asp-action="DeleteExercise" asp-controller="Exercise" method="post">
+                                                    <input asp-for="Id" hidden />
+                                                    <button type="submit" class="btn btn-outline-danger delBtn float-end">Yes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteExercise = document.getElementById('DeleteExercise');
+    document.body.appendChild(deleteExercise);
+</script>
+
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+    <script src="~/js/AddExercise.js"></script>
+}
