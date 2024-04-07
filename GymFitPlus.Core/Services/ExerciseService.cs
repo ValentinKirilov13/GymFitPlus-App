@@ -36,7 +36,7 @@ namespace GymFitPlus.Core.Services
         }
         public async Task<bool> EditExerciseAsync(ExerciseDetailViewModel viewModel)
         {
-            var model = await FindByIdAsync(viewModel.Id);
+            var model = await FindByIdAsync(viewModel.Id, false);
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
@@ -49,7 +49,7 @@ namespace GymFitPlus.Core.Services
         }
         public async Task<bool> DeleteExerciseAsync(int id)
         {
-            var model = await FindByIdAsync(id);
+            var model = await FindByIdAsync(id, false);
 
             model.IsDelete = true;
 
@@ -120,7 +120,6 @@ namespace GymFitPlus.Core.Services
                 })
                 .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
-
 
         public async Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(int programId)
         {
@@ -201,11 +200,36 @@ namespace GymFitPlus.Core.Services
         }
 
 
-        private async Task<Exercise> FindByIdAsync(int id)
+        public async Task<IEnumerable<ExerciseAllViewModel>> AllExerciseForAdminAsync(bool deleted)
+        {
+            return await _repository
+               .AllReadOnly<Exercise>()
+               .Where(x => x.IsDelete == deleted)
+               .Select(x => new ExerciseAllViewModel()
+               {
+                   Id = x.Id,
+                   Name = x.Name,
+                   MuscleGroup = x.MuscleGroup,
+                   UsedByProgramsCount = x.FitnessProgramsExercises.Count()
+               })
+               .ToListAsync();
+        }
+        public async Task<bool> RestoreExerciseAsync(int id)
+        {
+            var model = await FindByIdAsync(id, true);
+
+            model.IsDelete = false;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        private async Task<Exercise> FindByIdAsync(int id, bool deleted)
         {
             return await _repository
                 .All<Exercise>()
-                .Where(x => x.IsDelete == false)
+                .Where(x => x.IsDelete == deleted)
                 .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
         private async Task<FitnessProgramExercise> FindExerciseFromProgramAsync(int exerciseId, int programId)
@@ -215,6 +239,6 @@ namespace GymFitPlus.Core.Services
                 .FirstOrDefaultAsync(x =>
                                 x.FitnessProgramId == programId &&
                                 x.ExerciseId == exerciseId) ?? throw new NullReferenceException();
-        }       
+        }
     }
 }

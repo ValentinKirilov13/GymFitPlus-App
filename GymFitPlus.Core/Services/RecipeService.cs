@@ -162,7 +162,7 @@ namespace GymFitPlus.Core.Services
 
         public async Task<bool> DeleteRecipeAsync(int id)
         {
-            var model = await FindByIdAsync(id);
+            var model = await FindByIdAsync(id, false);
 
             model.IsDelete = true;
 
@@ -173,7 +173,7 @@ namespace GymFitPlus.Core.Services
 
         public async Task<bool> EditRecipeAsync(RecipeDetailsViewModel viewModel)
         {
-            var model = await FindByIdAsync(viewModel.Id);
+            var model = await FindByIdAsync(viewModel.Id, false);
 
             model.Name = viewModel.Name;
             model.Description = viewModel.Description;
@@ -199,7 +199,7 @@ namespace GymFitPlus.Core.Services
 
         public async Task<bool> AddRecipeToFavouriteAsync(RecipeDetailsViewModel viewModel, Guid userId)
         {
-            var model = await FindByIdAsync(viewModel.Id);
+            var model = await FindByIdAsync(viewModel.Id, false);
 
             int affectedRows = default;
 
@@ -247,10 +247,42 @@ namespace GymFitPlus.Core.Services
             return affectedRows > 0;
         }
 
-        private async Task<Recipe> FindByIdAsync(int id)
+        public async Task<IEnumerable<RecipesAllViewModel>> AllRecipeForAdminAsync(bool deleted)
+        {
+           return await _repository
+                .AllReadOnly<Recipe>()
+                .Where(x => x.IsDelete == deleted)
+                .Select(x => new RecipesAllViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Image = x.Image,
+                    Category = x.Category,
+                    FavoriteByUsers = x.UsersRecipes.Count,
+                    CaloriesPerHundredGrams = x.CaloriesPerHundredGrams,
+                    ProteinPerHundredGrams = x.ProteinPerHundredGrams,
+                    FatPerHundredGrams = x.FatPerHundredGrams,
+                    CarbsPerHundredGrams = x.CarbsPerHundredGrams
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> RestoreRecipeAsync(int id)
+        {
+            var model = await FindByIdAsync(id, true);
+
+            model.IsDelete = false;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        private async Task<Recipe> FindByIdAsync(int id, bool deleted)
         {
             return await _repository
                 .All<Recipe>()
+                .Where(x => x.IsDelete == deleted)
                 .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
     }

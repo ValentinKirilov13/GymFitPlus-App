@@ -70,7 +70,7 @@ namespace GymFitPlus.Core.Services
                .FirstOrDefaultAsync() ?? throw new NullReferenceException();
         }
 
-        public async Task<RegisterUserInfoFormViewModel> GetUserInfoForEdit(string userId)
+        public async Task<RegisterUserInfoFormViewModel> GetUserInfoForEditAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId) ?? throw new NullReferenceException();
 
@@ -105,6 +105,19 @@ namespace GymFitPlus.Core.Services
             }
 
             return viewModel;
+        }
+
+        public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
+        {
+            return await _userManager.Users
+                .AsNoTracking()
+                .OrderByDescending(x => x.Id)
+                .Select(x => new UserViewModel
+                {
+                    UserName = x.UserName,
+                    Email = x.Email
+                })
+                .ToListAsync();
         }
     }
 }
