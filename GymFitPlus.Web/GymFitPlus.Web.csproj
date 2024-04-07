@@ -28,4 +28,8 @@
     <ProjectReference Include="..\GymFitPlus.Core\GymFitPlus.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Views\FitnessProgram\" />
+  </ItemGroup>
+
 </Project>
