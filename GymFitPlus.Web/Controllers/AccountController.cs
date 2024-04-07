@@ -119,7 +119,7 @@ namespace GymFitPlus.Web.Controllers
         {
             try
             {
-                var model = await _accountService.GetUserInfoForEdit(User.Id().ToString());
+                var model = await _accountService.GetUserInfoForEditAsync(User.Id().ToString());
 
                 if (register)
                 {

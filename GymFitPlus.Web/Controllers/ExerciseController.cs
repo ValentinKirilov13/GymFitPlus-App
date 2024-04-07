@@ -1,10 +1,8 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.ExerciseViewModels;
 using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
-using static GymFitPlus.Infrastructure.Constants.DataConstants.RoleConstants;
 
 
 namespace GymFitPlus.Web.Controllers
@@ -58,133 +56,7 @@ namespace GymFitPlus.Web.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        public IActionResult AddExercise()
-        {
-            ExerciseDetailViewModel model = new ExerciseDetailViewModel();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> AddExercise(ExerciseDetailViewModel viewModel)
-        {
-            try
-            {
-                if (viewModel.MuscleGroup == default)
-                {
-                    ModelState.AddModelError(nameof(viewModel.MuscleGroup), string.Format(RequiredErrorMessage, "Muscle group"));
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return View(viewModel);
-                }
-
-                await _exerciseService.AddExerciseAsync(viewModel);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("{Message:}", ex.Message);
-                return BadRequest();
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> EditExercise(int id)
-        {
-            try
-            {
-                ExerciseDetailViewModel model = await _exerciseService.FindExerciseByIdAsync(id);
-
-                TempData["ExerciseId"] = model.Id;
-
-                return View(model);
-            }
-            catch (NullReferenceException ex)
-            {
-                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("{Message:}", ex.Message);
-                return BadRequest();
-            }            
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> EditExercise(ExerciseDetailViewModel viewModel)
-        {
-            try
-            {
-                if ((int?)TempData["ExerciseId"] != viewModel.Id)
-                {
-                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
-                    return BadRequest();
-                }
-
-                if (viewModel.MuscleGroup == default)
-                {
-                    ModelState.AddModelError(nameof(viewModel.MuscleGroup), string.Format(RequiredErrorMessage, "Muscle group"));
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return View(viewModel);
-                }
-
-                await _exerciseService.EditExerciseAsync(viewModel);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (NullReferenceException ex)
-            {
-                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("{Message:}", ex.Message);
-                return BadRequest();
-            }          
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> DeleteExercise(ExerciseDetailViewModel viewModel)
-        {
-            try
-            {
-                if ((int?)TempData["ExerciseId"] != viewModel.Id)
-                {
-                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
-                    return BadRequest();
-                }
-
-                await _exerciseService.DeleteExerciseAsync(viewModel.Id);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (NullReferenceException ex)
-            {
-                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("{Message:}", ex.Message);
-                return BadRequest();
-            }          
-        }
-
+     
         [HttpGet]
         public async Task<IActionResult> AddExerciseToProgram(int programId, int exerciseCount, int exerciseId = -1)
         {
