@@ -248,7 +248,7 @@ h6 span {
     transition: all 200ms linear;
 }
 
-.btn {
+.btnn {
     border-radius: 4px;
     height: 44px;
     font-size: 13px;
@@ -278,14 +278,14 @@ h6 span {
     box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
 }
 
-    .btn:active,
-    .btn:focus {
+    .btnn:active,
+    .btnn:focus {
         background-color: #ff206e;
         color: #ffeba7;
         box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
     }
 
-    .btn:hover {
+    .btnn:hover {
         background-color: #ff206e;
         color: #ffeba7;
         box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);

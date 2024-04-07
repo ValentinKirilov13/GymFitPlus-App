@@ -1,7 +1,6 @@
 ﻿@model RegisterUserInfoFormViewModel
 @{
     ViewBag.Title = "Register page";
-    ViewBag.RegState = "SecondPartRegistration";
 }
 
 @section Styles {
@@ -93,11 +92,14 @@
                                             <span asp-validation-for="YouTubeUrl" class="text-danger"></span>
                                         </div>
                                     
-                                        <button type="submit" class="btn btn-primary btn-block mt-5" onclick="showHiddenDiv()">Complete</button>
+                                        <button type="submit" class="btnn btn-primary btn-block mt-5" onclick="showHiddenDiv()">Complete</button>
                                     </form>
-                                    <form class="form-inline float-end" asp-controller="Account" asp-action="Logout" method="post">
-                                        <button type="submit" class="nav-link btn btn-link text-dark" onclick="showHiddenDiv()">Log out</button>
-                                    </form>
+                                    @if (ViewBag.RegState != null)
+                                    {
+                                        <form class="form-inline float-end" asp-controller="Account" asp-action="Logout" method="post">
+                                            <button type="submit" class="nav-link btnn btn-link text-dark" onclick="showHiddenDiv()">Log out</button>
+                                        </form>
+                                    }                                   
                                     <div id="hiddenDiv" class="text-center float-start m-5" style="display:none;">
                                         <div class="spinner-border custom-spinner-color " role="status">
                                             <span class="visually-hidden">Loading...</span>

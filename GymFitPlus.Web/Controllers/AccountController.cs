@@ -5,6 +5,7 @@ using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
@@ -89,7 +90,7 @@ namespace GymFitPlus.Web.Controllers
                         await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: true, lockoutOnFailure: false);
 
                         _logger.LogInformation("User logged in.");
-                        return RedirectToAction(nameof(RegisterUserInfo));
+                        return RedirectToAction(nameof(RegisterUserInfo), new { register = true });
                     }
                     foreach (var error in result.Errors)
                     {
@@ -114,11 +115,17 @@ namespace GymFitPlus.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RegisterUserInfo()
+        public async Task<IActionResult> RegisterUserInfo(bool register)
         {
             try
             {
                 var model = await _accountService.GetUserInfoForEdit(User.Id().ToString());
+
+                if (register)
+                {
+                    ViewBag.RegState = "SecondPartRegistration";
+                    TempData["RegState"] = true;
+                }
 
                 return View(model);
             }
@@ -145,8 +152,15 @@ namespace GymFitPlus.Web.Controllers
 
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("User have successfully full registered.");
-                        return RedirectToAction(nameof(StatisticController.Index),"Statistic");
+                        if (TempData["RegState"] != null)
+                        {
+                            TempData.Remove("RegState");
+                            return RedirectToAction(nameof(StatisticController.Index), "Statistic");
+                        }
+                        else
+                        {
+                            return RedirectToAction(nameof(Dashboard));
+                        }
                     }
                     foreach (var error in result.Errors)
                     {

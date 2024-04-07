@@ -21,6 +21,11 @@
             {
                 <img class="profileImg" src="/images/Avatar/avatar.svg" />
             }
+            <a type="button" class="btn bg-transparent border-0" asp-controller="Account" asp-action="RegisterUserInfo"
+               asp-route-register="false"
+               style="position:absolute; top:80px;">
+                <i class="fa fa-pencil fa-lg" style="font-size: 40px; color: gray;"></i>
+            </a>
         </div>
         <div class="col-md-4 text-center">
             <p class="myTitle">FullName:</p>
@@ -42,9 +47,9 @@
         </div>
         <div class="col-md-6 text-center">
             <p class="differents">
-                <span id="direction">Up:</span> <span id="value">3</span> <span id="dimension">kg</span>
+                <span id="direction"></span> <span id="value"></span> <span id="dimension"></span>
             </p>
-        </div>       
+        </div>
     </div>
     <div class="row mt-5 mb-5">
         <div class="col-md-12">
