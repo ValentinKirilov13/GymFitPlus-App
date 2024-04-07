@@ -13,21 +13,23 @@ $("#imageUpload").change(function () {
     readURL(this);
 });
 
-var protein = document.getElementById('protein');
+const protein = document.getElementById('protein');
 const carbs = document.getElementById('carbs');
 const fats = document.getElementById('fats');
+const calories = document.getElementById('calories');
 
 document.addEventListener('DOMContentLoaded', function () {
-   
     if (protein.value === '0') {
-        protein.value = '';
-      
+        protein.value = '';      
     }
     if (carbs.value === '0') {
         carbs.value = '';      
     }
     if (fats.value === '0') {
         fats.value = '';
+    }
+    if (calories.value === '0') {
+        calories.value = '';
     }
 });
 

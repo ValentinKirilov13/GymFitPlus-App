@@ -44,10 +44,19 @@ body {
 
     #guestNavBar a {
         color: #ffffff;
-        font-weight: bold
+        font-weight: bold;
+    }
+
+    #guestNavBar button {
+        color: #ffffff;
+        font-weight: bold;
     }
 
         #guestNavBar a:hover {
+            color: #ffeba7;
+        }
+
+        #guestNavBar button:hover {
             color: #ffeba7;
         }
 

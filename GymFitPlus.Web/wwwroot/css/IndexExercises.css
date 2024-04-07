@@ -201,6 +201,7 @@ h1 {
 
 .tabLinks {
     text-decoration-color: #ff206e;
+    font-size: 50px;
 }
 
     .tabLinks:hover {

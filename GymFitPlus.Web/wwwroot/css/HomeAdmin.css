@@ -1,0 +1,15 @@
+﻿.adminLinks {
+    text-decoration: none;
+    font-size: 30px;
+    color: #c4c3ca;
+    font-weight: bold;
+}
+
+    .adminLinks:hover {
+        color: #ffeba7;
+    }
+
+.adminImg {
+    width: 200px;
+    height: 200px;
+}
