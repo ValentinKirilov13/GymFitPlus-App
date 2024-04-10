@@ -1,0 +1,60 @@
+﻿@model QueryFitnessProgramViewModel
+@{
+    ViewBag.Title = "Fitness Programs";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Login_Register.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+}
+
+<header>
+    <h1 class="text-center">
+        @(Model.Username) Fitness Programs
+    </h1>
+</header>
+<hr />
+
+<div class="container">
+    <div class="row text-center justify-content-center">
+        <div class="col-md-12 center-div mb-4">
+            <form asp-area="Admin" asp-controller="FitnessProgram" asp-action="Index" method="get">
+                <div class="form-group">
+                    <input asp-for="Username" type="text" class="form-style" placeholder="Username">
+                    <i class="input-icon ph--user-bold"></i>
+                </div>
+                <button type="submit" class="btnn mt-4">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 center-div mb-4">
+            @if (Model.UserDeletedFitnessPrograms.Any())
+            {
+                @foreach (var item in Model.UserDeletedFitnessPrograms)
+                {
+                    <div class="card col-md-2 box mt-3 d-inline-block" style="height:200px;">
+                        <div class="card h-100 cardSize">
+                            <div class="card-body p-3">
+                                <h3 class="card-title">@item.Name</h3>
+                                <form asp-area="Admin" asp-controller="FitnessProgram" asp-action="RestoreFitnessProgram" method="post"
+                                      asp-route-id="@item.Id">
+                                    <button type="submit" class="btnn">Restore</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else if (!string.IsNullOrEmpty(Model.Username))
+            {
+                <h3 class="text-center mt-5">Nothing was found</h3>
+            }
+        </div>
+    </div>
+</div>

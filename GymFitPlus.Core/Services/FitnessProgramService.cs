@@ -31,7 +31,7 @@ namespace GymFitPlus.Core.Services
         }
         public async Task<bool> EditFitnessProgramAsync(FitnessProgramFormViewModel viewModel)
         {
-            var model = await FindByIdAsync(viewModel.Id);
+            var model = await FindByIdAsync(viewModel.Id, deleted: false);
 
             model.Name = viewModel.Name;
 
@@ -41,7 +41,7 @@ namespace GymFitPlus.Core.Services
         }
         public async Task<bool> DeleteFitnessProgramAsync(int id)
         {
-            var model = await FindByIdAsync(id);
+            var model = await FindByIdAsync(id, deleted: false);
 
             model.IsDelete = true;
 
@@ -129,12 +129,34 @@ namespace GymFitPlus.Core.Services
 
             await _repository.SaveChangesAsync();
         }
+        public async Task<IEnumerable<FitnessProgramFormViewModel>> GetUserAllDeletedFitnessProgramsAsync(string username)
+        {
+            return await _repository
+                .AllReadOnly<FitnessProgram>()
+                .Where(x => x.IsDelete == true && x.User.UserName == username)
+                .Select(x => new FitnessProgramFormViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                })
+                .ToListAsync(); 
+        }
+        public async Task<bool> RestoreFitnessProgramAsync(int fitnessProgramId)
+        {
+            var model = await FindByIdAsync(fitnessProgramId, deleted: true);
 
-        private async Task<FitnessProgram> FindByIdAsync(int id)
+            model.IsDelete = false;
+
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
+        }
+
+        private async Task<FitnessProgram> FindByIdAsync(int id, bool deleted)
         {
             return await _repository
                 .All<FitnessProgram>()
-                .Where(x => x.IsDelete == false)
+                .Where(x => x.IsDelete == deleted)
                 .FirstOrDefaultAsync(x => x.Id == id) ?? throw new NullReferenceException();
         }
     }
