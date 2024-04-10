@@ -20,11 +20,24 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(bool deleted)
         {
-            IEnumerable<RecipesAllViewModel> viewModel = await _recipeService.AllRecipeForAdminAsync(deleted);
+            try
+            {
+                IEnumerable<RecipesAllViewModel> viewModel = await _recipeService.AllRecipeForAdminAsync(deleted);
 
-            ViewBag.IsDeleted = deleted;
+                ViewBag.IsDeleted = deleted;
 
-            return View(viewModel);
+                return View(viewModel);
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }           
         }
 
         [HttpGet]
