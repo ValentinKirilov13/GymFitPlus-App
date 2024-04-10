@@ -46,9 +46,9 @@
                 @if (!isDeleted)
                 {
                     <div class="card col-md-2 box mt-3">
-                        <a asp-area="Admin" asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn">
-                            <div class="card h-100 ">
-                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top" />
+                        <a asp-area="Admin" asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn cardSize2">
+                            <div class="card h-100 cardSize2">
+                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top p-2" />
                                 <div class="card-body">
                                     <h3 class="card-title">@item.Name</h3>
                                     <p class="card-text"> Used in @item.UsedByProgramsCount fitness programs.</p>
@@ -60,8 +60,8 @@
                 else
                 {
                     <div class="card col-md-2 box mt-3">
-                        <div class="card h-100 ">
-                            <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top" />
+                        <div class="card h-100 cardSize2">
+                            <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top p-2" />
                             <div class="card-body">
                                 <h3 class="card-title">@item.Name</h3>
                                 <form asp-area="Admin" asp-controller="Exercise" asp-action="RestoreExercise" asp-route-Id="@item.Id">

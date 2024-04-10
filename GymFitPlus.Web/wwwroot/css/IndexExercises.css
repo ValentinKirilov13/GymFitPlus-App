@@ -235,3 +235,9 @@ h1 {
 .card-title {
     color: #ff206e;
 }
+
+.cardSize2 {
+    height: 100%;
+    border-radius: 50px;
+    padding: 0;
+}
