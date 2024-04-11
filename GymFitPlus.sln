@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.Core", "GymFitPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.Infrastructure", "GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj", "{7EA7965B-9240-48BD-A6FD-B20EA581F04F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymFitPlus.UnitTests", "GymFitPlus.UnitTests\GymFitPlus.UnitTests.csproj", "{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.UnitTests", "GymFitPlus.UnitTests\GymFitPlus.UnitTests.csproj", "{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
