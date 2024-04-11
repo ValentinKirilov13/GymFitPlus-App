@@ -127,7 +127,7 @@ namespace GymFitPlus.Core.Services
 
             return await _repository
                 .AllReadOnly<Exercise>()
-                .Where(x => !exercisesIdsNotToGet.Contains(x.Id))
+                .Where(x => x.IsDelete == false && !exercisesIdsNotToGet.Contains(x.Id))
                 .Select(x => new ExerciseForProgramViewModel()
                 {
                     Id = x.Id,
