@@ -9,12 +9,10 @@ namespace GymFitPlus.Core.Services
     public class StatisticService : IStatisticService
     {
         private readonly IRepository _repository;
-        private readonly IFitnessProgramService _fitnessProgramService;
 
-        public StatisticService(IRepository repository, IFitnessProgramService fitnessProgramService)
+        public StatisticService(IRepository repository)
         {
-            _repository = repository;
-            _fitnessProgramService = fitnessProgramService;
+            _repository = repository;           
         }
 
         public async Task<IEnumerable<UserStatsViewModel>> GetUserConcreteStatsAsync(string stats, Guid userId)
