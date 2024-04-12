@@ -17,19 +17,6 @@
     <header class="text-center">
         <h1>@Model.Name Details</h1>
     </header>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-3 center-div">
-                <a class="btnn nav-link d-flex justify-content-center"
-                   asp-controller="Recipe"
-                   asp-action="EditRecipe"
-                   asp-route-id="@Model.Id">
-                    Edit Recipe
-                </a>
-            </div>
-        </div>
-    </div>
 }
 
 <div class="container">
@@ -51,14 +38,14 @@
                         <div class="col-md-6 mb-2">
                             @if (!isFavourite)
                             {
-                                <form asp-action="AddToFavorite" asp-controller="Recipe" method="post">
+                                <form asp-area="" asp-action="AddToFavorite" asp-controller="Recipe" method="post">
                                     <input asp-for="Id" hidden />
                                     <input id="favoriteButnn" type="submit" class="btnn nav-link d-flex justify-content-center" value=" Add Recipe To Favorite" />
                                 </form>
                             }
                             else
                             {
-                                <form asp-action="EditFavouriteRecipe" asp-controller="Recipe" method="post">
+                                <form asp-area="" asp-action="EditFavouriteRecipe" asp-controller="Recipe" method="post">
                                     <input asp-for="Id" hidden />
 
                                     <div class="form-group">
@@ -67,7 +54,7 @@
                                         <span asp-validation-for="Note" class="text-danger"></span>
                                     </div>
 
-                                    <input id="favoriteButnn" style="visibility: hidden;" type="submit" class="btnn nav-link d-flex justify-content-center ms-4" value=" Add Note" />
+                                    <input id="favoriteButnn" style="visibility: hidden;" type="submit" class="btnn nav-link d-flex justify-content-center ms-4" value="Add Note" />
                                 </form>
                             }
                         </div>
@@ -76,6 +63,12 @@
                     <p class="card-text"> This recipe is a favorite of @Model.FavoriteByUsers users.</p>
                     <span>Тhe food tends towards the @Model.Category type. </span>
                     <hr />
+                    <p class="myTitles">Calories per 100 g:</p>
+                    <div class="col-md-12 text-center display-4">
+                        <p id="calories">
+                            @Model.CaloriesPerHundredGrams
+                        </p>
+                    </div>
                     <p class="myTitles">Macronutrients per 100 g</p>
                     <div class="row text-center">
                         <div class="col-md-4">
@@ -106,9 +99,9 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-md-6 center-div">
-                                    <form asp-action="DeleteFromFavorite" asp-controller="Recipe" method="post">
+                                    <form asp-area="" asp-action="DeleteFromFavorite" asp-controller="Recipe" method="post">
                                         <input asp-for="Id" hidden />
-                                        <input type="submit" class="btn btn-outline-danger border-0 fw-bold fs-5" value=" Remove Recipe from Favorite" />
+                                        <input type="submit" class="btn btn-outline-danger border-0 fw-bold fs-5" value="Remove Recipe from Favorite" />
                                     </form>
                                 </div>
                             </div>

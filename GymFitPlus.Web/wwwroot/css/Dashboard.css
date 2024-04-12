@@ -57,7 +57,51 @@
     #direction, #value, #dimension {
         font-size: 48px;
     }
-    .differents{
-        margin-top:15px;
+
+    .differents {
+        margin-top: 15px;
     }
+}
+
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image {
+    width: 250px;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+
+.edit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-icon {
+    color: white;
+    font-size: 24px;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image {
+    opacity: 0.5; 
+}
+
+.image-container:hover .edit-overlay {
+    opacity: 1;
+}
+
+.image-container:hover .edit-icon {
+    opacity: 1;
 }

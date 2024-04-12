@@ -156,7 +156,7 @@ function getStats(statsTypeParam) {
                         y: {
                             ticks: {
                                 callback: function (value, index, ticks) {
-                                    return value + ' ' + myDimensions;
+                                    return value.toFixed(1) + ' ' + myDimensions;
                                 },
                                 color: '#ff206e',
                             },

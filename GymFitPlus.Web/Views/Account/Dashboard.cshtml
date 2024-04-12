@@ -9,30 +9,40 @@
     <link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
 }
 
-
 <div class="container mt-5 pt-5">
     <div class="row text-center">
         <div class="col-md-12">
             <div>
-                <a class="btnn text-decoration-none" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Panel</a>
+                <a class="btnn text-decoration-none" asp-area="Admin" asp-controller="Home" asp-action="Index">Go to Admin Panel</a>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 mb-2">
+        <div class="col-md-4 mb-2 pe-5">
             @if (Model.Image != null)
             {
-                <img class="profileImg img-fluid" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="File Preview">
+                <a type="button" class="btn bg-transparent border-0 pe-5 " asp-area="" asp-controller="Account" asp-action="RegisterUserInfo"
+                   asp-route-register="false">
+                    <div class="image-container mb-5">
+                        <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Image" class="image profileImg" id="image">
+                        <div class="edit-overlay">
+                            <i class="fa fa-pencil fa-lg" style="font-size: 40px; color: gray;"></i>
+                        </div>
+                    </div>
+                </a>
             }
             else
             {
-                <img class="profileImg" src="/images/Avatar/avatar.svg" />
+                <a type="button" class="btn bg-transparent border-0 pe-5 " asp-area="" asp-controller="Account" asp-action="RegisterUserInfo"
+                   asp-route-register="false">
+                    <div class="image-container mb-5">
+                        <img class="image profileImg" src="/images/Avatar/avatar.svg" id="image" />
+                        <div class="edit-overlay">
+                            <i class="fa fa-pencil fa-lg" style="font-size: 40px; color: gray;"></i>
+                        </div>
+                    </div>
+                </a>
             }
-            <a type="button" class="btn bg-transparent border-0" asp-controller="Account" asp-action="RegisterUserInfo"
-               asp-route-register="false"
-               style="position:absolute; top:80px;">
-                <i class="fa fa-pencil fa-lg" style="font-size: 40px; color: gray;"></i>
-            </a>
         </div>
         <div class="col-md-4 text-center">
             <p class="myTitle">FullName:</p>
@@ -50,7 +60,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-md-4 text-center">
-            <a asp-action="ChangeStats" asp-controller="Statistic" class="btnn btnn2 nav-link">Update stats</a>
+            <a asp-area="" asp-action="ChangeStats" asp-controller="Statistic" class="btnn btnn2 nav-link">Update stats</a>
         </div>
         <div class="col-md-6 text-center">
             <p class="differents">
@@ -111,7 +121,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

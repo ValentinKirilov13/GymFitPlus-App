@@ -9,22 +9,9 @@
     <link rel="stylesheet" href="~/css/ExerciseDetails.css" asp-append-version="true" />
 }
 
-<header class="text-center">
+<header class="text-center mb-5">
     <h1>@Model.Name Details</h1>
 </header>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-3 center-div">
-            <a class="btnn nav-link d-flex justify-content-center"
-               asp-controller="Exercise"
-               asp-action="EditExercise"
-               asp-route-id="@Model.Id">
-                Edit Exercise
-            </a>
-        </div>
-    </div>
-</div>
 
 <div class="container">
     <div class="row text-center">

@@ -6,30 +6,30 @@
         <span id="burger"></span>
         <ul class="nav" id="menu">
             <li class="GymNameButton">
-                <a asp-controller="Home" asp-action="Index">Gym<span id="fit">Fit</span>+</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index">Gym<span id="fit">Fit</span>+</a>
             </li>
 
             <li class="nav__items">
-                <a asp-controller="FitnessProgram" asp-action="Index" asp-route-startWorkout="true">Start Workout</a>
+                <a asp-area="" asp-controller="FitnessProgram" asp-action="Index" asp-route-startWorkout="true">Start Workout</a>
             </li>
 
             <li class="nav__items">
-                <a asp-controller="Account" asp-action="Dashboard">Dashboard</a>
+                <a asp-area="" asp-controller="Account" asp-action="Dashboard">Dashboard</a>
             </li>
             <li class="nav__items">
-                <a asp-controller="Exercise" asp-action="Index">Exercises</a>
-            </li>
-
-            <li class="nav__items">
-                <a asp-controller="Recipe" asp-action="Index">Recipes</a>
+                <a asp-area="" asp-controller="Exercise" asp-action="Index">Exercises</a>
             </li>
 
             <li class="nav__items">
-                <a asp-controller="FitnessProgram" asp-action="Index">My Fitness Program</a>
+                <a asp-area="" asp-controller="Recipe" asp-action="Index">Recipes</a>
             </li>
 
             <li class="nav__items">
-                <a asp-controller="Workout" asp-action="Index">Workouts</a>
+                <a asp-area="" asp-controller="FitnessProgram" asp-action="Index">My Fitness Program</a>
+            </li>
+
+            <li class="nav__items">
+                <a asp-area="" asp-controller="Workout" asp-action="Index">Workouts</a>
             </li>
 
             <partial name="_LoginPartial" />
