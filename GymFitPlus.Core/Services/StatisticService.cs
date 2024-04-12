@@ -120,7 +120,6 @@ namespace GymFitPlus.Core.Services
 
             return await selectedResult.ToListAsync();
         }
-
         public async Task<UserStatsViewModel> GetUserLastAllStatsAsync(Guid userId)
         {
             return await _repository
@@ -144,8 +143,7 @@ namespace GymFitPlus.Core.Services
                 })
                 .FirstOrDefaultAsync() ?? throw new NullReferenceException();
         }
-
-        public async Task UpdateUserStatsAsync(UserStatsViewModel viewModel)
+        public async Task<bool> UpdateUserStatsAsync(UserStatsViewModel viewModel)
         {
             var statsFromDb = await _repository
                 .All<UserStatistics>()
@@ -192,7 +190,9 @@ namespace GymFitPlus.Core.Services
                 statsFromDb.RightCalfCircumference = viewModel.RightCalfCircumference;
             }
 
-            await _repository.SaveChangesAsync();
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
     }
 }
