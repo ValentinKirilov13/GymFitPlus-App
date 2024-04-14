@@ -1,8 +1,126 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5">
+    <h2 class="display-4">Welcome to</h2>
+    <h1 class="display-1 fw-bold">
+        Gym<span id="fit">Fit</span>+
+    </h1>
 </div>
+
+<div id="carouselExampleIndicators" class="carousel slide">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">     
+        <div class="carousel-item active">
+            <div class="caruselDivs text-center pt-5">
+                <h1 class="display-5 fw-bold">
+                    Explore Exercises
+                </h1>
+                <img src="~/images/Exercises/Chest.svg" class="caruselImg" />
+                <p class="caruselText mt-3">You can search for different exercises. <br />Learn how to do them through a video tutorial.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="caruselDivs text-center pt-5">
+                <h1 class="display-5 fw-bold">
+                    Explore Recipes
+                </h1>
+                <img src="~/images/Recipes/food.svg" class="caruselImg" />
+                <p class="caruselText mt-3">You can search for different recipes. <br />Learn how to do them and what their macros are.</p>
+            </div>
+        </div>
+        <div class="carousel-item ">
+            <div class="caruselDivs text-center pt-5">
+                <h1 class="display-5 fw-bold ">
+                    Custom Gym Program
+                </h1>
+                <img src="~/images/Exercises/Biceps.svg" class="caruselImg" />
+                <p class="caruselText mt-3">You can create your own Fitness Program. 
+                    <br />And keep track of all your body measurements and exercise progress</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<div class="text-center">
+    <p class="caruselText mt-5">Here's a start to your goal of a better body!</p>
+    <a class="btn btnn" asp-area="" asp-controller="Account" asp-action="LogInSignUp" asp-route-register="true">Register now</a>
+</div>
+
+<style>
+    .caruselImg {
+        width: 150px;
+        height: 150px;
+    }
+
+    .caruselText {
+        font-size: 30px;
+    }
+
+    .caruselDivs {
+        width: 100%;
+        height: 500px;
+        background-color: #2a2b38;
+    }
+
+    #fit {
+        color: #ff206e;
+    }
+
+    .btnn {
+        border-radius: 4px;
+        height: 50px;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        -webkit-transition: all 200ms linear;
+        transition: all 200ms linear;
+        padding: 0 30px;
+        margin-top: 20px;
+        letter-spacing: 1px;
+        display: -webkit-inline-flex;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+        -ms-flex-pack: center;
+        text-align: center;
+        border: none;
+        background-color: #ffeba7;
+        color: #102770;
+        box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
+    }
+
+        .btnn:active,
+        .btnn:focus {
+            background-color: #ff206e;
+            color: #ffeba7;
+            box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
+        }
+
+        .btnn:hover {
+            background-color: #ff206e;
+            color: #ffeba7;
+            box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
+        }
+
+</style>

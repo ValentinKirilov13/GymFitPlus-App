@@ -5,7 +5,6 @@ using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
 using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
@@ -30,8 +29,9 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         [UserIsNotAuthenticated]
-        public IActionResult LogInSignUp()
+        public IActionResult LogInSignUp(bool register)
         {
+            ViewBag.Register = register;
             return View("LogIn_SignUp");
         }
 
@@ -99,7 +99,7 @@ namespace GymFitPlus.Web.Controllers
                     }
                 }
                 ViewBag.RegisterModel = model;
-                ViewBag.Register = bool.Parse("true");
+                ViewBag.Register = true;
                 return View("LogIn_SignUp");
             }
             catch (NullReferenceException ex)
