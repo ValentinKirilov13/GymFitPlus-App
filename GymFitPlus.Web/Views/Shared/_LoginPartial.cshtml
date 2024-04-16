@@ -6,7 +6,7 @@
             <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
         </li>
         <li class="nav__items">
-            <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+            <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" method="post">
                 <button type="submit" class="btn btn-link text-light">Logout</button>
             </form>
         </li>     
@@ -14,7 +14,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Account" asp-action="LogInSignUp">Log In / Sign Up</a>
+            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="LogInSignUp">Log In / Sign Up</a>
         </li>
     }
 </ul>

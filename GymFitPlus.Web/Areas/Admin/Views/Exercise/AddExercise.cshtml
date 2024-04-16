@@ -14,7 +14,7 @@
     <div class="row text-center">
         <div class="row justify-content-center">
             <div class="col-sm-12 p-5 box">
-                <form asp-action="AddExercise" asp-controller="Exercise" method="post">
+                <form asp-area="Admin" asp-action="AddExercise" asp-controller="Exercise" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <input asp-for="Name" type="text" class="form-style" placeholder="Name">
@@ -50,6 +50,6 @@
 </div>
 
 @section Scripts {
-    @* <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/AddExercise.js"></script>
 }

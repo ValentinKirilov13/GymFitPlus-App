@@ -3,75 +3,98 @@
     ViewBag.Title = Model.Name;
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkoutDashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ChangeStats.css" asp-append-version="true" />
+}
+
 <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <h1 class="float-end">@Model.Name</h1>
-        </div>
-        <div class="col-sm-4">
-            <button type="button" class="btn bg-transparent border-0" data-bs-toggle="modal" data-bs-target="#ProgramNameModal">
-                <i class="fa fa-pencil fa-lg" style="font-size: 30px; color: gray;"></i>
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <h1 class="d-inline-block">@Model.Name</h1>
+            <button type="button" class="btn bg-transparent border-0 d-inline-block" data-bs-toggle="modal" data-bs-target="#ProgramNameModal">
+                <i class="fa fa-pencil fa-lg mb-5" style="font-size: 40px; color: gray;"></i>
             </button>
             <div class="modal fade" id="ProgramNameModal" tabindex="-1" aria-labelledby="ProgramNameModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit program name</h1>
+                    <div class="modal-content" style="background-color:#2a2b38; border-radius:50px;">
+                        <header class="text-center p-1">
+                            <h2 class="modal-title fs-5 mt-3" id="exampleModalLabel">Edit Program</h2>
+                        </header>
+                        <div class="container">
+                            <div class="row text-center">
+                                <div class="row justify-content-center" style="width:100%; height:100%;">
+                                    <div class="card col-md-12 box myBody mt-4 shadow-none" style="width:100%; height:100%;">
+                                        <div class="card myBody" style="border-radius: 50px;">
+                                            <div class="card-body">
+                                                <form asp-area="" asp-action="EditProgramName" asp-controller="FitnessProgram" method="post" class="text-center">
+                                                    <input asp-for="Id" hidden />
+                                                    <div class="form-group">
+                                                        <input asp-for="Name" class="form-style" type="text" style="padding-left:100px;" required />
+                                                        <i class="input-icon">Name:</i>
+                                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                                    </div>
+                                                    <input type="submit" class="btnn align-items-center" value="Save changes" />
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <form asp-action="EditProgramName" asp-controller="FitnessProgram" method="post">
-
-                            <input asp-for="Id" hidden />
-
-                            <label asp-for="Name" class="col-form-label-sm"></label>
-                            <input asp-for="Name" class="form-control" type="text" required />
-                            <span asp-validation-for="Name" id="Name-error" class="text-danger"></span>
-
-                            <input type="submit" class="btn btn-outline-primary float-end" value="Save changes" />
-                        </form>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <div class="modal-footer border-0 row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#DeleteProgram"
+                                            class="btn btn-outline-danger border-0"
+                                            style="font-weight:bold;">
+                                        Delete Program
+                                    </button>
+                                    <div class="modal fade" id="DeleteProgram" tabindex="-1" aria-labelledby="EditExerciseLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content" style="background-color:#2a2b38; border-radius:50px;">
+                                                <header class="text-center p-3">
+                                                    <h1 class="modal-title fs-5">Are you sure you want to delete program @Model.Name?</h1>
+                                                </header>
+                                                <div class="modal-body">
+                                                    <form asp-area="" asp-controller="FitnessProgram" asp-action="Delete" method="post">
+                                                        <input asp-for="Id" hidden />
+                                                        <input type="submit" class="btn btn-outline-danger border-0 float-end" value="Yes" />
+                                                    </form>
+                                                    <button class="btn btn-outline-warning float-start border-0" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-outline-warning border-0 float-end" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <button data-bs-toggle="modal"
-                    data-bs-target="#DeleteProgram"
-                    class="btn btn-outline-danger"
-                    style="font-weight:bold;">
-                Delete
-            </button>
-            <div class="modal fade" id="DeleteProgram" tabindex="-1" aria-labelledby="EditExerciseLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5">Are you sure you want to delete program @Model.Name?</h1>
-                        </div>
-                        <div class="modal-body">
-                            <form asp-controller="FitnessProgram" asp-action="Delete" method="post">
-                                <input asp-for="Id" hidden />
-                                <input type="submit" class="btn btn-danger float-end" value="Yes" />
-                            </form>
-                            <button class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
-                <table class="table">
-                    <thead>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table table-borderless text-light" id="recordsTable">
+                    <thead class="border-bottom-0">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Exercise</th>
-                            <th scope="col">Sets</th>
-                            <th scope="col">Reps</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col"></th>
+                            <th scope="col" class="text-center">Sets</th>
+                            <th scope="col" class="text-center">Reps</th>
+                            <th scope="col" class="text-center">Weight</th>
+                            <th scope="col" class="text-center"></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="myCustomTrHover">
                         @foreach (var item in Model.Exercises.OrderBy(x => x.Order))
                         {
                             string idForModal = $"element{item.FitnessProgramId}{item.ExerciseId}edit";
@@ -86,18 +109,19 @@
                                 <td style="text-align:center">
                                     <div class="btn-group dropend">
                                         <button type="button"
-                                                class="btn btn-sm btn-secondary dropdown-toggle"
+                                                class="btn btn-sm dropdown-toggle"
                                                 data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                            &#8942;
+                                                aria-expanded="false"
+                                                style="background-color:none;">
+                                            <i class="fa fa-pencil fa-lg" style="font-size: 30px; color: gray;"></i>
                                         </button>
-                                        <ul class="dropdown-menu" style="text-align:center;">
+                                        <ul class="dropdown-menu droppDownMy">
                                             <li>
                                                 <button type="button"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#@idForModal"
                                                         class="dropdown-item btn btn-primary"
-                                                        style="font-weight:bold;">
+                                                        style="font-weight:bold; color:#fff">
                                                     Edit
                                                 </button>
                                             </li>
@@ -112,45 +136,55 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </td>
-                                <td>
                                     <div class="modal fade" id="@idForRemove" tabindex="-1" aria-labelledby="EditExerciseLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5">Are you sure you want to delete this exercise from @Model.Name?</h1>
-                                                </div>
+                                            <div class="modal-content" style="background-color:#2a2b38; border-radius:50px;">
+                                                <header class="text-center p-3">
+                                                    <h1 class="modal-title fs-5">Are you sure you want to remove exercise from program?</h1>
+                                                </header>
                                                 <div class="modal-body">
-                                                    <form asp-action="RemoveExerciseFromProgram" method="post"
+                                                    <form asp-area="" asp-action="RemoveExerciseFromProgram" method="post"
                                                           asp-controller="Exercise"
                                                           asp-route-exerciseId="@item.ExerciseId"
                                                           asp-route-programId="@item.FitnessProgramId">
-
-                                                        <input type="submit" class="btn btn-outline-danger float-end" value="Yes" />
+                                                        <input type="submit" class="btn btn-outline-danger float-end border-0" value="Yes" />
                                                     </form>
-                                                    <button class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button class="btn btn-outline-warning float-start border-0" data-bs-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
+
                                     <div class="modal fade" id="@idForModal" tabindex="-1" aria-labelledby="EditExerciseLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5">Edit @item.ExerciseName</h1>
+                                            <div class="modal-content" style="background-color:#2a2b38; border-radius:50px;">
+                                                <header class="text-center p-1">
+                                                    <h2 class="modal-title fs-5 mt-3" id="exampleModalLabel">Edit @item.ExerciseName</h2>
+                                                </header>
+                                                <div class="container">
+                                                    <div class="row text-center">
+                                                        <div class="row justify-content-center" style="width:100%; height:100%;">
+                                                            <div class="card col-md-12 box myBody mt-4 shadow-none" style="width:100%; height:100%;">
+                                                                <div class="card myBody" style="border-radius: 50px;">
+                                                                    <div class="card-body">
+                                                                        @await Component.InvokeAsync(
+                                                                                 "EditExerciseFromProgramComponent",
+                                                                                 new
+                                                                                 {
+                                                                                     errors = TempData["FitnessProgramExerciseViewModelErrors"],
+                                                                                     exerciseId = item.ExerciseId,
+                                                                                     programId = item.FitnessProgramId
+                                                                                 })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-body">
-
-                                                    @await Component.InvokeAsync(
-                                                             "EditExerciseFromProgramComponent",
-                                                             new
-                                                             {
-                                                                 errors = TempData["FitnessProgramExerciseViewModelErrors"],
-                                                                 exerciseId = item.ExerciseId,
-                                                                 programId = item.FitnessProgramId
-                                                             })
+                                                <div class="modal-footer border-0 row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-outline-warning border-0" data-bs-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,14 +194,15 @@
                         }
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="6">
+                        <tr class="border-0">
+                            <td colspan="7">
                                 <div class="d-grid gap-2">
                                     <a asp-controller="Exercise"
+                                       asp-area=""
                                        asp-action="AddExerciseToProgram"
                                        asp-route-programId="@Model.Id" ,
                                        asp-route-exerciseCount="@Model.Exercises.Count()"
-                                       class="btn btn-primary">
+                                       class="btnn text-decoration-none">
                                         Add Exercise
                                     </a>
                                 </div>
@@ -180,6 +215,21 @@
     </div>
 </div>
 
-@* @section Scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    } *@
+
+    @if (@TempData["ModalToShow"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modal = new bootstrap.Modal(document.getElementById('@TempData["ModalToShow"]'));
+                modal.show();
+            });
+        </script>
+    }
+}
+
+
+
+
+

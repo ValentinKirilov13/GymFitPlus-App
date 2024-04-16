@@ -4,7 +4,7 @@
     ViewBag.Title = "Partial";
 }
 
-<form asp-controller="Exercise" asp-action="EditExerciseFromProgram" method="post">
+<form asp-area="" asp-controller="Exercise" asp-action="EditExerciseFromProgram" method="post">
 
     <input asp-for="FitnessProgramId" hidden>
     <input asp-for="ExerciseId" hidden>
@@ -38,6 +38,6 @@
     </div>
 </form>
 
-@* @section Scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+}

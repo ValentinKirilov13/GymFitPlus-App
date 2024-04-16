@@ -5,7 +5,7 @@
 <div class="section text-center">
     <h4 class="mb-4 pb-3">Log In</h4>
 
-    <form asp-action="Login" asp-controller="Account" method="post">
+    <form asp-area="" asp-action="Login" asp-controller="Account" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -26,8 +26,7 @@
             <input asp-for="RememberMe" type="checkbox" class="bigger-checkbox m-2">
         </div>
 
-        <button type="submit" class="btn mt-4 btn-primary btn-block">Login</button>
+        <button type="submit" class="btnn mt-4 btn-primary btn-block">Login</button>
     </form>
-    @* <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p> *@
 </div>
 

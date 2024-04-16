@@ -1,11 +1,9 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.RecipeViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
-using static GymFitPlus.Infrastructure.Constants.DataConstants.RoleConstants;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -23,140 +21,165 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] AllRecipesQueryModel query, bool favourite)
         {
-            IEnumerable<RecipesAllViewModel> model = await _recipeService.AllRecipesAsync(query, favourite, User.Id());
+            try
+            {
+                IEnumerable<RecipesAllViewModel> model = await _recipeService.AllRecipesAsync(query, favourite, User.Id());
 
-            ViewBag.IsFavourite = favourite;
+                ViewBag.IsFavourite = favourite;
 
-            ViewBag.Query = query;
+                ViewBag.Query = query;
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id, bool favourite)
         {
-            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, favourite, User.Id());
-
-            ViewBag.IsFavourite = favourite;
-
-            if (TempData["NoteError"] != null)
+            try
             {
-                string? errorMessage = TempData["NoteError"]?.ToString();
+                RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, favourite, User.Id());
 
-                if (errorMessage != null)
+                ViewBag.IsFavourite = favourite;
+
+                TempData["RecipeId"] = model.Id;
+
+                if (TempData["NoteError"] != null)
                 {
-                    ModelState.AddModelError(nameof(model.Note), errorMessage);
+                    string? errorMessage = TempData["NoteError"]?.ToString();
+
+                    if (errorMessage != null)
+                    {
+                        ModelState.AddModelError(nameof(model.Note), errorMessage);
+                    }
                 }
+
+                return View(model);
             }
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        public IActionResult AddRecipe()
-        {
-            RecipeDetailsViewModel model = new RecipeDetailsViewModel();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> AddRecipe(RecipeDetailsViewModel viewModel)
-        {
-            if (viewModel.Category == default)
+            catch (NullReferenceException ex)
             {
-                ModelState.AddModelError(nameof(viewModel.Category), string.Format(RequiredErrorMessage, "Recipe type"));
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
             }
-
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return View(viewModel);
-            }
-
-            await _recipeService.AddRecipeAsync(viewModel);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> EditRecipe(int id)
-        {
-            RecipeDetailsViewModel model = await _recipeService.FindRecipeByIdAsync(id, false, User.Id());
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> EditRecipe(int id, RecipeDetailsViewModel viewModel)
-        {
-            if (id != viewModel.Id)
-            {
+                _logger.LogError("{Message:}", ex.Message);
                 return BadRequest();
             }
-
-            if (viewModel.Category == default)
-            {
-                ModelState.AddModelError(nameof(viewModel.Category), string.Format(RequiredErrorMessage, "Recipe type"));
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
-
-            await _recipeService.EditRecipeAsync(viewModel);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> DeleteRecipe(int id, RecipeDetailsViewModel viewModel)
-        {
-            if (id != viewModel.Id)
-            {
-                return BadRequest();
-            }
-
-            await _recipeService.DeleteRecipeAsync(viewModel.Id);
-
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddToFavorite(RecipeDetailsViewModel viewModel)
         {
-            await _recipeService.AddRecipeToFavouriteAsync(viewModel, User.Id());
+            try
+            {
+                bool result = await _recipeService.AddRecipeToFavouriteAsync(viewModel, User.Id());
 
-            return RedirectToAction(nameof(Index), new { favourite = true });
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully added recipe {viewModel.Name} to favourite";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
+
+                return RedirectToAction(nameof(Index), new { favourite = true });
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> EditFavouriteRecipe(RecipeDetailsViewModel viewModel)
         {
-            if (ModelState["Note"] != null && ModelState["Note"]?.ValidationState == ModelValidationState.Valid)
+            try
             {
-                await _recipeService.EditFavouriteRecipeAsync(viewModel, User.Id());
+                if ((int?)TempData["RecipeId"] != viewModel.Id)
+                {
+                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
+                    return BadRequest();
+                }
+
+                if (ModelState["Note"] != null && ModelState["Note"]?.ValidationState == ModelValidationState.Valid)
+                {
+                    bool result = await _recipeService.EditFavouriteRecipeAsync(viewModel, User.Id());
+
+                    if (result)
+                    {
+                        TempData["UserMessageSuccess"] = $"Successfully edited recipe {viewModel.Name} from favourite";
+                    }
+                    else
+                    {
+                        TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                    }
+                }
+                else
+                {
+                    TempData["NoteError"] = ModelState["Note"]?.Errors[0].ErrorMessage;
+                }
+
+                return RedirectToAction(nameof(Details), new { favourite = true, id = viewModel.Id });
             }
-            else
+            catch (NullReferenceException ex)
             {
-                TempData["NoteError"] = ModelState["Note"]?.Errors[0].ErrorMessage;
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
             }
-
-
-            return RedirectToAction(nameof(Details), new { favourite = true, id = viewModel.Id });
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteFromFavorite(RecipeDetailsViewModel viewModel)
         {
-            await _recipeService.DeleteRecipeFromFavouriteAsync(viewModel, User.Id());
+            try
+            {
+                if ((int?)TempData["RecipeId"] != viewModel.Id)
+                {
+                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
+                    return BadRequest();
+                }
 
-            return RedirectToAction(nameof(Index), new { favourite = true });
+                bool result = await _recipeService.DeleteRecipeFromFavouriteAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted recipe {viewModel.Name} from favourite";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
+
+                return RedirectToAction(nameof(Index), new { favourite = true });
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
     }
 }

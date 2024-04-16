@@ -12,5 +12,7 @@ namespace GymFitPlus.Core.Contracts
         Task<IEnumerable<int>> GetAllExerciseFromProgramAsync(int programId);
         Task<IEnumerable<FitnessProgramFormViewModel>> GetAllFitnessProgramsFilltered(Guid userId, int exerciseId);
         Task ReOrderExercisesInFitnessProgramAsync(int programId);
+        Task<IEnumerable<FitnessProgramFormViewModel>> GetUserAllDeletedFitnessProgramsAsync(string username);
+        Task<bool> RestoreFitnessProgramAsync(int fitnessProgramId);
     }
 }

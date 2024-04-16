@@ -5,11 +5,11 @@ namespace GymFitPlus.Web.Components
 {
     public class RegisterComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(RegisterViewModel viewModel)
         {
-            var model = new RegisterViewModel();
+            viewModel ??= new RegisterViewModel();
 
-            return await Task.FromResult<IViewComponentResult>(View(model));
+            return await Task.FromResult<IViewComponentResult>(View(viewModel));
         }
     }
 }

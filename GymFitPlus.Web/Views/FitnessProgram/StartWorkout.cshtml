@@ -19,7 +19,7 @@
             @foreach (var item in Model)
             {
                 <div class="card col-md-2 box" style="border-radius: 50px;">
-                    <a asp-controller="FitnessProgram" asp-action="Details" asp-route-id="@item.Id" asp-route-startWorkout="true" class="btn linkbtn">
+                    <a asp-area="" asp-controller="FitnessProgram" asp-action="Details" asp-route-id="@item.Id" asp-route-startWorkout="true" class="btn linkbtn">
                         <div>
                             <div class="card-body text-light">
                                 <h3 class="card-title">@item.Name</h3>

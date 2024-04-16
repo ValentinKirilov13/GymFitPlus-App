@@ -1,26 +1,25 @@
 ﻿@model RecipeDetailsViewModel
 @{
-    ViewBag.Title = "Edit Recipe";
+    ViewBag.Title = "Add Recipe";
 
     string imgSrc = Model.Image != null
                     ? String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.Image))
                     : "/images/Recipes/food.svg";
 }
-
 @section Styles {
     <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/AddRecipe.css" asp-append-version="true" />
 }
 
 <header class="text-center">
-    <h1>Edit Recipe</h1>
+    <h1>Add Recipe</h1>
 </header>
 
 <div class="container">
     <div class="row text-center">
         <div class="row justify-content-center">
             <div class="col-sm-12 p-5 box">
-                <form asp-action="EditRecipe" asp-controller="Recipe" method="post" enctype="multipart/form-data">
+                <form asp-area="Admin" asp-action="AddRecipe" asp-controller="Recipe" method="post" enctype="multipart/form-data">
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -44,7 +43,7 @@
 
                     <div class="form-group">
                         <input asp-for="Name" type="text" class="form-style" placeholder="Name">
-                        <i class="input-icon material-symbols-light--exercise-outline"></i>
+                        <i class="input-icon ep--food"></i>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
@@ -55,22 +54,27 @@
                                 <option style="color: #ffffff" value="@recipeType">@recipeType</option>
                             }
                         </select>
-                        <i class="input-icon ion--body-outline"></i>
+                        <i class="input-icon dashicons--food"></i>
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
+                        <input asp-for="CaloriesPerHundredGrams" type="text" id="calories" class="form-style" placeholder="Calories content in 100 grams">
+                        <i class="input-icon fluent-mdl2--calories"></i>
+                        <span asp-validation-for="CaloriesPerHundredGrams" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
                         <input asp-for="ProteinPerHundredGrams" type="text" id="protein" class="form-style" placeholder="Protein content in 100 grams">
-                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <i class="input-icon mdi--meat-outline"></i>
                         <span asp-validation-for="ProteinPerHundredGrams" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
                         <input asp-for="CarbsPerHundredGrams" type="text" id="carbs" class="form-style" placeholder="Carb content in 100 grams">
-                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <i class="input-icon ph--bread "></i>
                         <span asp-validation-for="CarbsPerHundredGrams" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
                         <input asp-for="FatPerHundredGrams" type="text" id="fats" class="form-style" placeholder="Fat content in 100 grams">
-                        <i class="input-icon fluent--video-link-24-regular"></i>
+                        <i class="input-icon streamline--pork-meat"></i>
                         <span asp-validation-for="FatPerHundredGrams" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
@@ -78,52 +82,15 @@
                         <i class="input-icon fluent--text-description-ltr-24-regular"></i>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <button type="submit" class="btnn">Edit Recipe</button>
+                    <button type="submit" class="btnn">Add Recipe</button>
                 </form>
-                <div>
-                    <button data-bs-toggle="modal"
-                            data-bs-target="#DeleteRecipe"
-                            class="btn btn-outline-danger delBtn"
-                            style="font-weight:bold;">
-                        Delete Recipe
-                    </button>
-                    <div class="modal fade" id="DeleteRecipe" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content box">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5 text-center">Are you sure you want to delete recipe @Model.Name?</h1>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-outline-warning mt-5 border-0" data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <form asp-action="DeleteRecipe" asp-controller="Recipe" method="post">
-                                                    <input asp-for="Id" hidden />
-                                                    <button type="submit" class="btn btn-outline-danger delBtn float-end">Yes</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    var deleteRecipe = document.getElementById('DeleteRecipe');
-    document.body.appendChild(deleteRecipe);
-</script>
-
 @section Scripts {
-    @*  <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/AddExercise.js"></script>
     <script src="~/js/AddRecipe.js"></script>
 }

@@ -30,6 +30,9 @@ namespace GymFitPlus.Core.ViewModels.AccountViewModels
         [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
         public IFormFile[]? Image { get; set; }
 
+        [MaxLength(ImageMaxLenght, ErrorMessage = PhotoErrorMessage)]
+        public byte[]? ImageForPreview { get; set; }
+
         [StringLength(
            UrlMaxLenght,
            MinimumLength = UrlMinLenght,

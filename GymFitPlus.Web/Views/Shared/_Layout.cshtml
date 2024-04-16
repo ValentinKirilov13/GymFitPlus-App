@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - GymFit+</title>
     <link rel="stylesheet" href="~/css/normalize.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GymFitPlus.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,24 +18,16 @@
 
         @if (SignInManager.IsSignedIn(User) && ViewBag.RegState == null)
         {
-            @await Component.InvokeAsync("SideNavigationBarComponent")
-            if (ViewBag.GoBackUrl != null)
-            {
-                <button class="back-arrow" onclick="goBackWithUrl('@(ViewBag.GoBackUrl)')">&#8592; Go Back</button>
-            }
-            else
-            {
-                <button class="back-arrow" onclick="goBack()">&#8592; Go Back</button>
-            }
+            @await Component.InvokeAsync("SideNavigationBarComponent")            
         }
         else if (!SignInManager.IsSignedIn(User))
         {
-            <nav id="guestNavBar" class="navbar navbar-expand-sm navbar-toggleable-sm text-center">
+            <nav id="guestNavBar" class="navbar navbar-expand-sm navbar-toggleable-sm text-center navbar-light bg-lignt">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gym<span id="fit">Fit</span>+</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon navbar-light"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
@@ -59,13 +52,27 @@
 
     <footer class="footer text-muted">
         <div class="container">
-            &copy; @DateTime.Today.Year - GymFit+ - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Today.Year - GymFitPlus - <a asp-area="" asp-controller="Home" asp-action="Privacy" 
+            class="text-decoration-none" id="privacyH1">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (TempData["UserMessageSuccess"] != null)
+    {
+        <script defer>
+            message.showSuccess('@TempData["UserMessageSuccess"]');
+        </script>
+    }
+    @if (TempData["UserMessageError"] != null)
+    {
+        <script defer>
+            message.showError('@TempData["UserMessageError"]');
+        </script>
+    }
 </body>
 </html>

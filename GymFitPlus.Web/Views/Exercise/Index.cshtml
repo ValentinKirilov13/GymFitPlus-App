@@ -12,18 +12,9 @@
     }
 }
 
-<header class="text-center">
+<header class="text-center mb-5">
     <h1>Explore Exercises</h1>
 </header>
-
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-3 center-div mb-4">
-            <a class="btnn nav-link d-flex justify-content-center" asp-controller="Exercise" asp-action="AddExercise">Add Exercise</a>
-        </div>
-    </div>
-</div>
 <hr />
 
 @await Component.InvokeAsync("SearchExerciseComponent", ViewBag.Query)
@@ -34,11 +25,11 @@
         <div class="row text-center">
             <div class="row justify-content-center mt-0" id="sourceElement">
                 @foreach (var item in Model)
-                {
+                {                   
                     <div class="card col-md-2 box mt-3">
-                        <a asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn">
-                            <div class="card h-100 ">
-                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top" />
+                        <a asp-area="" asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn cardSize2">
+                            <div class="card h-100 cardSize2">
+                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top p-2" />
                                 <div class="card-body">
                                     <h3 class="card-title">@item.Name</h3>
                                     <p class="card-text"> Used in @item.UsedByProgramsCount fitness programs.</p>
@@ -61,7 +52,6 @@ else
         </div>
     </div>  
 }
-
 
 @section Scripts {
     <script src="~/js/IndexExercises.js"></script>

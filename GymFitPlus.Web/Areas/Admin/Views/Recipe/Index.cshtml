@@ -1,0 +1,90 @@
+﻿@model IEnumerable<RecipesAllViewModel>
+@{
+    ViewBag.Title = "All Recipes";
+
+    bool isDeleted = ViewBag.IsDeleted != null ? ViewBag.IsDeleted : false;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+}
+
+<div class="row">
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-area="Admin" asp-action="Index" asp-controller="Recipe" asp-route-deleted="false" class="tabLinks">
+                <h1 class="@(!isDeleted ? "tabLinksClicked" : "tabLinks")">Active Recipes</h1>
+            </a>
+        </header>
+    </div>
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-area="Admin" asp-action="Index" asp-controller="Recipe" asp-route-deleted="true" class="tabLinks">
+                <h1 class="@(isDeleted ? "tabLinksClicked" : "tabLinks")">Deleted Recipes</h1>
+            </a>
+        </header>
+    </div>
+</div>
+
+@if (!isDeleted)
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3 center-div mb-4">
+                <a class="btnn nav-link d-flex justify-content-center"
+                   asp-area="Admin" asp-controller="Recipe" asp-action="AddRecipe">Add Recipe</a>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+
+<div class="container">
+    <div class="row text-center">
+        <div class="row justify-content-center mt-0" id="sourceElement">
+            @foreach (var item in Model)
+            {
+                string imgSrc = item.Image != null
+                ? String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.Image))
+                : "/images/Recipes/food.svg";
+
+                if (!isDeleted)
+                {
+                    <div class="card col-md-2 box mt-3">
+                        <a asp-area="Admin" asp-controller="Recipe" asp-action="Details" asp-route-id="@item.Id" class="btn linkHeight p-0">
+                            <div class="card h-100 cardSize">
+                                <img src="@imgSrc" class="card-img-top imgSize" />
+                                <div class="card-body p-0">
+                                    <h4 class="card-title">@item.Name</h4>
+                                    <p>Calories: @item.CaloriesPerHundredGrams</p>
+                                    <p>P: @item.ProteinPerHundredGrams</p>
+                                    <p>C: @item.CarbsPerHundredGrams</p>
+                                    <p>F: @item.FatPerHundredGrams</p>
+                                    <p class="card-text fs-0">This recipe is a favorite of @item.FavoriteByUsers users.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="card col-md-2 box mt-3">
+                        <div class="card h-100 cardSize">
+                            <img src="@imgSrc" class="card-img-top imgSize" />
+                            <div class="card-body p-0">
+                                <h4 class="card-title">@item.Name</h4>
+                                <p>Calories: @item.CaloriesPerHundredGrams</p>
+                                <p>P: @item.ProteinPerHundredGrams</p>
+                                <p>C: @item.CarbsPerHundredGrams</p>
+                                <p>F: @item.FatPerHundredGrams</p>
+                                <form asp-area="Admin" asp-controller="Recipe" asp-action="RestoreRecipe" asp-route-Id="@item.Id">
+                                    <input type="submit" class="btnn" value="Restore Recipe" style="width:170px; margin-bottom:20px;" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

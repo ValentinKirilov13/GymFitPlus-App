@@ -48,7 +48,7 @@ namespace GymFitPlus.Core.Services
                 })
                 .FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId) ?? throw new NullReferenceException();
         }
-        public async Task CreateWorkoutAsync(WorkoutDetailViewModel viewModel)
+        public async Task<bool> CreateWorkoutAsync(WorkoutDetailViewModel viewModel)
         {
             Workout model = new()
             {
@@ -60,16 +60,20 @@ namespace GymFitPlus.Core.Services
             };
 
             await _repository.AddAsync(model);
-            await _repository.SaveChangesAsync();
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
-        public async Task DeleteWorkoutAsync(WorkoutDetailViewModel viewModel, Guid userId)
+        public async Task<bool> DeleteWorkoutAsync(WorkoutDetailViewModel viewModel, Guid userId)
         {
             Workout workoutToDelete = await _repository
                 .All<Workout>()
                 .FirstOrDefaultAsync(x => x.Id == viewModel.Id && x.UserId == userId) ?? throw new NullReferenceException();
 
-             _repository.Remove(workoutToDelete);
-            await _repository.SaveChangesAsync();
+            _repository.Remove(workoutToDelete);
+            int affectedRows = await _repository.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
     }
 }

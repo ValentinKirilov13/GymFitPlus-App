@@ -7,13 +7,15 @@ namespace GymFitPlus.Core.Contracts
     {
         Task<IEnumerable<ExerciseAllViewModel>> AllExerciseAsync(AllExercisesQueryModel query);
         Task<ExerciseDetailViewModel> FindExerciseByIdAsync(int id);
-        Task AddExerciseAsync(ExerciseDetailViewModel viewModel);
-        Task DeleteExerciseAsync(int id);
-        Task EditExerciseAsync(ExerciseDetailViewModel viewModel);
+        Task<bool> AddExerciseAsync(ExerciseDetailViewModel viewModel);
+        Task<bool> DeleteExerciseAsync(int id);
+        Task<bool> EditExerciseAsync(ExerciseDetailViewModel viewModel);
         Task<IEnumerable<ExerciseForProgramViewModel>> GetAllExerciseForProgramAsync(int programId);
         Task<bool> AddExerciseToProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
         Task<bool> EditExerciseFromProgramAsync(FitnessProgramExercisesInfoViewModel viewModel);
         Task<bool> RemoveExerciseFromProgramAsync(int exerciseId, int programId);
         Task<FitnessProgramExercisesInfoViewModel> GetExerciseFromProgramToEditAsync(int exerciseId, int programId);
+        Task<IEnumerable<ExerciseAllViewModel>> AllExerciseForAdminAsync(bool deleted);
+        Task<bool> RestoreExerciseAsync(int id);
     }
 }

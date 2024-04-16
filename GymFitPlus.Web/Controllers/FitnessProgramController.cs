@@ -4,7 +4,7 @@ using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
-using System.Text;
+using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
 {
@@ -24,14 +24,22 @@ namespace GymFitPlus.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(bool startWorkout = false)
         {
-            IEnumerable<FitnessProgramFormViewModel> allPrograms = await _fitnessProgramService.AllFitnessProgramsAsync(User.Id());
-
-            if (startWorkout)
+            try
             {
-                return View("StartWorkout", allPrograms);
-            }
+                IEnumerable<FitnessProgramFormViewModel> allPrograms = await _fitnessProgramService.AllFitnessProgramsAsync(User.Id());
 
-            return View(allPrograms);
+                if (startWorkout)
+                {
+                    return View("StartWorkout", allPrograms);
+                }
+
+                return View(allPrograms);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }         
         }
 
         [HttpGet]
@@ -45,93 +53,204 @@ namespace GymFitPlus.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProgram(FitnessProgramFormViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(viewModel);
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
+
+                bool result = await _fitnessProgramService.AddFitnessProgramAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully was created fitness program {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
+
+                return RedirectToAction(nameof(Index));
             }
-
-            await _fitnessProgramService.AddFitnessProgramAsync(viewModel, User.Id());
-
-            return RedirectToAction(nameof(Index));
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id, bool startWorkout = false)
         {
-            var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
-
-            if (startWorkout)
+            try
             {
+                var program = await _fitnessProgramService.FindFitnessProgramByIdAsync(id);
+
                 TempData["FitnessProgramId"] = program.Id;
 
-                if (TempData.Get<WorkoutDetailViewModel>("WorkoutModel") != null && TempData["WorkoutModelErrors"] != null)
+                if (startWorkout)
+                {                   
+                    if (TempData.Get<WorkoutDetailViewModel>("WorkoutModel") != null && TempData["WorkoutModelErrors"] != null)
+                    {
+                        if (TempData["WorkoutModelErrors"] is string[] errorsWorkout && errorsWorkout.Any())
+                        {
+                            foreach (var error in errorsWorkout)
+                            {
+                                ModelState.AddModelError("", error);
+                            }
+                        }
+
+                        ViewBag.ValidationError = true;
+                        ViewBag.WorkoutModel = TempData.Get<WorkoutDetailViewModel>("WorkoutModel");
+                    }
+                    else
+                    {
+                        ViewBag.WorkoutModel = new WorkoutDetailViewModel() { FitnessProgramId = program.Id };
+                    }
+
+                    return View("StartWorkoutDashboard", program);
+                }
+
+                if (TempData["NameErrors"] != null)
                 {
-                    if (TempData["WorkoutModelErrors"] is string[] errors && errors.Any())
+                    if (TempData["NameErrors"] is Dictionary<string,string> errors && errors.Any())
                     {
                         foreach (var error in errors)
                         {
-                            ModelState.AddModelError("", error);
+                            ModelState.AddModelError(error.Key, error.Value);
                         }
-                    }
-
-                    ViewBag.ValidationError = true;
-                    ViewBag.WorkoutModel = TempData.Get<WorkoutDetailViewModel>("WorkoutModel");
-                }
-                else
-                {
-                    ViewBag.WorkoutModel = new WorkoutDetailViewModel() { FitnessProgramId = program.Id };
+                    }                  
                 }
 
-                return View("StartWorkoutDashboard", program);
+                return View(program);
             }
-
-            return View(program);
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }        
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(FitnessProgramDetailViewModel viewModel)
         {
-            await _fitnessProgramService.DeleteFitnessProgramAsync(viewModel.Id);
+            try
+            {
+                if ((int?)TempData["FitnessProgramId"] != viewModel.Id)
+                {
+                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
+                    return BadRequest();
+                }
+                 
+                bool result = await _fitnessProgramService.DeleteFitnessProgramAsync(viewModel.Id);
 
-            return RedirectToAction(nameof(Index));
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted fitness program {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> EditProgramName(FitnessProgramDetailViewModel viewModel)
         {
-            TempData["Succssed"] = false;
-
-            if (ModelState.IsValid)
+            try
             {
-                TempData["Succssed"] = await _fitnessProgramService.EditFitnessProgramAsync(viewModel);
-                TempData["Action"] = "edited program name";
-            }
-            else
-            {
-                var errors = ModelState.Values
-                            .SelectMany(v => v.Errors)
-                            .Select(e => e.ErrorMessage)
-                            .ToList();
-
-                StringBuilder sb = new StringBuilder();
-
-                foreach (var error in errors)
+                if ((int?)TempData["FitnessProgramId"] != viewModel.Id)
                 {
-                    sb.AppendLine(error);
+                    _logger.LogError("{Message:}", TryToEditNotChoosenOne);
+                    return BadRequest();
                 }
 
-                TempData["Errors"] = sb.ToString().TrimEnd();
-            }
+                if (ModelState.IsValid)
+                {
+                    bool result = await _fitnessProgramService.EditFitnessProgramAsync(viewModel);
 
-            return RedirectToAction("Details", new { id = viewModel.Id });
+                    if (result)
+                    {
+                        TempData["UserMessageSuccess"] = $"Successfully change name to {viewModel.Name}";
+                    }
+                    else
+                    {
+                        TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                    }
+                }
+                else
+                {
+                    Dictionary<string, string> errors = new();
+
+                    foreach (var error in ModelState)
+                    {
+                        foreach (var item in error.Value.Errors)
+                        {
+                            errors.Add(error.Key, item.ErrorMessage);
+                        }
+                    }
+
+                    TempData["ModalToShow"] = "ProgramNameModal";
+                    TempData["NameErrors"] = errors;
+                }
+
+                return RedirectToAction("Details", new { id = viewModel.Id });
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }        
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllProgramsAjax(int withoutExerciseId)
         {
-            var programs = await _fitnessProgramService.GetAllFitnessProgramsFilltered(User.Id(), withoutExerciseId);
+            try
+            {
+                var programs = await _fitnessProgramService.GetAllFitnessProgramsFilltered(User.Id(), withoutExerciseId);
 
-            return Json(programs);
+                return Json(programs);
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError("{Message:}", $"{NullReferenceErrorMessage} {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Message:}", ex.Message);
+                return BadRequest();
+            }          
         }
     }
 }

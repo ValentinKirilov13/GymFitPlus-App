@@ -1,7 +1,6 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.AccountViewModels;
 using GymFitPlus.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,7 +69,7 @@ namespace GymFitPlus.Core.Services
                .FirstOrDefaultAsync() ?? throw new NullReferenceException();
         }
 
-        public async Task<RegisterUserInfoFormViewModel> GetUserInfoForEdit(string userId)
+        public async Task<RegisterUserInfoFormViewModel> GetUserInfoForEditAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId) ?? throw new NullReferenceException();
 
@@ -84,27 +83,22 @@ namespace GymFitPlus.Core.Services
             viewModel.InstagramUrl = user.InstagramUrl;
             viewModel.YouTubeUrl = user.YouTubeUrl;
             viewModel.PhoneNumber = user.PhoneNumber;
-
-
-            if (user.Image != null && user.Image.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream(user.Image))
-                {
-                    var formFile = new FormFile(memoryStream, 0, user.Image.Length, "", "UserImage")
-                    {
-                        Headers = new HeaderDictionary(),
-                        ContentDisposition = "form-data",
-                        ContentType = "image/jpeg",
-                    };
-
-                    var formFileArray = new IFormFile[1];
-                    formFileArray[0] = formFile;
-
-                    viewModel.Image = formFileArray;
-                }
-            }
-
+            viewModel.ImageForPreview = user.Image;
+            
             return viewModel;
+        }
+
+        public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
+        {
+            return await _userManager.Users
+                .AsNoTracking()
+                .OrderByDescending(x => x.Id)
+                .Select(x => new UserViewModel
+                {
+                    UserName = x.UserName,
+                    Email = x.Email
+                })
+                .ToListAsync();
         }
     }
 }

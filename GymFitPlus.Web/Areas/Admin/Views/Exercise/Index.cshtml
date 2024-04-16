@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ExerciseAllViewModel>
+@{
+    ViewBag.Title = "All Exercises";
+    bool isDeleted = ViewBag.IsDeleted != null ? ViewBag.IsDeleted : false;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+}
+
+<div class="row">
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-area="Admin" asp-action="Index" asp-controller="Exercise" asp-route-deleted="false" class="tabLinks">
+                <h1 class="@(!isDeleted ? "tabLinksClicked" : "tabLinks")">Active Exercises</h1>
+            </a>
+        </header>
+    </div>
+    <div class="col-md-6 divForHeaders">
+        <header class="text-center">
+            <a asp-area="Admin" asp-action="Index" asp-controller="Exercise" asp-route-deleted="true" class="tabLinks">
+                <h1 class="@(isDeleted ? "tabLinksClicked" : "tabLinks")">Deleted Exercises</h1>
+            </a>
+        </header>
+    </div>
+</div>
+
+@if (!isDeleted)
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3 center-div mb-4">
+                <a class="btnn nav-link d-flex justify-content-center"
+                   asp-area="Admin" asp-controller="Exercise" asp-action="AddExercise">Add Exercise</a>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+
+<div class="container">
+    <div class="row text-center">
+        <div class="row justify-content-center mt-0" id="sourceElement">
+            @foreach (var item in Model)
+            {
+                @if (!isDeleted)
+                {
+                    <div class="card col-md-2 box mt-3">
+                        <a asp-area="Admin" asp-controller="Exercise" asp-action="Details" asp-route-id="@item.Id" class="btn cardSize2">
+                            <div class="card h-100 cardSize2">
+                                <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top p-2" />
+                                <div class="card-body">
+                                    <h3 class="card-title">@item.Name</h3>
+                                    <p class="card-text"> Used in @item.UsedByProgramsCount fitness programs.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="card col-md-2 box mt-3">
+                        <div class="card h-100 cardSize2">
+                            <img src="/images/Exercises/@(item.MuscleGroup.ToString()).svg" class="card-img-top p-2" />
+                            <div class="card-body">
+                                <h3 class="card-title">@item.Name</h3>
+                                <form asp-area="Admin" asp-controller="Exercise" asp-action="RestoreExercise" asp-route-Id="@item.Id">
+                                    <input type="submit" class="btnn" value="Restore Exercise" style="width:170px;" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

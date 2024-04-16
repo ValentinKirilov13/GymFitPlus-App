@@ -18,12 +18,12 @@
                         <div class="card-3d-wrapper">
                             <div class="card-front">
                                 <div class="center-wrap">
-                                    @await Component.InvokeAsync("LoginComponent")
+                                    @await Component.InvokeAsync("LoginComponent", new { viewModel = ViewBag.LoginModel })
                                 </div>
                             </div>
                             <div class="card-back">
                                 <div class="center-wrap">
-                                    @await Component.InvokeAsync("RegisterComponent")
+                                    @await Component.InvokeAsync("RegisterComponent", new { viewModel = ViewBag.RegisterModel })
                                 </div>
                             </div>
                         </div>
@@ -45,6 +45,6 @@
     </script>
 }
 
-@* @section Scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+}

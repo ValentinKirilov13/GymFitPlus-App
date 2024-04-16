@@ -5,7 +5,7 @@
 
 <div class="section text-center">
     <h4 class="mb-2 pb-3">Sign Up</h4>
-    <form asp-action="Register" asp-controller="Account" method="post">
+    <form asp-area="" asp-action="Register" asp-controller="Account" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -33,7 +33,7 @@
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        <button type="submit" class="btnn btn-primary btn-block">Sign Up</button>
     </form>
 </div>
 

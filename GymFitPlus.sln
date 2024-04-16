@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.Core", "GymFitPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.Infrastructure", "GymFitPlus.Infrastructure\GymFitPlus.Infrastructure.csproj", "{7EA7965B-9240-48BD-A6FD-B20EA581F04F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymFitPlus.UnitTests", "GymFitPlus.UnitTests\GymFitPlus.UnitTests.csproj", "{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7EA7965B-9240-48BD-A6FD-B20EA581F04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA7965B-9240-48BD-A6FD-B20EA581F04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA7965B-9240-48BD-A6FD-B20EA581F04F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7BF785-C6DA-4E8E-A0D2-06E84B5EA492}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

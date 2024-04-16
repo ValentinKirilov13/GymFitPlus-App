@@ -1,0 +1,45 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    ViewBag.Title = "All Users";
+    int count = default;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/IndexExercises.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StartWorkoutDashboard.css" asp-append-version="true" />
+}
+
+<header>
+    <h1 class="display-3 text-center">
+        All Registered Users
+    </h1>
+</header>
+<hr />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="table">
+                <table class="table text-light" id="recordsTable">
+                    <thead class="text-center">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col" class="text-center">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myCustomTrHover" class="text-center">
+                        @foreach(var user in Model)
+                        {
+                            <tr>
+                                <td>@(++count)</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

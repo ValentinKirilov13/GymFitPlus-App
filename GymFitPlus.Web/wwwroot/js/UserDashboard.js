@@ -156,7 +156,7 @@ function getStats(statsTypeParam) {
                         y: {
                             ticks: {
                                 callback: function (value, index, ticks) {
-                                    return value + ' ' + myDimensions;
+                                    return value.toFixed(1) + ' ' + myDimensions;
                                 },
                                 color: '#ff206e',
                             },
@@ -174,7 +174,7 @@ function getStats(statsTypeParam) {
             myChart = new Chart(ctx, cfg);
 
             directionElement.textContent = direction;
-            changeValueElement.textContent = Math.abs(changeValue);
+            changeValueElement.textContent = Math.abs(changeValue).toFixed(1);
             dimensionElement.textContent = myDimensions;
 
             directionElement.style.color = color;

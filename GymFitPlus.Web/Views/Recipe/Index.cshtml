@@ -3,7 +3,6 @@
     ViewBag.Title = "Explore Recipes";
 
     bool isFavourite = ViewBag.IsFavourite != null ? ViewBag.IsFavourite : false;
-
 }
 
 @section Styles {
@@ -16,28 +15,20 @@
     }
 }
 
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-6 divForHeaders">
         <header class="text-center">
-            <a asp-action="Index" asp-controller="Recipe" asp-route-favourite="false" class="tabLinks">
+            <a asp-area="" asp-action="Index" asp-controller="Recipe" asp-route-favourite="false" class="tabLinks">
                 <h1 class="@(!isFavourite ? "tabLinksClicked" : "tabLinks")">All Recipes</h1>
             </a>
         </header>
     </div>
     <div class="col-md-6 divForHeaders">
         <header class="text-center">
-            <a asp-action="Index" asp-controller="Recipe" asp-route-favourite="true" class="tabLinks" style="">
+            <a asp-area="" asp-action="Index" asp-controller="Recipe" asp-route-favourite="true" class="tabLinks" style="">
                 <h1 class="@(isFavourite ? "tabLinksClicked" : "tabLinks")">My Recipes</h1>
             </a>
         </header>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-3 center-div mb-4">
-            <a class="btnn nav-link d-flex justify-content-center" asp-controller="Recipe" asp-action="AddRecipe">Add Recipe</a>
-        </div>
     </div>
 </div>
 <hr />
@@ -56,11 +47,12 @@
                     : "/images/Recipes/food.svg";
 
                     <div class="card col-md-2 box mt-3">
-                        <a asp-controller="Recipe" asp-action="Details" asp-route-id="@item.Id" asp-route-favourite="@isFavourite" class="btn linkHeight p-0">
+                        <a asp-area="" asp-controller="Recipe" asp-action="Details" asp-route-id="@item.Id" asp-route-favourite="@isFavourite" class="btn linkHeight p-0">
                             <div class="card h-100 cardSize">
                                 <img src="@imgSrc" class="card-img-top imgSize" />
                                 <div class="card-body p-0">
                                     <h4 class="card-title">@item.Name</h4>
+                                    <p>Calories: @item.CaloriesPerHundredGrams</p>
                                     <p>P: @item.ProteinPerHundredGrams</p>
                                     <p>C: @item.CarbsPerHundredGrams</p>
                                     <p>F: @item.FatPerHundredGrams</p>
@@ -84,7 +76,6 @@ else
         </div>
     </div>
 }
-
 
 @section Scripts {
     <script src="~/js/IndexExercises.js"></script>
