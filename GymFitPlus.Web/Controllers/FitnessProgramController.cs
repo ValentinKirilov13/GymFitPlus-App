@@ -4,7 +4,6 @@ using GymFitPlus.Core.ViewModels.WorkoutViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Security.Claims;
-using System.Text;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
 namespace GymFitPlus.Web.Controllers
@@ -90,9 +89,9 @@ namespace GymFitPlus.Web.Controllers
                 {                   
                     if (TempData.Get<WorkoutDetailViewModel>("WorkoutModel") != null && TempData["WorkoutModelErrors"] != null)
                     {
-                        if (TempData["WorkoutModelErrors"] is string[] errors && errors.Any())
+                        if (TempData["WorkoutModelErrors"] is string[] errorsWorkout && errorsWorkout.Any())
                         {
-                            foreach (var error in errors)
+                            foreach (var error in errorsWorkout)
                             {
                                 ModelState.AddModelError("", error);
                             }
@@ -107,6 +106,17 @@ namespace GymFitPlus.Web.Controllers
                     }
 
                     return View("StartWorkoutDashboard", program);
+                }
+
+                if (TempData["NameErrors"] != null)
+                {
+                    if (TempData["NameErrors"] is Dictionary<string,string> errors && errors.Any())
+                    {
+                        foreach (var error in errors)
+                        {
+                            ModelState.AddModelError(error.Key, error.Value);
+                        }
+                    }                  
                 }
 
                 return View(program);
@@ -167,19 +177,18 @@ namespace GymFitPlus.Web.Controllers
                 }
                 else
                 {
-                    var errors = ModelState.Values
-                                .SelectMany(v => v.Errors)
-                                .Select(e => e.ErrorMessage)
-                                .ToList();
+                    Dictionary<string, string> errors = new();
 
-                    StringBuilder sb = new StringBuilder();
-
-                    foreach (var error in errors)
+                    foreach (var error in ModelState)
                     {
-                        sb.AppendLine(error);
+                        foreach (var item in error.Value.Errors)
+                        {
+                            errors.Add(error.Key, item.ErrorMessage);
+                        }
                     }
 
-                    TempData["Errors"] = sb.ToString().TrimEnd();
+                    TempData["ModalToShow"] = "ProgramNameModal";
+                    TempData["NameErrors"] = errors;
                 }
 
                 return RedirectToAction("Details", new { id = viewModel.Id });

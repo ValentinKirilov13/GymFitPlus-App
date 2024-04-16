@@ -34,7 +34,7 @@
                                                     <div class="form-group">
                                                         <input asp-for="Name" class="form-style" type="text" style="padding-left:100px;" required />
                                                         <i class="input-icon">Name:</i>
-                                                        <span asp-validation-for="Name" id="Name-error" class="text-danger"></span>
+                                                        <span asp-validation-for="Name" class="text-danger"></span>
                                                     </div>
                                                     <input type="submit" class="btnn align-items-center" value="Save changes" />
                                                 </form>
@@ -215,9 +215,21 @@
     </div>
 </div>
 
-@* @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    } *@
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+
+    @if (@TempData["ModalToShow"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modal = new bootstrap.Modal(document.getElementById('@TempData["ModalToShow"]'));
+                modal.show();
+            });
+        </script>
+    }
+}
+
+
 
 
 

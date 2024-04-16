@@ -1,7 +1,6 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.AccountViewModels;
 using GymFitPlus.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -84,26 +83,8 @@ namespace GymFitPlus.Core.Services
             viewModel.InstagramUrl = user.InstagramUrl;
             viewModel.YouTubeUrl = user.YouTubeUrl;
             viewModel.PhoneNumber = user.PhoneNumber;
-
-
-            if (user.Image != null && user.Image.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream(user.Image))
-                {
-                    var formFile = new FormFile(memoryStream, 0, user.Image.Length, "", "UserImage")
-                    {
-                        Headers = new HeaderDictionary(),
-                        ContentDisposition = "form-data",
-                        ContentType = "image/jpeg",
-                    };
-
-                    var formFileArray = new IFormFile[1];
-                    formFileArray[0] = formFile;
-
-                    viewModel.Image = formFileArray;
-                }
-            }
-
+            viewModel.ImageForPreview = user.Image;
+            
             return viewModel;
         }
 

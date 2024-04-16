@@ -133,7 +133,7 @@ namespace GymFitPlus.Web.Controllers
                             errors.Add(error.Key, item.ErrorMessage);
                         }
                     }
-
+                    TempData["ModalToShow"] = $"element{viewModel.FitnessProgramId}{viewModel.ExerciseId}edit";
                     TempData["FitnessProgramExerciseViewModelErrors"] = errors;
                 }
 

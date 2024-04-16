@@ -3,51 +3,64 @@
     ViewBag.Title = "Add Exercise";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddExercise.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ChangeStats.css" asp-append-version="true" />
+}
+
+<header class="text-center mb-5">
+    <h1>Add Exercise to Program</h1>
+</header>
+<hr />
+
 <div class="container">
-    <div class="row">
+    <div class="row text-center">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 p-5 box">
+                <form asp-area="" asp-controller="Exercise" asp-action="AddExerciseToProgram" method="post" class="row g-3 needs-validation">
+
+                    <input asp-for="FitnessProgramId" hidden>
+                    <input asp-for="Order" hidden />
+
+                    <div class="form-group mt-2">
+                        <select asp-for="ExerciseId" class="form-style" style="color: #ffeba7" required>
+                            <option selected disabled value="" style="color: #ffffff">Exercise</option>
+                            @foreach (var item in Model.Exercises)
+                            {
+                                <option style="color: #ffffff" value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <i class="input-icon">Exercise</i>
+                        <span asp-validation-for="ExerciseId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="Sets" type="text" class="form-style" required>
+                        <i class="input-icon">Sets</i>
+                        <span asp-validation-for="Sets" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="Reps" type="text" class="form-style" required>
+                        <i class="input-icon">Reps</i>
+                        <span asp-validation-for="Reps" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <input asp-for="Weight" type="text" class="form-style" required>
+                        <i class="input-icon">Weight [kg]</i>
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <button class="btnn" type="submit">Add Exercise</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-<form asp-controller="Exercise" asp-action="AddExerciseToProgram" method="post" class="row g-3 needs-validation">
-
-    <input asp-for="FitnessProgramId" hidden>
-    <input asp-for="Order" hidden />
-
-    <div class="col-md-3">
-        <label asp-for="ExerciseId"  class="form-label"></label>
-        <select asp-for="ExerciseId" class="form-select"  required>
-            <option selected disabled value="">Choose...</option>
-            @foreach (var item in Model.Exercises)
-            {
-                <option value="@item.Id">@item.Name</option>
-            } 
-        </select>
-        <span asp-validation-for="ExerciseId" class="alert-danger"></span>
-    </div>
-
-    <div class="col-md-4">
-        <label asp-for="Sets" class="form-label"></label>
-        <input asp-for="Sets" type="text" class="form-control"required>
-        <span asp-validation-for="Sets" class="alert-danger"></span>
-    </div>
-
-    <div class="col-md-4">
-        <label asp-for="Reps" class="form-label"></label>
-        <input asp-for="Reps" type="text" class="form-control"  required>
-        <span asp-validation-for="Reps" class="alert-danger"></span>
-    </div>
-
-    <div class="col-md-4">
-        <label asp-for="Weight" class="form-label"></label>
-        <input asp-for="Weight" type="text" class="form-control"  required>
-        <span asp-validation-for="Weight" class="alert-danger"></span>
-    </div>
-
-    <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
-    </div>
-</form>
-
 @* @section scripts {
     <partial name="_validationscriptspartial" />
-} *@
+    } *@

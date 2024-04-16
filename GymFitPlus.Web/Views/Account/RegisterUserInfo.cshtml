@@ -1,6 +1,9 @@
 ﻿@model RegisterUserInfoFormViewModel
 @{
     ViewBag.Title = "Register page";
+    string imgSrc = Model.ImageForPreview != null
+                   ? String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.ImageForPreview))
+                   : "/images/Avatar/avatar.svg";
 }
 
 @section Styles {
@@ -17,10 +20,10 @@
                             <div class="card-front">
                                 <div class="center-wrap">
                                     <h1>Profile configuration</h1>
-                                    <form asp-action="RegisterUserInfo" asp-controller="Account" method="post" enctype="multipart/form-data">
+                                    <form asp-area="" asp-action="RegisterUserInfo" asp-controller="Account" method="post" enctype="multipart/form-data">
 
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                       
+
                                         <div class="container">
                                             <div class="avatar-upload">
                                                 <div class="avatar-edit">
@@ -29,12 +32,16 @@
                                                     <span asp-validation-for="Image" class="text-danger"></span>
                                                 </div>
                                                 <div class="avatar-preview">
-                                                    <div id="imagePreview">
+                                                    <div id="imagePreview"
+                                                         style="background-image: url(@imgSrc);
+                                                                background-size: cover;
+                                                                background-position: center;">
                                                     </div>
                                                     <h4 class="mt-2">Profile picture</h4>
                                                 </div>
                                             </div>
                                         </div>
+                                       
                                         <div class="form-group">
                                             <input asp-for="FirstName" type="text" class="form-style" placeholder="First name">
                                             <i class="input-icon ph--user-bold"></i>
@@ -49,9 +56,9 @@
 
                                         <div class="form-group mt-2">
                                             <input id="dateInput" asp-for="BirthDate"
-                                                   type="text" class="form-style textbox-n" 
-                                                   onfocus="(this.type='date')" 
-                                                   onblur="(this.type='text')" 
+                                                   type="text" class="form-style textbox-n"
+                                                   onfocus="(this.type='date')"
+                                                   onblur="(this.type='text')"
                                                    placeholder="Birthdate">
                                             <i class="input-icon material-symbols--cake-outline"></i>
                                             <span asp-validation-for="BirthDate" class="text-danger"></span>
@@ -91,7 +98,7 @@
                                             <i class="input-icon ri--youtube-line"></i>
                                             <span asp-validation-for="YouTubeUrl" class="text-danger"></span>
                                         </div>
-                                    
+
                                         <button type="submit" class="btnn btn-primary btn-block mt-5" onclick="showHiddenDiv()">Complete</button>
                                     </form>
                                     @if (ViewBag.RegState != null)
@@ -99,7 +106,7 @@
                                         <form class="form-inline float-end" asp-controller="Account" asp-action="Logout" method="post">
                                             <button type="submit" class="nav-link btnn btn-link text-dark" onclick="showHiddenDiv()">Log out</button>
                                         </form>
-                                    }                                   
+                                    }
                                     <div id="hiddenDiv" class="text-center float-start m-5" style="display:none;">
                                         <div class="spinner-border custom-spinner-color " role="status">
                                             <span class="visually-hidden">Loading...</span>
