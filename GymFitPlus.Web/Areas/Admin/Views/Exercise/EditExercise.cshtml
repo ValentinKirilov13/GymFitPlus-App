@@ -83,12 +83,11 @@
     </div>
 </div>
 
-<script>
-    var deleteExercise = document.getElementById('DeleteExercise');
-    document.body.appendChild(deleteExercise);
-</script>
-
 @section Scripts {
-    @* <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/AddExercise.js"></script>
+    <script>
+        var deleteExercise = document.getElementById('DeleteExercise');
+        document.body.appendChild(deleteExercise);
+    </script>
 }

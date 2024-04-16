@@ -6,10 +6,7 @@
         Back,
         Shoulders,
         Biceps,
-        Triceps,
-        Forearms,
         Legs,
         Glutes,
-        Calves,
     }
 }

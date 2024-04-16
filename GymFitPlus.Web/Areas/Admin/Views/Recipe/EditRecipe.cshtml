@@ -122,13 +122,13 @@
     </div>
 </div>
 
-<script>
-    var deleteRecipe = document.getElementById('DeleteRecipe');
-    document.body.appendChild(deleteRecipe);
-</script>
 
 @section Scripts {
-    @*  <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/AddExercise.js"></script>
     <script src="~/js/AddRecipe.js"></script>
+    <script>
+        var deleteRecipe = document.getElementById('DeleteRecipe');
+        document.body.appendChild(deleteRecipe);
+    </script>
 }

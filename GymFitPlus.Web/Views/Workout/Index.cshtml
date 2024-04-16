@@ -17,6 +17,7 @@
             <div id="startDiv">
                 <a class="btnn nav-link d-flex justify-content-center mt-0"
                    id="startButton"
+                   asp-area=""
                    asp-controller="FitnessProgram"
                    asp-action="Index"
                    asp-route-startWorkout="true">
@@ -79,7 +80,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-outline-warning border-0" data-bs-dismiss="modal">Close</button>
-                <form asp-action="DeleteWorkout" asp-controller="Workout" method="post">
+                <form asp-area="" asp-action="DeleteWorkout" asp-controller="Workout" method="post">
                     <input id="deleteElementId" type="text" hidden name="Id" readonly/>
                     <input id="userId" type="text" hidden name="UserId" readonly/>
                     <button type="submit" class="btn btn-outline-danger border-0">Delete Workout</button>
@@ -88,7 +89,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <script src="~/js/WorkoutIndex.js"></script>

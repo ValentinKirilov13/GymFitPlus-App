@@ -44,14 +44,14 @@
                             {
                                 <img class="profileImg" src="~/images/Recipes/food.svg" />
                             }
-                        </div>                      
+                        </div>
                     </div>
                     <h3 class="card-title">@Model.Name</h3>
                     <p class="card-text"> This recipe is a favorite of @Model.FavoriteByUsers users.</p>
                     <span>Тhe food tends towards the @Model.Category type. </span>
-                    <hr />   
+                    <hr />
                     <p class="myTitles">Calories per 100 g:</p>
-                    <div class="col-md-12 text-center display-4">                      
+                    <div class="col-md-12 text-center display-4">
                         <p id="calories">
                             @Model.CaloriesPerHundredGrams
                         </p>
@@ -87,7 +87,7 @@
 </div>
 
 @section Scripts {
-    @*  <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/AddExercise.js"></script>
     <script src="~/js/AddRecipe.js"></script>
 }

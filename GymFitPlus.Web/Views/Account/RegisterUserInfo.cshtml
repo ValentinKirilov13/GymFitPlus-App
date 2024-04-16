@@ -103,7 +103,7 @@
                                     </form>
                                     @if (ViewBag.RegState != null)
                                     {
-                                        <form class="form-inline float-end" asp-controller="Account" asp-action="Logout" method="post">
+                                        <form class="form-inline float-end" asp-area="" asp-controller="Account" asp-action="Logout" method="post">
                                             <button type="submit" class="nav-link btnn btn-link text-dark" onclick="showHiddenDiv()">Log out</button>
                                         </form>
                                     }
@@ -123,6 +123,6 @@
 </div>
 
 @section Scripts {
-    @* <partial name="_ValidationScriptsPartial" /> *@
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/RegisterUserInfoView.js"></script>
 }
