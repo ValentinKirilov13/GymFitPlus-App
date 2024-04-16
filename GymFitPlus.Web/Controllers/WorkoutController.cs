@@ -93,7 +93,16 @@ namespace GymFitPlus.Web.Controllers
                 viewModel.UserId = User.Id();
                 viewModel.Date = DateTime.Today;
 
-                await _workoutService.CreateWorkoutAsync(viewModel);
+                bool result = await _workoutService.CreateWorkoutAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully finished workout";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -119,7 +128,16 @@ namespace GymFitPlus.Web.Controllers
                     return Unauthorized();
                 }
 
-                await _workoutService.DeleteWorkoutAsync(viewModel, User.Id());
+                bool result = await _workoutService.DeleteWorkoutAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted workout";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }

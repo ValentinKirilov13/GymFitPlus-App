@@ -60,7 +60,16 @@ namespace GymFitPlus.Web.Controllers
                     return View(viewModel);
                 }
 
-                await _fitnessProgramService.AddFitnessProgramAsync(viewModel, User.Id());
+                bool result = await _fitnessProgramService.AddFitnessProgramAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully was created fitness program {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -143,8 +152,17 @@ namespace GymFitPlus.Web.Controllers
                     _logger.LogError("{Message:}", TryToEditNotChoosenOne);
                     return BadRequest();
                 }
+                 
+                bool result = await _fitnessProgramService.DeleteFitnessProgramAsync(viewModel.Id);
 
-                await _fitnessProgramService.DeleteFitnessProgramAsync(viewModel.Id);
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted fitness program {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -173,7 +191,16 @@ namespace GymFitPlus.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    await _fitnessProgramService.EditFitnessProgramAsync(viewModel);
+                    bool result = await _fitnessProgramService.EditFitnessProgramAsync(viewModel);
+
+                    if (result)
+                    {
+                        TempData["UserMessageSuccess"] = $"Successfully change name to {viewModel.Name}";
+                    }
+                    else
+                    {
+                        TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                    }
                 }
                 else
                 {

@@ -1,6 +1,5 @@
 ﻿using GymFitPlus.Core.Contracts;
 using GymFitPlus.Core.ViewModels.StatisticViewModels;
-using GymFitPlus.Web.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
@@ -62,7 +61,16 @@ namespace GymFitPlus.Web.Controllers
                 viewModel.UserId = User.Id();
                 viewModel.DateOfМeasurements = DateTime.Today;
 
-                await _statisticService.UpdateUserStatsAsync(viewModel);
+                bool result = await _statisticService.UpdateUserStatsAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = "Successfully updated statistics";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(AccountController.Dashboard), "Account");
             }

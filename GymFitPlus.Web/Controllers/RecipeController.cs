@@ -35,7 +35,7 @@ namespace GymFitPlus.Web.Controllers
             {
                 _logger.LogError("{Message:}", ex.Message);
                 return BadRequest();
-            }       
+            }
         }
 
         [HttpGet]
@@ -78,7 +78,16 @@ namespace GymFitPlus.Web.Controllers
         {
             try
             {
-                await _recipeService.AddRecipeToFavouriteAsync(viewModel, User.Id());
+                bool result = await _recipeService.AddRecipeToFavouriteAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully added recipe {viewModel.Name} to favourite";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index), new { favourite = true });
             }
@@ -107,7 +116,16 @@ namespace GymFitPlus.Web.Controllers
 
                 if (ModelState["Note"] != null && ModelState["Note"]?.ValidationState == ModelValidationState.Valid)
                 {
-                    await _recipeService.EditFavouriteRecipeAsync(viewModel, User.Id());
+                    bool result = await _recipeService.EditFavouriteRecipeAsync(viewModel, User.Id());
+
+                    if (result)
+                    {
+                        TempData["UserMessageSuccess"] = $"Successfully edited recipe {viewModel.Name} from favourite";
+                    }
+                    else
+                    {
+                        TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                    }
                 }
                 else
                 {
@@ -139,7 +157,16 @@ namespace GymFitPlus.Web.Controllers
                     return BadRequest();
                 }
 
-                await _recipeService.DeleteRecipeFromFavouriteAsync(viewModel, User.Id());
+                bool result = await _recipeService.DeleteRecipeFromFavouriteAsync(viewModel, User.Id());
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted recipe {viewModel.Name} from favourite";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index), new { favourite = true });
             }

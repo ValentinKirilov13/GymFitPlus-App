@@ -94,7 +94,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return View(viewModel);
                 }
 
-                await _recipeService.AddRecipeAsync(viewModel);
+                bool result = await _recipeService.AddRecipeAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully added recipe {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -154,7 +163,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return View(viewModel);
                 }
 
-                await _recipeService.EditRecipeAsync(viewModel);
+                bool result = await _recipeService.EditRecipeAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully edited recipe {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -181,7 +199,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return BadRequest();
                 }
 
-                await _recipeService.DeleteRecipeAsync(viewModel.Id);
+                bool result = await _recipeService.DeleteRecipeAsync(viewModel.Id);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted recipe {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -202,7 +229,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
         {
             try
             {
-                await _recipeService.RestoreRecipeAsync(viewModel.Id);
+                bool result = await _recipeService.RestoreRecipeAsync(viewModel.Id);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully restored recipe {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }

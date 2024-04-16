@@ -4,7 +4,6 @@ using GymFitPlus.Core.ViewModels.FitnessProgramViewModels;
 using Microsoft.AspNetCore.Mvc;
 using static GymFitPlus.Core.ErrorMessages.ErrorMessages;
 
-
 namespace GymFitPlus.Web.Controllers
 {
     public class ExerciseController : BaseController
@@ -95,7 +94,16 @@ namespace GymFitPlus.Web.Controllers
                     return View(viewModel);
                 }
 
-                await _exerciseService.AddExerciseToProgramAsync(viewModel);
+                bool result = await _exerciseService.AddExerciseToProgramAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = "Successfully added exercise to program";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(FitnessProgramController.Details),
                                         "FitnessProgram",
@@ -120,7 +128,16 @@ namespace GymFitPlus.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await _exerciseService.EditExerciseFromProgramAsync(viewModel);
+                    bool result = await _exerciseService.EditExerciseFromProgramAsync(viewModel);
+
+                    if (result)
+                    {
+                        TempData["UserMessageSuccess"] = $"Successfully edited exercise {viewModel.ExerciseName}";
+                    }
+                    else
+                    {
+                        TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                    }
                 }
                 else
                 {
@@ -158,7 +175,16 @@ namespace GymFitPlus.Web.Controllers
         {
             try
             {
-                await _exerciseService.RemoveExerciseFromProgramAsync(exerciseId, programId);
+                bool result = await _exerciseService.RemoveExerciseFromProgramAsync(exerciseId, programId);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = "Successfully deleted exercise";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(FitnessProgramController.Details),
                                        "FitnessProgram",

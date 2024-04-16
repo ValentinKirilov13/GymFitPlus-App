@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - GymFit+</title>
     <link rel="stylesheet" href="~/css/normalize.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GymFitPlus.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -57,8 +58,21 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (TempData["UserMessageSuccess"] != null)
+    {
+        <script defer>
+            message.showSuccess('@TempData["UserMessageSuccess"]');
+        </script>
+    }
+    @if (TempData["UserMessageError"] != null)
+    {
+        <script defer>
+            message.showError('@TempData["UserMessageError"]');
+        </script>
+    }
 </body>
 </html>

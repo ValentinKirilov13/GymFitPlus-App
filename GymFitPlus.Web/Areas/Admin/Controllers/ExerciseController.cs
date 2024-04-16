@@ -83,7 +83,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return View(viewModel);
                 }
 
-                await _exerciseService.AddExerciseAsync(viewModel);
+                bool result = await _exerciseService.AddExerciseAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully added exercise {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -138,7 +147,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return View(viewModel);
                 }
 
-                await _exerciseService.EditExerciseAsync(viewModel);
+                bool result = await _exerciseService.EditExerciseAsync(viewModel);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully edited exercise {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -165,7 +183,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
                     return BadRequest();
                 }
 
-                await _exerciseService.DeleteExerciseAsync(viewModel.Id);
+                bool result = await _exerciseService.DeleteExerciseAsync(viewModel.Id);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully deleted exercise {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -186,7 +213,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
         {
             try
             {
-                await _exerciseService.RestoreExerciseAsync(viewModel.Id);
+                bool result = await _exerciseService.RestoreExerciseAsync(viewModel.Id);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = $"Successfully restored exercise {viewModel.Name}";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index));
             }

@@ -47,7 +47,16 @@ namespace GymFitPlus.Web.Areas.Admin.Controllers
         {
             try
             {
-                await _fitnessProgramService.RestoreFitnessProgramAsync(id);
+                bool result = await _fitnessProgramService.RestoreFitnessProgramAsync(id);
+
+                if (result)
+                {
+                    TempData["UserMessageSuccess"] = "Successfully restored fitness program";
+                }
+                else
+                {
+                    TempData["UserMessageError"] = "Аn error occurred, please try again later";
+                }
 
                 return RedirectToAction(nameof(Index), new { username = TempData["Username"] });
             }

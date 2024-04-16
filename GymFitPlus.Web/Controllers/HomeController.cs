@@ -6,13 +6,11 @@ namespace GymFitPlus.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         [UserIsNotAuthenticated]
         public IActionResult Index()
@@ -20,12 +18,14 @@ namespace GymFitPlus.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [HttpGet]
         [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
@@ -48,6 +48,7 @@ namespace GymFitPlus.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
